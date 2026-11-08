@@ -79,3 +79,4 @@ production, other branches upload a preview version with its own URL.
 | Build variable | `NODE_VERSION` = `24` |
 
 `public/_headers` and `public/_redirects` end up at the root of `dist/`, where the Worker applies them.
+
