@@ -4,9 +4,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ContactPanel from '../../components/ContactPanel.astro';
 import Crumbs from '../../components/Crumbs.astro';
+import ProductMediaView from '../../components/ProductMediaView.astro';
 import { breadcrumbs, softwareApplication, webPage } from '../../lib/schema';
 import { serviceBySlug, serviceUrl, type Service } from '../../data/services';
-import { PRODUCTS, type Product } from '../../data/products';
+import { badgeClass, PRODUCTS, type Product } from '../../data/products';
 
 export function getStaticPaths() {
   return PRODUCTS.filter((p) => p.generatedPage).map((p) => ({ params: { slug: p.id }, props: { product: p } }));
@@ -27,28 +28,43 @@ const seo = {
       category: p.appCategory ?? 'BusinessApplication',
       license: p.license,
       sameAs: p.link?.href,
+      operatingSystem: p.os,
+      free: p.free,
+      downloadUrl: p.download?.available ? p.download.href : undefined,
+      softwareVersion: p.download?.available ? p.download.version : undefined,
     }),
     breadcrumbs(['Home', '/'], ['Products', '/products'], [p.name, p.path]),
   ],
 };
 const heading = p.heading ?? [p.name, ''];
-const badge = p.status === 'Open source' ? 'oss' : 'dev';
+const badge = badgeClass(p.status);
 const inDev = p.status === 'In development';
+const dl = p.download;
+const contact = p.contact ?? (inDev
+  ? { eyebrow: 'Get Access', title: 'Tell us you are interested.', lead: 'We will write to you when it is ready.', message: `I would like to hear more about ${p.name}.` }
+  : { eyebrow: 'Talk to Us', title: 'Want this in your product?', lead: 'Tell us about your product and where AI could help.', message: 'I would like to talk about AI in our product.' });
 ---
 <BaseLayout seo={seo} nav={{ current: 'products' }}>
 <main id="main">
-  <section class="page-hero dark">
+  <section class:list={['page-hero dark', { 'ph-media': p.hero }]}>
     <div class="hero-content">
       <Crumbs items={[['Home', '/'], ['Products', '/products'], [p.short]]} />
       <p style="margin:10px 0 6px"><span class:list={['badge', badge]}>{p.status}</span></p>
       <h1 class="page-title" style="font-size:clamp(2.4rem,5.4vw,4.6rem);color:#fff">{heading[0]} <span style="color:var(--cyan)">{heading[1]}</span></h1>
       <p class="page-sub" style="color:var(--on-dark-2)">{p.intro}</p>
       <div class="hero-actions">
-        {p.link
-          ? <a class="btn-primary" href={p.link.href} target="_blank" rel="noopener">{p.link.label}</a>
-          : <a class="btn-primary" href="#access">{p.cta}</a>}
+        {dl
+          ? (dl.available
+            ? <a class="btn-primary" href={dl.href} download>{dl.label}</a>
+            : <span class="btn-primary is-off" aria-disabled="true">{dl.label} · coming soon</span>)
+          : p.link
+            ? <a class="btn-primary" href={p.link.href} target="_blank" rel="noopener">{p.link.label}</a>
+            : <a class="btn-primary" href="#access">{p.cta}</a>}
+        {p.requirements && <a class="btn-outline" href="#requirements">Requirements</a>}
       </div>
+      {dl && <p class="dl-line">{dl.platformLine}{dl.available && dl.version && ` · Version ${dl.version}`}{dl.available && dl.size && ` · ${dl.size}`}</p>}
     </div>
+    {p.hero && <div class="ph-shot"><ProductMediaView media={p.hero} eager /></div>}
   </section>
 
   <section class="band" aria-labelledby="does-title">
@@ -58,6 +74,54 @@ const inDev = p.status === 'In development';
       {p.note && <p class="note2"><b>Status.</b> {p.note}</p>}
     </div>
   </section>
+
+  {p.features && p.features.length > 0 && (
+    <section class="band" id="features" aria-labelledby="features-title">
+      <div class="wrap">
+        <div class="sec-h" data-reveal><h2 class="section-title" id="features-title">How it works</h2></div>
+        <nav class="feat-jump" aria-label="Features">{p.features.map((f) => <a href={`#${f.id}`}>{f.title}</a>)}</nav>
+        <div class="feats">
+          {p.features.map((f) => (
+            <article class:list={['feat', { 'no-media': !f.media }]} id={f.id} data-reveal>
+              <div class="feat-text">
+                <h3>{f.title}</h3>
+                <p>{f.text}</p>
+                {f.points && <ul class="ticks">{f.points.map((x) => <li>{x}</li>)}</ul>}
+              </div>
+              {f.media && <ProductMediaView media={f.media} />}
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {(p.requirements || p.firstRun) && (
+    <section class="band" id="requirements" aria-labelledby="req-title">
+      <div class="wrap req-grid">
+        {p.requirements && (
+          <div>
+            <div class="sec-h" data-reveal><h2 class="section-title" id="req-title">Requirements</h2></div>
+            <dl class="req">
+              {p.requirements.map((r) => (
+                <div><dt>{r.label}{r.optional && <span class="req-opt">Optional</span>}</dt><dd>{r.value}</dd></div>
+              ))}
+            </dl>
+          </div>
+        )}
+        {p.firstRun && (
+          <div>
+            <h3 class="h2s" style="font-size:clamp(1.5rem,2.6vw,2rem)">Before you start</h3>
+            <ol class="firstrun">{p.firstRun.map((x) => <li>{x}</li>)}</ol>
+            {dl && (dl.available
+              ? <a class="btn-primary" href={dl.href} download style="margin-top:22px">{dl.label}</a>
+              : <span class="btn-primary is-off" aria-disabled="true" style="margin-top:22px">{dl.label} · coming soon</span>)}
+          </div>
+        )}
+      </div>
+      {p.credits && <div class="wrap"><p class="credits">{p.credits}</p></div>}
+    </section>
+  )}
 
   {related.length > 0 && (
     <section class="band" aria-labelledby="related-title">
@@ -70,9 +134,8 @@ const inDev = p.status === 'In development';
 
   <section class="band dark" id="access" aria-labelledby="access-title">
     <div class="wrap">
-      <ContactPanel eyebrow={inDev ? 'Get Access' : 'Talk to Us'} title={inDev ? 'Tell us you are interested.' : 'Want this in your product?'} titleId="access-title"
-        lead={inDev ? 'We will write to you when it is ready.' : 'Tell us about your product and where AI could help.'}
-        service={p.formService} message={inDev ? `I would like to hear more about ${p.name}.` : 'I would like to talk about AI in our product.'} />
+      <ContactPanel eyebrow={contact.eyebrow} title={contact.title} titleId="access-title"
+        lead={contact.lead} service={p.formService} message={contact.message} />
     </div>
   </section>
 </main>

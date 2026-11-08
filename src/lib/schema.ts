@@ -106,6 +106,13 @@ export function softwareApplication(input: {
   category: string;
   license?: string;
   sameAs?: string;
+  /** For downloadable apps, e.g. "macOS 13 or later". */
+  operatingSystem?: string;
+  /** Free to download and use: adds a zero-price offer. */
+  free?: boolean;
+  /** Direct download. Only pass it once the file actually exists. */
+  downloadUrl?: string;
+  softwareVersion?: string;
 }): SchemaNode {
   const url = absoluteUrl(input.path);
   return {
@@ -117,6 +124,10 @@ export function softwareApplication(input: {
     ...(input.description && { description: input.description }),
     ...(input.license && { license: input.license, isAccessibleForFree: true }),
     ...(input.sameAs && { sameAs: input.sameAs }),
+    ...(input.operatingSystem && { operatingSystem: input.operatingSystem }),
+    ...(input.free && { isAccessibleForFree: true, offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' } }),
+    ...(input.downloadUrl && { downloadUrl: input.downloadUrl }),
+    ...(input.softwareVersion && { softwareVersion: input.softwareVersion }),
     creator: namedOrganization(),
     publisher: namedOrganization(),
   };

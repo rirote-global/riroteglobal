@@ -2,39 +2,41 @@
 // One product as a full-width row: name, status, pitch and actions beside a screenshot, or beside its key
 // points when there is no screenshot yet, so a product without screens never leaves an empty box.
 import { PROBLEMS } from '../data/cases';
-import type { Product } from '../data/products';
+import { badgeClass, type Product } from '../data/products';
 
 export interface Props {
   product: Product;
   /** Show which problems it solves (the /products page, where they back the filter). */
   showTags?: boolean;
+  /** Overrides the screenshot's alt text for this placement. */
   shotAlt?: string;
 }
-const { product: p, showTags = false, shotAlt = 'ERPTick ticket screen with stage progress, SLA status and AMC coverage.' } = Astro.props;
+const { product: p, showTags = false, shotAlt } = Astro.props;
 const external = p.path.startsWith('http');
 const linkProps = external ? { target: '_blank', rel: 'noopener' } : {};
-const badge = p.status === 'Open source' ? 'oss' : 'dev';
-const hasShot = p.id === 'erptick';
+const shot = p.shot;
+const dl = p.download?.available ? p.download : undefined;
 const label = (id: string) => PROBLEMS.find((x) => x.id === id)?.label ?? id;
 ---
-<article class:list={['prow', { solo: !hasShot && p.points.length === 0 }]} data-item data-status={(p.status ?? '').replace(/ /g, '-')} data-tags={p.tags.join(' ')} data-reveal>
+<article class:list={['prow', { solo: !shot && p.points.length === 0 }]} data-item data-status={(p.status ?? '').replace(/ /g, '-')} data-tags={p.tags.join(' ')} data-reveal>
   <div class="prow-text">
-    {p.status && <span class:list={['badge', badge]}>{p.status}</span>}
+    {p.status && <span class:list={['badge', badgeClass(p.status)]}>{p.status}</span>}
     <h3><a href={p.path} {...linkProps}>{p.name}</a></h3>
     <p class="prow-line">{p.line}</p>
-    {hasShot && <ul class="mini-pts">{p.points.map((x) => <li>{x}</li>)}</ul>}
+    {shot && <ul class="mini-pts">{p.points.map((x) => <li>{x}</li>)}</ul>}
     {showTags && <ul class="tagcloud" aria-label="Problems it solves">{p.tags.map((t) => <li>{label(t)}</li>)}</ul>}
     <div class="cta-row">
       <a class="btn-primary" href={p.path} {...linkProps}>Explore {p.short} {external ? '↗' : '→'}</a>
-      {hasShot && <a class="btn-outline" href="/products/erptick#get-started">Talk to Us</a>}
+      {dl
+        ? <a class="btn-outline" href={dl.href} download>{dl.label}</a>
+        : p.rowCta && <a class="btn-outline" href={p.rowCta.href}>{p.rowCta.label}</a>}
     </div>
   </div>
-  {hasShot ? (
-    <a class="prow-shot" href="/products/erptick#promo" aria-label="Watch the 90-second ERPTick overview">
-      <img src="/assets/products/erptick/posters/01-tickets.webp"
-        srcset="/assets/products/erptick/posters/01-tickets-720.webp 720w, /assets/products/erptick/posters/01-tickets.webp 1280w"
-        sizes="(max-width: 900px) 100vw, 50vw" width="1280" height="800" loading="lazy" decoding="async" alt={shotAlt}>
-      <span class="prow-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>Watch the 90-sec overview</span>
+  {shot ? (
+    <a class="prow-shot" href={shot.href ?? p.path} aria-label={shot.hrefLabel ?? `See ${p.name}`}>
+      <img src={shot.poster ?? shot.src} srcset={shot.srcset}
+        sizes="(max-width: 900px) 100vw, 50vw" width={shot.width} height={shot.height} loading="lazy" decoding="async" alt={shotAlt ?? shot.alt}>
+      {shot.playLabel && <span class="prow-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>{shot.playLabel}</span>}
     </a>
   ) : p.points.length > 0 && (
     <ul class="big-pts">{p.points.map((x) => <li>{x}</li>)}</ul>

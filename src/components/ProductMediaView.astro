@@ -1,0 +1,22 @@
+---
+// A product screenshot or a short muted clip. Clips never preload: site.js plays them only while they are
+// on screen and leaves them on their still under reduced motion. Without JS the still and controls show.
+import type { ProductMedia } from '../data/products';
+
+export interface Props {
+  media: ProductMedia;
+  /** Lazy by default; the hero passes eager. */
+  eager?: boolean;
+  sizes?: string;
+}
+const { media: m, eager = false, sizes = '(max-width: 900px) 100vw, 55vw' } = Astro.props;
+---
+<figure class="pmedia">
+  {m.kind === 'video' ? (
+    <video src={m.src} poster={m.poster} width={m.width} height={m.height} muted loop playsinline preload="none"
+      controls data-inview aria-label={m.alt}></video>
+  ) : (
+    <img src={m.src} srcset={m.srcset} sizes={m.srcset ? sizes : undefined} width={m.width} height={m.height}
+      loading={eager ? 'eager' : 'lazy'} decoding="async" alt={m.alt}>
+  )}
+</figure>

@@ -57,7 +57,7 @@ const approach = [
         {intro && <><h3 class="group-h">{group}</h3><p class="group-d">{intro}</p></>}
         <div class="prows">
           {PRODUCTS.filter((p) => p.group === group).map((p) => (
-            <ProductRow product={p} showTags shotAlt="ERPTick ticket screen showing stage progress, SLA status and AMC coverage for a crusher breakdown." />
+            <ProductRow product={p} showTags shotAlt={p.id === 'erptick' ? 'ERPTick ticket screen showing stage progress, SLA status and AMC coverage for a crusher breakdown.' : undefined} />
           ))}
         </div>
         {group === 'Products' && (

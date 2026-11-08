@@ -289,4 +289,24 @@
       sendBtn.textContent = sendLabel;
     });
   });
+
+  // Product clips (video[data-inview]): muted loops that play only while on screen. They never preload,
+  // so a page of clips costs nothing until it is scrolled. Under reduced motion they keep their controls
+  // and stay on the still until the visitor presses play.
+  var clips = document.querySelectorAll('video[data-inview]');
+  if (clips.length && !reduced && 'IntersectionObserver' in window) {
+    var clipObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) {
+          if (v.preload === 'none') v.preload = 'auto';
+          var p = v.play();
+          if (p && p.catch) p.catch(function () { v.controls = true; }); // autoplay refused: let them press play
+        } else if (!v.paused) {
+          v.pause();
+        }
+      });
+    }, { rootMargin: '120px 0px', threshold: 0.35 });
+    clips.forEach(function (v) { v.controls = false; clipObs.observe(v); });
+  }
 })();
