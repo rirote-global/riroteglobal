@@ -106,6 +106,13 @@ const ECOMMERCE: ServiceProof = {
   link: caseLink('high-traffic-ecommerce-platform'),
 };
 
+const ANGARAA: ServiceProof = {
+  kicker: 'Case study · Local brand, Jaipur',
+  title: 'ANGARAA: charcoal orders straight to WhatsApp',
+  text: 'A new website for a Jaipur charcoal brand: a weighing-scale product picker, a kitchen calculator and an order slip that sends a ready-written order on WhatsApp.',
+  link: caseLink('angaraa-charcoal-website'),
+};
+
 const SHOPIFY: ServiceProof = {
   kicker: 'Case study · E-commerce',
   title: 'Shopify stores built, sped up and automated',
@@ -145,7 +152,7 @@ export const SERVICES: Service[] = [
       { title: 'Taking over existing software', text: 'If another team built it, we first make it stable and fix the urgent problems, then improve it without stopping your business.' },
       { title: 'Launch and support', text: 'We put it live, watch it and fix issues afterwards, so the people who built it are the ones who keep it running.' },
     ],
-    proof: [UNIFIED_ERP, NIMNIM, MULTI_SERVICE, SHOPIFY],
+    proof: [UNIFIED_ERP, NIMNIM, MULTI_SERVICE, ANGARAA, SHOPIFY],
     faq: [
       { question: 'Can you take over a product another team built?', answer: 'Yes. We start by stabilising what is live: infrastructure, urgent bugs and security. Then we plan improvements or a revamp that keeps the product running for its users, as we did for NimNim.' },
       { question: 'Do you build MVPs or only large platforms?', answer: 'Both. We scope a first version around the one outcome the business needs, and design the data model and APIs so the product can grow without a rewrite.' },
