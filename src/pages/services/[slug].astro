@@ -5,7 +5,7 @@ import Crumbs from '../../components/Crumbs.astro';
 import Cta from '../../components/Cta.astro';
 import Faq from '../../components/Faq.astro';
 import { breadcrumbs, service as serviceNode, webPage } from '../../lib/schema';
-import { contactUrl } from '../../data/site';
+import { contactUrl, SITE } from '../../data/site';
 import { SERVICES, SERVICES_PATH, SERVICE_STEPS, serviceBySlug, serviceUrl, type Service } from '../../data/services';
 
 export function getStaticPaths() {
@@ -82,6 +82,20 @@ const seo = {
       </div>
     </div>
   </section>
+
+  {service.designs && (
+    <section class="band" aria-labelledby="designs-title">
+      <div class="wrap">
+        <div class="sec-h" data-reveal>
+          <h2 class="section-title" id="designs-title">{service.designs.title}</h2>
+          <p class="section-sub">{service.designs.text}</p>
+        </div>
+        <div class="rel">
+          {service.designs.links.map((l) => <a href={SITE.designsUrl + l.path}><b>{l.label}</b><span>{l.text}</span></a>)}
+        </div>
+      </div>
+    </section>
+  )}
 
   <section class="band" aria-labelledby="steps-title">
     <div class="wrap">

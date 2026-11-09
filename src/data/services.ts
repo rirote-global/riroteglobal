@@ -38,6 +38,8 @@ export interface Service {
   proof: ServiceProof[];
   faq: FaqItem[];
   related: string[];
+  /** Optional row linking to the design gallery (designs.riroteglobal.com). */
+  designs?: { title: string; text: string; links: Array<{ path: string; label: string; text: string }> };
 }
 
 export const serviceUrl = (slug: string): string => `${SERVICES_PATH}/${slug}`;
@@ -150,6 +152,15 @@ export const SERVICES: Service[] = [
       { question: 'Who owns the code?', answer: 'You do. The code, the infrastructure accounts and the documentation are yours, and we can work inside your repositories from day one.' },
     ],
     related: ['ai-integration', 'cloud-devops', 'technical-leadership'],
+    designs: {
+      title: 'Designs you can try',
+      text: 'Open a working design on your phone before you decide. Each one is a full page with placeholder content, ready to be built with your own photos and words.',
+      links: [
+        { path: '/event-planner/', label: 'Event planner websites', text: 'Six homepages for wedding planners and event managers, with enquiries straight to WhatsApp.' },
+        { path: '/shop/', label: 'Online shops', text: 'A made-to-order shop with a gift builder and WhatsApp orders.' },
+        { path: '/', label: 'All designs', text: 'Websites, dashboards, fintech apps and sign-in screens.' },
+      ],
+    },
   },
   {
     slug: 'ai-integration',

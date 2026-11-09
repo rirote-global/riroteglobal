@@ -11,6 +11,8 @@ export const SITE = {
   name: 'Rirote Global',
   url: 'https://riroteglobal.com',
   email: 'info@riroteglobal.com',
+  /** The design gallery (separate static site, built from ~/startup/designs). */
+  designsUrl: 'https://designs.riroteglobal.com',
   legal: {
     name: 'Rirote Global',
     type: 'Sole proprietorship',

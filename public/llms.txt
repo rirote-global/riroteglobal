@@ -26,6 +26,10 @@
 - [Roomcraftr](https://riroteglobal.com/products/roomcraftr): quotes, orders and dealer commissions for curtain and blind shops (in development)
 - [stop-guessing](https://riroteglobal.com/products/stop-guessing): open-source guardrails for AI coding agents (MIT)
 
+## Designs
+
+- [Rirote Designs](https://designs.riroteglobal.com/): working website and app designs to try before choosing: event planner websites, online shops, fintech apps, dashboards and sign-in screens
+
 ## Optional
 
 - [Privacy Policy](https://riroteglobal.com/privacy-policy)
