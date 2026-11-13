@@ -21,6 +21,9 @@ const hasFooterText = Astro.slots.has('footer');
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<!-- charset must sit in the first 1024 bytes, so it comes before any script -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script is:inline>document.documentElement.classList.add('js')</script>
 <Analytics />
 <Seo {...seo} />

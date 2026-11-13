@@ -1,0 +1,276 @@
+{
+  "site": "https://theangaraa.rishabh-sisodiya4.workers.dev",
+  "checkedAt": "2026-11-13T10:48:32.607Z",
+  "tool": "scripts/launch-report.mjs with Lighthouse 12.2.1 (median of 3 runs)",
+  "site_files": {
+    "https": false,
+    "robots": true,
+    "aiCrawlersAllowed": true,
+    "blockedBots": [],
+    "sitemap": true,
+    "sitemapUrl": "https://theangaraa.rishabh-sisodiya4.workers.dev/sitemap-index.xml",
+    "llms": true,
+    "llmsLines": 18,
+    "notFoundAnswers404": true
+  },
+  "speed": [
+    {
+      "strategy": "mobile",
+      "performance": 99,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "firstPaintMs": 1511,
+      "mainContentMs": 2022,
+      "layoutShift": 0,
+      "pageKB": 226,
+      "runs": 3,
+      "performanceRange": [
+        99,
+        99
+      ]
+    },
+    {
+      "strategy": "desktop",
+      "performance": 100,
+      "accessibility": 100,
+      "bestPractices": 100,
+      "seo": 100,
+      "firstPaintMs": 403,
+      "mainContentMs": 511,
+      "layoutShift": 0.007,
+      "pageKB": 226,
+      "runs": 3,
+      "performanceRange": [
+        100,
+        100
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "ANGARAA — Premium Wooden Charcoal, Mansarovar, Jaipur",
+      "description": "ANGARAA is Jaipur",
+      "canonical": "https://theangaraa.com/",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "LocalBusiness",
+        "WebSite",
+        "FAQPage"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "title": "Contact ANGARAA — Wooden Charcoal, Mansarovar, Jaipur",
+      "description": "Call or WhatsApp ANGARAA on +91 94141 84987, email info@theangaraa.com, or send an enquiry. Mansarovar, Jaipur.",
+      "canonical": "https://theangaraa.com/contact",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 3,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "LocalBusiness",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/for-business",
+      "status": 200,
+      "title": "For Business — Monthly Charcoal Supply in Jaipur · ANGARAA",
+      "description": "Monthly wooden charcoal supply for restaurants, hotels, caterers and commercial kitchens near Mansarovar, Jaipur. Ask for a monthly rate on WhatsApp.",
+      "canonical": "https://theangaraa.com/for-business",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 3,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/founder",
+      "status": 200,
+      "title": "Founder — Yuvraj Singh Sankhala · ANGARAA",
+      "description": "Yuvraj Singh Sankhala worked the Jaipur charcoal trade himself before building ANGARAA, India",
+      "canonical": "https://theangaraa.com/founder",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 4,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/product",
+      "status": 200,
+      "title": "Tandoor Coal & Charcoal Rates in Jaipur — ANGARAA",
+      "description": "Tandoor Coal from 1 to 20 kg, Pencil Coal from 1 to 30 kg and loose Small Size Coal at ₹30/kg. Real rates, delivered within 5–6 km of Mansarovar, Jaipur.",
+      "canonical": "https://theangaraa.com/product",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/product-3kg",
+      "status": 200,
+      "title": "Tandoor Coal 3 kg — ₹105 · ANGARAA Jaipur",
+      "description": "Tandoor Coal 3 kg sack, ₹105 (₹35/kg). A first taste of ANGARAA. Try it before you switch suppliers. ANGARAA, Jaipur. Order on WhatsApp.",
+      "canonical": "https://theangaraa.com/product-3kg",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "Product",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/product-5kg",
+      "status": 200,
+      "title": "Tandoor Coal 5 kg — ₹175 · ANGARAA Jaipur",
+      "description": "Tandoor Coal 5 kg sack, ₹175 (₹35/kg). A day of tandoor service without over-ordering. ANGARAA, Jaipur. Order on WhatsApp.",
+      "canonical": "https://theangaraa.com/product-5kg",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "Product",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/product-10kg",
+      "status": 200,
+      "title": "Tandoor Coal 10 kg — ₹350 · ANGARAA Jaipur",
+      "description": "Tandoor Coal 10 kg sack, ₹350 (₹35/kg). For hotel kitchens and catering crews running high-volume tandoor service. ANGARAA, Jaipur. Order on WhatsApp.",
+      "canonical": "https://theangaraa.com/product-10kg",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "Product",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/product-20kg",
+      "status": 200,
+      "title": "Tandoor Coal 20 kg — ₹700 · ANGARAA Jaipur",
+      "description": "Tandoor Coal 20 kg sack, ₹700 (₹35/kg). Our largest sack, for commercial kitchens that run tandoors daily. ANGARAA, Jaipur. Order on WhatsApp.",
+      "canonical": "https://theangaraa.com/product-20kg",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "Product",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/product-tandoor-1kg",
+      "status": 200,
+      "title": "Tandoor Coal 1 kg — ₹40 · ANGARAA Jaipur",
+      "description": "Tandoor Coal 1 kg sack, ₹40 (₹40/kg). Sized for a single day of tandoor service. ANGARAA, Jaipur. Order on WhatsApp.",
+      "canonical": "https://theangaraa.com/product-tandoor-1kg",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "Product",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/product-tandoor-2kg",
+      "status": 200,
+      "title": "Tandoor Coal 2 kg — ₹75 · ANGARAA Jaipur",
+      "description": "Tandoor Coal 2 kg sack, ₹75 (₹37.5/kg). For full-day tandoor service without a mid-shift reorder. ANGARAA, Jaipur. Order on WhatsApp.",
+      "canonical": "https://theangaraa.com/product-tandoor-2kg",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "Product",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/why-angaraa",
+      "status": 200,
+      "title": "Why ANGARAA — Better Wooden Charcoal for Jaipur Kitchens",
+      "description": "Jaipur",
+      "canonical": "https://theangaraa.com/why-angaraa",
+      "shareImage": true,
+      "lang": "en-IN",
+      "h1s": 1,
+      "images": 3,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "BreadcrumbList"
+      ],
+      "issues": []
+    }
+  ],
+  "summary": {
+    "pages": 12,
+    "pagesWithIssues": 0,
+    "schemaTypes": [
+      "BreadcrumbList",
+      "FAQPage",
+      "LocalBusiness",
+      "Product",
+      "WebSite"
+    ]
+  }
+}

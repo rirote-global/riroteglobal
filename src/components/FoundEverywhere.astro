@@ -1,0 +1,141 @@
+---
+// "Found Everywhere" on the Websites & Web Apps page: one real page shown as each of its three
+// visitors reads it, what every website includes, and measured proof from our own live site.
+// The X-ray shows this site's real content: its title and description, the same schema.org node
+// the page emits, and the generated llms.txt. Nothing in it is a mock-up.
+import { FOUND, LAUNCH_REPORT_PATH } from '../data/found';
+import { SITE } from '../data/site';
+import { service as serviceNode } from '../lib/schema';
+import { llmsText } from '../lib/llms';
+import report from '../data/launch-reports/riroteglobal.json';
+import angaraaBefore from '../data/launch-reports/angaraa-before.json';
+import angaraaAfter from '../data/launch-reports/angaraa-after.json';
+import BeforeAfter from './BeforeAfter.astro';
+
+export interface Props {
+  /** The page the X-ray shows: the one this section sits on. */
+  page: { path: string; title: string; description: string; name: string; techName: string; summary: string };
+}
+const { page } = Astro.props;
+
+const host = new URL(SITE.url).host;
+const crumbs = page.path.split('/').filter(Boolean);
+const schemaJson = JSON.stringify(
+  serviceNode({ name: page.name, serviceType: page.techName, description: page.summary, path: page.path }),
+  null, 2,
+);
+const llmsLines = llmsText().split('\n');
+const llmsExcerpt = llmsLines.slice(0, 16).join('\n');
+
+const mobile = report.speed.find((s) => s.strategy === 'mobile');
+const desktop = report.speed.find((s) => s.strategy === 'desktop');
+const checked = new Date(report.checkedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const stats: Array<[string, string]> = [
+  ...(mobile && 'performance' in mobile ? [[String(mobile.performance), 'Speed score on a phone, out of 100'] as [string, string]] : []),
+  ...(desktop && 'performance' in desktop ? [[String(desktop.performance), 'Speed score on a computer, out of 100'] as [string, string]] : []),
+  ...(mobile && 'accessibility' in mobile ? [[String(mobile.accessibility), 'Accessibility score, out of 100'] as [string, string]] : []),
+  [String(report.summary.pages), report.summary.pagesWithIssues === 0 ? 'Pages checked, every one passing' : 'Pages checked'],
+  [String(report.summary.schemaTypes.length), 'Kinds of structured data Google can read'],
+];
+const promiseName = (id: string) => FOUND.promises.find((p) => p.id === id)?.name ?? id;
+const views = [
+  { id: 'customer', label: 'Your customer', note: 'What a visitor sees' },
+  { id: 'google', label: 'Google', note: 'What a search engine reads' },
+  { id: 'chatgpt', label: 'ChatGPT', note: 'What an AI assistant reads' },
+];
+---
+<section class="band found" id="found" aria-labelledby="found-title">
+  <div class="wrap">
+    <div class="sec-h" data-reveal>
+      <p class="eyebrow">{FOUND.name}</p>
+      <h2 class="section-title" id="found-title">{FOUND.title[0]} <span class="fe-accent">{FOUND.title[1]}</span></h2>
+      <p class="section-sub">{FOUND.lead}</p>
+    </div>
+
+    <div class="fe-xray" data-tabs data-reveal>
+      <div class="fe-xray-top">
+        <p class="fe-xray-label">This page, three ways</p>
+        <div class="fe-tabs" role="tablist" aria-label="This page as each visitor reads it" hidden>
+          {views.map((v, i) => (
+            <button class="fe-tab" role="tab" type="button" id={`fe-tab-${v.id}`} aria-controls={`fe-panel-${v.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? undefined : '-1'}>
+              <b>{v.label}</b><span>{v.note}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="fe-panel" role="tabpanel" id="fe-panel-customer" aria-labelledby="fe-tab-customer">
+        <h3 class="fe-panel-h">Your customer sees the page</h3>
+        <figure class="fe-browser">
+          <div class="fe-browser-bar" aria-hidden="true"><i></i><i></i><i></i><span>{host}/{crumbs.join('/')}</span></div>
+          <img src="/assets/found/page.webp" srcset="/assets/found/page-720.webp 720w, /assets/found/page.webp 1280w"
+            sizes="(max-width: 900px) 92vw, 1100px" width="1280" height="720" loading="lazy" decoding="async"
+            alt={`The top of the ${page.name} page as a visitor sees it.`} />
+        </figure>
+        <p class="fe-caption">Fast to open and easy to read on any screen. This is the only view most websites are built for.</p>
+      </div>
+
+      <div class="fe-panel" role="tabpanel" id="fe-panel-google" aria-labelledby="fe-tab-google">
+        <h3 class="fe-panel-h">Google reads the title, description and structured data</h3>
+        <div class="fe-google">
+          <div class="fe-serp">
+            <p class="fe-serp-site"><span class="fe-serp-icon" aria-hidden="true">R</span><span><b>{SITE.name}</b><small>{host} › {crumbs.join(' › ')}</small></span></p>
+            <p class="fe-serp-title">{page.title}</p>
+            <p class="fe-serp-desc">{page.description}</p>
+          </div>
+          <div class="fe-code-wrap">
+            <p class="fe-code-h">Behind it, in the page’s code</p>
+            <pre class="fe-code" tabindex="0" aria-label="The structured data on this page"><code>{schemaJson}</code></pre>
+          </div>
+        </div>
+        <p class="fe-caption">A preview of this page’s search result, built from its real title and description. The structured data tells Google exactly what the business offers, where, and who provides it.</p>
+      </div>
+
+      <div class="fe-panel" role="tabpanel" id="fe-panel-chatgpt" aria-labelledby="fe-tab-chatgpt">
+        <h3 class="fe-panel-h">ChatGPT reads a plain-text guide to the business</h3>
+        <div class="fe-code-wrap">
+          <p class="fe-code-h"><a href="/llms.txt">{host}/llms.txt</a> · first {llmsExcerpt.split('\n').length} of {llmsLines.length} lines</p>
+          <pre class="fe-code fe-code-text" tabindex="0" aria-label="The start of this site's llms.txt file"><code>{llmsExcerpt}</code></pre>
+        </div>
+        <p class="fe-caption">AI assistants get your facts in plain words, generated from the site so they never go stale. On top of that, we set up your business on ChatGPT’s Business Hub.</p>
+      </div>
+    </div>
+
+    <div class="fe-promises">
+      {FOUND.promises.map((p) => (
+        <article class="fe-promise" data-reveal>
+          <p class="fe-promise-for">{p.line}</p>
+          <h3>{p.name}</h3>
+          <p>{p.text}</p>
+          <p class="fe-tech">{p.tech}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="fe-included">
+      <div class="sec-h" data-reveal><h3 class="h2s" style="font-size:clamp(1.5rem,2.6vw,2.1rem)">Included in every website</h3></div>
+      <div class="fe-cols">
+        {FOUND.checklist.map((group) => (
+          <div data-reveal>
+            <p class="fe-col-h">{promiseName(group.promise)}</p>
+            <ul class="fe-list">{group.items.map(([title, text]) => <li><b>{title}</b><span>{text}</span></li>)}</ul>
+          </div>
+        ))}
+      </div>
+      <ul class="fe-list fe-handover" data-reveal>{FOUND.handover.map(([title, text]) => <li><b>{title}</b><span>{text}</span></li>)}</ul>
+    </div>
+
+    <div class="fe-proof" data-reveal>
+      <div>
+        <p class="fe-col-h">Our own site, checked live</p>
+        <p class="fe-proof-text">We run the same checks on {host} that we run on yours: Google Lighthouse for speed, and every page in the sitemap for titles, descriptions and structured data. Checked {checked}.</p>
+        <a class="btn-outline" href={LAUNCH_REPORT_PATH}>See the full launch report →</a>
+      </div>
+      <dl class="fe-stats">{stats.map(([value, label]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+    </div>
+
+    <BeforeAfter name="ANGARAA" caseSlug="angaraa-charcoal-website" before={angaraaBefore} after={angaraaAfter}
+      afterNote="its preview address before launch" />
+  </div>
+</section>
