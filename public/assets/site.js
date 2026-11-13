@@ -220,6 +220,8 @@
   var WEB3FORMS_URL = 'https://api.web3forms.com/submit';
   var CONTACT_FALLBACK = 'Please email us at <a href="mailto:info@riroteglobal.com">info@riroteglobal.com</a>.';
   var form = document.getElementById('contactForm');
+  // In its own function so pages without the form still run everything after it.
+  (function () {
   if (!form) return;
 
   // Pre-fill from links such as /contact?service=ERPTick%20(our%20product)&message=...
@@ -289,6 +291,7 @@
       sendBtn.textContent = sendLabel;
     });
   });
+  })();
 
   // Product clips (video[data-inview]): muted loops that play only while on screen. They never preload,
   // so a page of clips costs nothing until it is scrolled. Under reduced motion they keep their controls
@@ -309,4 +312,36 @@
     }, { rootMargin: '120px 0px', threshold: 0.35 });
     clips.forEach(function (v) { v.controls = false; clipObs.observe(v); });
   }
+
+  // Tabs ([data-tabs]): WAI-ARIA tabs with manual activation. Without this script every panel shows,
+  // stacked, and the tab row stays hidden, so nothing is lost when JavaScript fails.
+  document.querySelectorAll('[data-tabs]').forEach(function (box) {
+    var list = box.querySelector('[role="tablist"]');
+    var tabs = Array.prototype.slice.call(box.querySelectorAll('[role="tab"]'));
+    if (!list || !tabs.length) return;
+    function select(tab, focus) {
+      tabs.forEach(function (t) {
+        var on = t === tab;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (panel) panel.hidden = !on;
+      });
+      if (focus) tab.focus();
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(tab, false); });
+      tab.addEventListener('keydown', function (e) {
+        var next = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = tabs[(i + 1) % tabs.length];
+        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (e.key === 'Home') next = tabs[0];
+        else if (e.key === 'End') next = tabs[tabs.length - 1];
+        if (next) { e.preventDefault(); select(next, true); }
+      });
+    });
+    list.hidden = false;
+    box.classList.add('is-tabbed');
+    select(tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0], false);
+  });
 })();

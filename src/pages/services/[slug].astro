@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Crumbs from '../../components/Crumbs.astro';
 import Cta from '../../components/Cta.astro';
 import Faq from '../../components/Faq.astro';
+import FoundEverywhere from '../../components/FoundEverywhere.astro';
 import { breadcrumbs, service as serviceNode, webPage } from '../../lib/schema';
 import { contactUrl, SITE } from '../../data/site';
 import { SERVICES, SERVICES_PATH, SERVICE_STEPS, serviceBySlug, serviceUrl, type Service } from '../../data/services';
@@ -59,6 +60,10 @@ const seo = {
       </div>
     </div>
   </section>
+
+  {service.found && (
+    <FoundEverywhere page={{ path, title: service.metaTitle, description: service.description, name: service.name, techName: service.techName, summary: service.summary }} />
+  )}
 
   <section class="band" aria-labelledby="proof-title">
     <div class="wrap">

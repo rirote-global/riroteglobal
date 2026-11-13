@@ -1,0 +1,145 @@
+---
+// Sample launch report: what every client gets when their website goes live, shown for our own site.
+// All numbers come from src/data/launch-reports/riroteglobal.json, written by scripts/launch-report.mjs.
+// To refresh: node scripts/launch-report.mjs https://riroteglobal.com src/data/launch-reports/riroteglobal.json
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Crumbs from '../components/Crumbs.astro';
+import { breadcrumbs, webPage } from '../lib/schema';
+import { FOUND, FOUND_PATH, LAUNCH_REPORT_PATH } from '../data/found';
+import report from '../data/launch-reports/riroteglobal.json';
+
+const host = new URL(report.site).host;
+const checked = new Date(report.checkedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const files = report.site_files;
+const speed = report.speed.filter((s): s is Extract<typeof s, { performance: number }> => 'performance' in s);
+const secs = (ms: number) => `${(ms / 1000).toFixed(1)} s`;
+const passing = report.pages.filter((p) => p.issues.length === 0).length;
+
+type Check = { ok: boolean; title: string; text: string };
+const groups: Array<{ name: string; checks: Check[] }> = [
+  {
+    name: 'Found, for Google',
+    checks: [
+      { ok: passing === report.pages.length, title: `${passing} of ${report.pages.length} pages pass every check`, text: 'Each page has a title and description within the length Google shows, one main heading, a canonical address, a share image, alt text on images and structured data.' },
+      { ok: report.summary.schemaTypes.length > 0, title: `${report.summary.schemaTypes.length} kinds of structured data`, text: report.summary.schemaTypes.join(', ') + '.' },
+      { ok: files.sitemap, title: 'Sitemap', text: `Lists every page for search engines, at ${files.sitemapUrl.replace(/^https?:\/\//, '')}.` },
+      { ok: files.robots, title: 'robots.txt', text: 'Tells search engines what they may read and where the sitemap is.' },
+    ],
+  },
+  {
+    name: 'Answered, for ChatGPT and AI assistants',
+    checks: [
+      { ok: files.llms, title: 'llms.txt', text: `A ${files.llmsLines}-line plain-text guide to the business for AI assistants, generated from the site's own pages.` },
+      { ok: files.aiCrawlersAllowed, title: 'AI crawlers allowed', text: files.aiCrawlersAllowed ? 'GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, PerplexityBot and Google-Extended may all read the site.' : `Blocked: ${files.blockedBots.join(', ')}.` },
+    ],
+  },
+  {
+    name: 'Safe basics',
+    checks: [
+      { ok: files.https, title: 'Secure connection', text: 'Every visit is sent to the https:// address.' },
+      { ok: files.notFoundAnswers404, title: 'Missing pages answer correctly', text: 'An address that does not exist returns a proper "not found", so search engines never index an error as a page.' },
+    ],
+  },
+];
+const byHand = [
+  ['Google Search Console', 'Set up in the owner’s name, with the sitemap submitted.'],
+  ['Google Business Profile', 'Linked to the website, with the same name, address and hours.'],
+  ['ChatGPT Business Hub', 'The business profile set up on ChatGPT, so it is listed from the start.'],
+];
+const label: Record<string, string> = { mobile: 'On a phone', desktop: 'On a computer' };
+
+const seo = {
+  title: 'Sample Launch Report | Rirote Global',
+  path: LAUNCH_REPORT_PATH,
+  description: `The launch report every Rirote Global website comes with, run live on ${host}: speed scores, Google checks for every page, llms.txt and AI crawler access.`,
+  schema: [
+    webPage({ path: LAUNCH_REPORT_PATH, name: 'Sample launch report' }),
+    breadcrumbs(['Home', '/'], ['Websites & Web Apps', FOUND_PATH.split('#')[0]], ['Launch report', LAUNCH_REPORT_PATH]),
+  ],
+};
+---
+<BaseLayout seo={seo} nav={{ current: 'services' }}>
+<main id="main" class="lr">
+  <section class="page-hero">
+    <div class="wrap">
+      <Crumbs items={[['Home', '/'], ['Websites & Web Apps', FOUND_PATH.split('#')[0]], ['Launch report']]} />
+      <p class="eyebrow" style="margin-top:12px">Sample launch report</p>
+      <h1 class="page-title">{host}, <span style="color:var(--wire-t)">checked live.</span></h1>
+      <p class="page-sub">Every website we build comes with this report on launch day. This one is for our own site, so you can see exactly what you would get.</p>
+      <p class="lr-meta">Checked {checked} · {report.pages.length} pages · Google Lighthouse 12.2.1 and our launch checker</p>
+      <div class="hero-actions lr-noprint">
+        <button class="btn-primary" type="button" onclick="window.print()">Print or save as PDF</button>
+        <a class="btn-outline" href={FOUND_PATH}>What every website includes</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="lr-speed">
+    <div class="wrap">
+      <div class="sec-h"><p class="eyebrow">{FOUND.promises[0].name}, for your customer</p><h2 class="section-title" id="lr-speed">Speed</h2>
+        <p class="section-sub">Google Lighthouse scores for the homepage, out of 100. Above 90 is good. They move a few points between runs.</p></div>
+      <div class="lr-speed">
+        {speed.map((s) => (
+          <div class="lr-run">
+            <p class="lr-run-h">{label[s.strategy] ?? s.strategy}</p>
+            <dl class="lr-scores">
+              <div><dt>Speed</dt><dd>{s.performance}</dd></div>
+              <div><dt>Accessibility</dt><dd>{s.accessibility}</dd></div>
+              <div><dt>Best practices</dt><dd>{s.bestPractices}</dd></div>
+              <div><dt>Search basics</dt><dd>{s.seo}</dd></div>
+            </dl>
+            <p class="lr-run-facts">Main content visible in <b>{secs(s.mainContentMs)}</b> · page size <b>{s.pageKB} KB</b> · layout shift <b>{s.layoutShift}</b></p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {groups.map((g, gi) => (
+    <section class="band" aria-labelledby={`lr-g${gi}`}>
+      <div class="wrap">
+        <div class="sec-h"><h2 class="section-title" id={`lr-g${gi}`} style="font-size:clamp(1.8rem,3.6vw,2.8rem)">{g.name}</h2></div>
+        <ul class="lr-checks">
+          {g.checks.map((c) => (
+            <li class:list={[c.ok ? 'is-ok' : 'is-bad']}>
+              <span class="lr-mark" aria-hidden="true">{c.ok ? '✓' : '!'}</span>
+              <div><b>{c.title}</b><span class="sr-only">{c.ok ? ' (passed)' : ' (needs work)'}</span><p>{c.text}</p></div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  ))}
+
+  <section class="band" aria-labelledby="lr-hand">
+    <div class="wrap">
+      <div class="sec-h"><h2 class="section-title" id="lr-hand" style="font-size:clamp(1.8rem,3.6vw,2.8rem)">Set up by hand at launch</h2>
+        <p class="section-sub">These need the owner’s login, so we set them up together on launch day and tick them off in the client’s copy of this report.</p></div>
+      <ul class="lr-checks">{byHand.map(([title, text]) => <li class="is-hand"><span class="lr-mark" aria-hidden="true">○</span><div><b>{title}</b><p>{text}</p></div></li>)}</ul>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="lr-pages">
+    <div class="wrap">
+      <div class="sec-h"><h2 class="section-title" id="lr-pages" style="font-size:clamp(1.8rem,3.6vw,2.8rem)">Every page</h2>
+        <p class="section-sub">Every address in the sitemap, as a search engine reads it.</p></div>
+      <div class="lr-table-wrap" tabindex="0" role="region" aria-label="Every page checked">
+        <table class="lr-table">
+          <thead><tr><th scope="col">Page</th><th scope="col">Title</th><th scope="col">Description</th><th scope="col">Structured data</th><th scope="col">Result</th></tr></thead>
+          <tbody>
+            {report.pages.map((p) => (
+              <tr>
+                <th scope="row"><a href={p.path}>{p.path}</a></th>
+                <td>{p.title?.length ?? 0} chars</td>
+                <td>{p.description?.length ?? 0} chars</td>
+                <td>{p.schema.join(', ')}</td>
+                <td class:list={[p.issues.length ? 'is-bad' : 'is-ok']}>{p.issues.length ? p.issues.join('; ') : 'Passes'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+</BaseLayout>

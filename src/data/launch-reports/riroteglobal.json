@@ -1,0 +1,553 @@
+{
+  "site": "https://riroteglobal.com",
+  "checkedAt": "2026-11-11T17:02:07.232Z",
+  "tool": "scripts/launch-report.mjs with Lighthouse 12.2.1",
+  "site_files": {
+    "https": true,
+    "robots": true,
+    "aiCrawlersAllowed": true,
+    "blockedBots": [],
+    "sitemap": true,
+    "sitemapUrl": "https://riroteglobal.com/sitemap.xml",
+    "llms": true,
+    "llmsLines": 35,
+    "notFoundAnswers404": true
+  },
+  "speed": [
+    {
+      "strategy": "mobile",
+      "performance": 97,
+      "accessibility": 100,
+      "bestPractices": 79,
+      "seo": 92,
+      "firstPaintMs": 1957,
+      "mainContentMs": 2140,
+      "layoutShift": 0,
+      "pageKB": 134
+    },
+    {
+      "strategy": "desktop",
+      "performance": 86,
+      "accessibility": 100,
+      "bestPractices": 78,
+      "seo": 92,
+      "firstPaintMs": 1444,
+      "mainContentMs": 1866,
+      "layoutShift": 0,
+      "pageKB": 152
+    }
+  ],
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Rirote Global | Software, AI & ERP Development in Jaipur",
+      "description": "Rirote Global builds full-stack products, AI agents and ERP integrations for businesses in India and worldwide. Based in Jaipur. Makers of ERPTick.",
+      "canonical": "https://riroteglobal.com/",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 5,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "Organization",
+        "ProfessionalService",
+        "WebSite"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "title": "About Rirote Global | Software & ERP Company, Jaipur",
+      "description": "Full-stack, AI and ERP engineering company in Jaipur, India, building software for businesses in India, the US and the Middle East.",
+      "canonical": "https://riroteglobal.com/about",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "AboutPage",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "title": "Contact Rirote Global | Software & ERP Company, Jaipur",
+      "description": "Tell Rirote Global what you want to build or fix: websites, business software, AI or ERP. A person reads every message and gets back to you as soon as possible.",
+      "canonical": "https://riroteglobal.com/contact",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/privacy-policy",
+      "status": 200,
+      "title": "Privacy Policy | Rirote Global",
+      "description": "How Rirote Global collects, uses and protects personal data when you visit riroteglobal.com or contact us, and the rights you have over it.",
+      "canonical": "https://riroteglobal.com/privacy-policy",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/products",
+      "status": 200,
+      "title": "Software Products for Busy Operations | Rirote Global",
+      "description": "ERPTick and other software products we build and run for businesses with busy operations, connected to the systems they already use.",
+      "canonical": "https://riroteglobal.com/products",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 4,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "CollectionPage",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/products/distinctive-ui",
+      "status": 200,
+      "title": "Distinctive UI: Open-Source Design Plugin for Claude Code",
+      "description": "Distinctive UI is a free, MIT-licensed Claude Code plugin that gives AI-built interfaces a distinct identity through intake, art directions, a build and a real-browser review.",
+      "canonical": "https://riroteglobal.com/products/distinctive-ui",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "SoftwareApplication",
+        "BreadcrumbList"
+      ],
+      "issues": [
+        "description is 175 characters (over 160 gets cut off)"
+      ]
+    },
+    {
+      "path": "/products/erptick",
+      "status": 200,
+      "title": "ERPTick: Service Desk for Equipment Makers on ERPNext",
+      "description": "Field service desk for equipment makers on ERPNext: tickets with SLAs, field visits, AMC contracts, quotations and a customer portal, synced with your ERP.",
+      "canonical": "https://riroteglobal.com/products/erptick",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 3,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "SoftwareApplication",
+        "BreadcrumbList",
+        "FAQPage",
+        "VideoObject"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/products/rirote-vision",
+      "status": 200,
+      "title": "RIROTE VISION: Free AI Video Studio for Mac",
+      "description": "RIROTE VISION is a free AI video studio for macOS. Describe a video, edit it on a timeline or its transcript, and export it. Voices and music run on your Mac.",
+      "canonical": "https://riroteglobal.com/products/rirote-vision",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 7,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "SoftwareApplication",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/products/roomcraftr",
+      "status": 200,
+      "title": "Roomcraftr: Quotes & Orders for Curtain and Blind Shops",
+      "description": "Roomcraftr is software for curtain and blind shops in India: measure, quote, track orders and manage dealer commissions. In development, from Rirote Global.",
+      "canonical": "https://riroteglobal.com/products/roomcraftr",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "SoftwareApplication",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/products/stop-guessing",
+      "status": 200,
+      "title": "stop-guessing: Open-Source Guardrails for AI Coding Agents",
+      "description": "stop-guessing is a free, MIT-licensed set of Agent Skills that stops AI coding agents from inventing decisions or calling a job done when it is not.",
+      "canonical": "https://riroteglobal.com/products/stop-guessing",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "SoftwareApplication",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects",
+      "status": 200,
+      "title": "ERP, SaaS & E-commerce Case Studies | Rirote Global",
+      "description": "Case studies in enterprise ERP, manufacturing ERP, SaaS, logistics and e-commerce: what we built, the stack, and the measured results.",
+      "canonical": "https://riroteglobal.com/projects",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "CollectionPage",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects/angaraa-charcoal-website",
+      "status": 200,
+      "title": "ANGARAA Charcoal Website Case Study | Rirote Global",
+      "description": "A new website for ANGARAA, a Jaipur charcoal brand: a weighing-scale product picker, a kitchen calculator and an order slip that sends orders on WhatsApp.",
+      "canonical": "https://riroteglobal.com/projects/angaraa-charcoal-website",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects/foundry-operations-erp",
+      "status": 200,
+      "title": "Foundry ERP & ERPNext Integration Case Study | Rirote Global",
+      "description": "A 17-module foundry ERP with heat-number traceability, joined to ERPNext for finance and payroll through a safe REST boundary and nightly reconciliation.",
+      "canonical": "https://riroteglobal.com/projects/foundry-operations-erp",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects/high-traffic-ecommerce-platform",
+      "status": 200,
+      "title": "High-Traffic E-Commerce Case Study | Rirote Global",
+      "description": "Redesign and modernisation of a high-traffic Indian e-commerce platform: a monolith-to-microservices migration plan and better backend performance.",
+      "canonical": "https://riroteglobal.com/projects/high-traffic-ecommerce-platform",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects/multi-service-delivery-platform",
+      "status": 200,
+      "title": "Multi-Service Delivery Platform Case Study | Rirote Global",
+      "description": "A unified platform for food delivery, parcel logistics and ride booking, built on microservices so each service scales on its own.",
+      "canonical": "https://riroteglobal.com/projects/multi-service-delivery-platform",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects/nimnim",
+      "status": 200,
+      "title": "NimNim On-Demand Laundry Platform Case Study | Rirote Global",
+      "description": "How we stabilised and rebuilt NimNim, a live US laundry platform: one hardened server, a 50% lower AWS bill and 50% faster API responses.",
+      "canonical": "https://riroteglobal.com/projects/nimnim",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects/shopify-store-projects",
+      "status": 200,
+      "title": "Shopify Development Case Study | Rirote Global",
+      "description": "End-to-end Shopify work for fashion, lifestyle and homeware brands: bespoke themes, custom apps, faster stores and bulk product automation.",
+      "canonical": "https://riroteglobal.com/projects/shopify-store-projects",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/projects/unified-erp-service-platform",
+      "status": 200,
+      "title": "Unified ERP & Service Platform Case Study | Rirote Global",
+      "description": "One platform for 9 business entities across 5 ERPNext sites: a service ticketing engine and 11 role-based dashboards loading in under 500ms.",
+      "canonical": "https://riroteglobal.com/projects/unified-erp-service-platform",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Article",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "title": "Software, AI & ERP Services in Jaipur | Rirote Global",
+      "description": "Websites and web apps, AI assistants, ERP integration, hosting, reports and dedicated developers, from a software company in Jaipur.",
+      "canonical": "https://riroteglobal.com/services",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "CollectionPage",
+        "BreadcrumbList",
+        "ItemList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services/ai-integration",
+      "status": 200,
+      "title": "AI Integration & Automation Services, India | Rirote Global",
+      "description": "AI assistants and automations that work with your own documents and data, with clear rules and checks so you can trust the answers.",
+      "canonical": "https://riroteglobal.com/services/ai-integration",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Service",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services/cloud-devops",
+      "status": 200,
+      "title": "Cloud Hosting, Speed & Security (DevOps) | Rirote Global",
+      "description": "Lower cloud bills, faster load times and locked-down servers on AWS or DigitalOcean, without taking your product offline.",
+      "canonical": "https://riroteglobal.com/services/cloud-devops",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Service",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services/data-pipelines",
+      "status": 200,
+      "title": "Dashboards, Reports & Data Pipelines | Rirote Global",
+      "description": "Dashboards and reports that bring the numbers from your ERP and your other software into one place, defined once and fast to load.",
+      "canonical": "https://riroteglobal.com/services/data-pipelines",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Service",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services/dedicated-engineers",
+      "status": 200,
+      "title": "Hire Dedicated Developers from India | Rirote Global",
+      "description": "Experienced full-stack, AI, ERP and cloud developers who join your team full-time, part-time or per project. Vetted and managed by us.",
+      "canonical": "https://riroteglobal.com/services/dedicated-engineers",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Service",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services/erp-integration",
+      "status": 200,
+      "title": "ERP Integration & Custom ERP Development | Rirote Global",
+      "description": "Connect your ERP to your other software, add custom modules and build management dashboards, from a Jaipur team that builds its own software products.",
+      "canonical": "https://riroteglobal.com/services/erp-integration",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Service",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services/full-stack-development",
+      "status": 200,
+      "title": "Website & Web App Development (Full-Stack) | Rirote Global",
+      "description": "Websites, web apps and online products for businesses, from a first version to a busy live product. Planned, built and looked after by one Jaipur team.",
+      "canonical": "https://riroteglobal.com/services/full-stack-development",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Service",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    },
+    {
+      "path": "/services/technical-leadership",
+      "status": 200,
+      "title": "Software Architecture & Technical Leadership | Rirote Global",
+      "description": "Advice before you build, step-by-step plans for big system changes, and a senior engineer to lead your developers day to day.",
+      "canonical": "https://riroteglobal.com/services/technical-leadership",
+      "shareImage": true,
+      "lang": "en",
+      "h1s": 1,
+      "images": 2,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [
+        "WebPage",
+        "Service",
+        "BreadcrumbList"
+      ],
+      "issues": []
+    }
+  ],
+  "summary": {
+    "pages": 26,
+    "pagesWithIssues": 1,
+    "schemaTypes": [
+      "AboutPage",
+      "Article",
+      "BreadcrumbList",
+      "CollectionPage",
+      "FAQPage",
+      "ItemList",
+      "Organization",
+      "ProfessionalService",
+      "Service",
+      "SoftwareApplication",
+      "VideoObject",
+      "WebPage",
+      "WebSite"
+    ]
+  }
+}

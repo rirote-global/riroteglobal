@@ -218,7 +218,7 @@ export const PRODUCTS: Product[] = [
     heading: ['A creative director', 'for Claude Code.'],
     intro: 'Most AI-built interfaces look the same. Our open-source plugin runs intake, a brief, three art directions, the build and a real-browser review, so the result could only belong to your product.',
     metaTitle: 'Distinctive UI: Open-Source Design Plugin for Claude Code',
-    description: 'Distinctive UI is a free, MIT-licensed Claude Code plugin that gives AI-built interfaces a distinct identity through intake, art directions, a build and a real-browser review.',
+    description: 'Distinctive UI is a free, MIT-licensed Claude Code plugin that runs a real design process, so AI-built interfaces look like your product, not a template.',
     cta: 'Talk about your product design', link: { href: 'https://github.com/rirote-global/distinctive-ui', label: 'View on GitHub' }, services: ['ai-integration', 'full-stack-development'],
     appCategory: 'DeveloperApplication', license: 'https://opensource.org/licenses/MIT',
   },

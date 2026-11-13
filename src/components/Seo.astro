@@ -30,8 +30,6 @@ const canonical = absoluteUrl(path);
 const imageUrl = absoluteUrl(image.path);
 const jsonLd = schema.length ? JSON.stringify({ '@context': 'https://schema.org', '@graph': schema }, null, 2) : null;
 ---
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{title}</title>
 {noindex ? (
   <meta name="robots" content="noindex">

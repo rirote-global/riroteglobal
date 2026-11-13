@@ -8,6 +8,7 @@ import { organization, website } from '../lib/schema';
 import { COMPANY_STATS } from '../data/site';
 import { CASES, PROJECTS_PATH } from '../data/cases';
 import { PRODUCTS } from '../data/products';
+import { FOUND, FOUND_PATH } from '../data/found';
 
 // Stats strip under the hero: shared company numbers.
 const HERO_STATS = [COMPANY_STATS.projects, COMPANY_STATS.industries, COMPANY_STATS.regions];
@@ -113,6 +114,20 @@ const stops: Array<[string, string]> = [['start', 'Start'], ['clients', 'Proof']
     </div>
     <div class="prows">{products.map((p) => <ProductRow product={p} />)}</div>
     <p class="seeall"><a class="btn-outline" href="/products">All products →</a></p>
+  </div>
+</section>
+
+<section class="band fe-band" id="found-everywhere" aria-labelledby="found-band-title">
+  <div class="wrap fe-band-grid">
+    <div data-reveal>
+      <p class="eyebrow">{FOUND.name}</p>
+      <h2 class="section-title" id="found-band-title" style="margin-top:12px">{FOUND.title[0]} <span>{FOUND.title[1]}</span></h2>
+      <p class="section-sub">{FOUND.lead}</p>
+      <p class="seeall" style="margin-top:22px"><a class="btn-outline" href={FOUND_PATH}>See what every website includes →</a></p>
+    </div>
+    <ol class="fe-band-list" data-reveal>
+      {FOUND.promises.map((p) => <li><span>{p.line}</span><b>{p.name}</b><em>{p.tech}</em></li>)}
+    </ol>
   </div>
 </section>
 

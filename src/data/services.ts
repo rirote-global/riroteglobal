@@ -38,6 +38,8 @@ export interface Service {
   proof: ServiceProof[];
   faq: FaqItem[];
   related: string[];
+  /** Shows the "Found Everywhere" section (components/FoundEverywhere.astro, data/found.ts). */
+  found?: boolean;
   /** Optional row linking to the design gallery (designs.riroteglobal.com). */
   designs?: { title: string; text: string; links: Array<{ path: string; label: string; text: string }> };
 }
@@ -152,6 +154,7 @@ export const SERVICES: Service[] = [
       { title: 'Taking over existing software', text: 'If another team built it, we first make it stable and fix the urgent problems, then improve it without stopping your business.' },
       { title: 'Launch and support', text: 'We put it live, watch it and fix issues afterwards, so the people who built it are the ones who keep it running.' },
     ],
+    found: true,
     proof: [UNIFIED_ERP, NIMNIM, MULTI_SERVICE, ANGARAA, SHOPIFY],
     faq: [
       { question: 'Can you take over a product another team built?', answer: 'Yes. We start by stabilising what is live: infrastructure, urgent bugs and security. Then we plan improvements or a revamp that keeps the product running for its users, as we did for NimNim.' },
