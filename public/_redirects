@@ -6,3 +6,7 @@
 # ERP service renamed
 /services/erpnext-integration       /services/erp-integration   301
 /services/erpnext-integration.html  /services/erp-integration   301
+# Interview prep moved to its own site (CrackThePrep), same paths. Google still has the old addresses.
+/prep/system-design/reference/  https://rirote-global.github.io/crack-the-prep/system-design/  301
+/prep                           https://rirote-global.github.io/crack-the-prep/  301
+/prep/*                         https://rirote-global.github.io/crack-the-prep/:splat  301
