@@ -8,6 +8,9 @@ import { SITE } from '../data/site';
 import { service as serviceNode } from '../lib/schema';
 import { llmsText } from '../lib/llms';
 import report from '../data/launch-reports/riroteglobal.json';
+import angaraaBefore from '../data/launch-reports/angaraa-before.json';
+import angaraaAfter from '../data/launch-reports/angaraa-after.json';
+import BeforeAfter from './BeforeAfter.astro';
 
 export interface Props {
   /** The page the X-ray shows: the one this section sits on. */
@@ -131,5 +134,8 @@ const views = [
       </div>
       <dl class="fe-stats">{stats.map(([value, label]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
     </div>
+
+    <BeforeAfter name="ANGARAA" caseSlug="angaraa-charcoal-website" before={angaraaBefore} after={angaraaAfter}
+      afterNote="its preview address before launch" />
   </div>
 </section>

@@ -1,0 +1,62 @@
+---
+// A client's old website against the new one we built, from two launch-report files
+// (scripts/launch-report.mjs). Only measured values appear; a row is skipped when a run failed.
+import { caseUrl } from '../data/cases';
+
+type Speed = { strategy: string; performance?: number; mainContentMs?: number; pageKB?: number; error?: string };
+type Report = {
+  site: string; checkedAt: string;
+  site_files: { llms: boolean; llmsLines: number; sitemap: boolean; robots: boolean; aiCrawlersAllowed: boolean };
+  speed: Speed[]; pages: unknown[]; summary: { schemaTypes: string[] };
+};
+export interface Props {
+  name: string;
+  caseSlug: string;
+  before: Report;
+  after: Report;
+  /** Said under the table when the new site was measured somewhere other than its final address. */
+  afterNote?: string;
+}
+const { name, caseSlug, before, after, afterNote } = Astro.props;
+
+const phone = (r: Report) => r.speed.find((s) => s.strategy === 'mobile' && !s.error);
+const secs = (ms?: number) => (ms == null ? null : `${(ms / 1000).toFixed(1)} s`);
+const yes = (ok: boolean, text = 'Yes') => (ok ? text : 'Missing');
+const listed = (r: Report) => (r.site_files.sitemap ? String(r.pages.length) : 'None');
+const schema = (r: Report) => (r.summary.schemaTypes.length ? r.summary.schemaTypes.filter((t) => t !== 'BreadcrumbList').join(', ') : 'None');
+const [bp, ap] = [phone(before), phone(after)];
+
+const rows: Array<[label: string, old: string | null, now: string | null]> = [
+  ['Speed score on a phone', bp?.performance != null ? `${bp.performance}` : null, ap?.performance != null ? `${ap.performance}` : null],
+  ['Main content shows on a phone', secs(bp?.mainContentMs), secs(ap?.mainContentMs)],
+  ['Page size', bp?.pageKB != null ? `${bp.pageKB} KB` : null, ap?.pageKB != null ? `${ap.pageKB} KB` : null],
+  ['Pages listed for search engines', listed(before), listed(after)],
+  ['Structured data Google reads', schema(before), schema(after)],
+  ['llms.txt for AI assistants', yes(before.site_files.llms), yes(after.site_files.llms, `Yes, ${after.site_files.llmsLines} lines`)],
+  ['robots.txt welcoming AI crawlers', yes(before.site_files.robots && before.site_files.aiCrawlersAllowed), yes(after.site_files.robots && after.site_files.aiCrawlersAllowed)],
+];
+const shown = rows.filter((r): r is [string, string, string] => r[1] != null && r[2] != null);
+const date = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+const host = (url: string) => new URL(url).host;
+---
+<div class="ba" data-reveal>
+  <div class="ba-head">
+    <p class="fe-col-h">A client site, before and after</p>
+    <h3 class="ba-title">{name}: the old website against the one we built</h3>
+  </div>
+  <div class="lr-table-wrap" tabindex="0" role="region" aria-label={`${name} before and after`}>
+    <table class="ba-table">
+      <thead><tr><th scope="col">Measured</th><th scope="col">Old site</th><th scope="col">New site</th></tr></thead>
+      <tbody>
+        {shown.map(([label, old, now]) => (
+          <tr><th scope="row">{label}</th><td class:list={[{ 'ba-miss': old === 'Missing' || old === 'None' }]}>{old}</td><td class="ba-now">{now}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p class="ba-note">
+    Old site measured on {host(before.site)} on {date(before.checkedAt)}. New site measured on {host(after.site)} on {date(after.checkedAt)}{afterNote ? `, ${afterNote}` : ''}.
+    Speed is the median of three Google Lighthouse runs.
+    <a href={caseUrl(caseSlug)}>Read the {name} case study →</a>
+  </p>
+</div>

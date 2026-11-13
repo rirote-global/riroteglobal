@@ -1,0 +1,76 @@
+{
+  "site": "https://theangaraa.com",
+  "checkedAt": "2026-11-13T10:47:16.707Z",
+  "tool": "scripts/launch-report.mjs with Lighthouse 12.2.1 (median of 3 runs)",
+  "site_files": {
+    "https": true,
+    "robots": false,
+    "aiCrawlersAllowed": false,
+    "blockedBots": [],
+    "sitemap": false,
+    "sitemapUrl": "https://theangaraa.com/sitemap.xml",
+    "llms": false,
+    "llmsLines": 0,
+    "notFoundAnswers404": true
+  },
+  "speed": [
+    {
+      "strategy": "mobile",
+      "performance": 84,
+      "accessibility": 95,
+      "bestPractices": 100,
+      "seo": 100,
+      "firstPaintMs": 2014,
+      "mainContentMs": 4220,
+      "layoutShift": 0,
+      "pageKB": 359,
+      "runs": 3,
+      "performanceRange": [
+        82,
+        97
+      ]
+    },
+    {
+      "strategy": "desktop",
+      "performance": 94,
+      "accessibility": 91,
+      "bestPractices": 100,
+      "seo": 100,
+      "firstPaintMs": 844,
+      "mainContentMs": 1114,
+      "layoutShift": 0.101,
+      "pageKB": 359,
+      "runs": 3,
+      "performanceRange": [
+        93,
+        96
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "ANGARAA — Premium Wooden Charcoal, Jaipur",
+      "description": "ANGARAA is Jaipur",
+      "canonical": null,
+      "shareImage": false,
+      "lang": "en",
+      "h1s": 1,
+      "images": 3,
+      "imagesWithoutAlt": 0,
+      "noindex": false,
+      "schema": [],
+      "issues": [
+        "no canonical address",
+        "no share image",
+        "no structured data"
+      ]
+    }
+  ],
+  "summary": {
+    "pages": 1,
+    "pagesWithIssues": 1,
+    "schemaTypes": []
+  }
+}

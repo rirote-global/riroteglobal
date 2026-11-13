@@ -831,3 +831,23 @@ footer { background: #0A1424; color: var(--on-dark-2); border-top: 2px solid var
   [data-reveal] { opacity: 1 !important; transform: none !important; }
   body { background: #fff; }
 }
+
+/* ── Before and after (components/BeforeAfter.astro) ── */
+.ba { margin-top: clamp(40px, 6vw, 64px); }
+.ba-title { font: 700 clamp(1.4rem, 2.6vw, 2rem)/1.15 var(--head); letter-spacing: -.02em; margin: 14px 0 18px; max-width: 30ch; }
+.ba-table { width: 100%; border-collapse: collapse; }
+.ba-table th, .ba-table td { padding: 12px 16px 12px 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); font-size: 15px; }
+.ba-table thead th { font: 500 11.5px var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--wire-t); }
+.ba-table tbody th { font-weight: 500; color: var(--ink); width: 34%; }
+.ba-table td { color: var(--ink-2); width: 33%; }
+.ba-table td.ba-miss { color: var(--err); }
+.ba-table td.ba-now { color: var(--ink); font-weight: 600; }
+.ba-note { margin-top: 12px; font-size: 13.5px; color: var(--ink-2); max-width: 80ch; }
+.ba-note a { font-weight: 600; white-space: nowrap; }
+@media (max-width: 620px) {
+  .ba-table th, .ba-table td { padding: 10px 8px 10px 0; font-size: 13px; overflow-wrap: break-word; }
+  .ba-table tbody th { width: 38%; }
+  .ba-table td { width: 31%; }
+  .ba-table tbody th { width: 40%; }
+  .ba-table td { width: 30%; }
+}

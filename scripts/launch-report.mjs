@@ -47,7 +47,7 @@ function checkPage(path, html, status) {
   const description = decode(first(html, /<meta[^>]+name=["']description["'][^>]+content=["']([^"']*)["']/i));
   const h1s = html.match(/<h1[\s>]/gi)?.length ?? 0;
   const imgs = [...html.matchAll(/<img\b[^>]*>/gi)].map((m) => m[0]);
-  const noAlt = imgs.filter((tag) => !/\balt=/i.test(tag)).length;
+  const noAlt = imgs.filter((tag) => !/\salt(\s|=|\/?>)/i.test(tag)).length; // a bare alt (decorative) counts
   const noindex = /<meta[^>]+name=["']robots["'][^>]+noindex/i.test(html);
   const page = {
     path, status, title, description,
@@ -94,16 +94,30 @@ function lighthouse(url, strategy) {
   } finally { rmSync(dir, { recursive: true, force: true }); }
 }
 
+/** Lighthouse scores swing between runs, so run it three times and keep the median run by speed score. */
+function lighthouseMedian(url, strategy, runs = 3) {
+  const ok = Array.from({ length: runs }, () => lighthouse(url, strategy)).filter((r) => !('error' in r));
+  if (!ok.length) return lighthouse(url, strategy);
+  ok.sort((a, b) => a.performance - b.performance);
+  return { ...ok[Math.floor(ok.length / 2)], runs: ok.length, performanceRange: [ok[0].performance, ok.at(-1).performance] };
+}
+
 // ── Site files ──
+// A preview address (e.g. *.workers.dev) still names the final domain in robots.txt and the sitemap,
+// so every address found there is moved onto the site being checked.
+const onSite = (url) => { const u = new URL(url, origin); return origin + u.pathname + u.search; };
 const robots = await get(`${origin}/robots.txt`);
-const sitemapUrl = first(robots.text, /^sitemap:\s*(\S+)/im) ?? `${origin}/sitemap.xml`;
+const sitemapUrl = onSite(first(robots.text, /^sitemap:\s*(\S+)/im) ?? `${origin}/sitemap.xml`);
 const sitemap = await get(sitemapUrl);
-let locs = [...sitemap.text.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]);
+let locs = sitemap.status === 200 ? [...sitemap.text.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => onSite(m[1])) : [];
 // A sitemap index lists other sitemaps; read those too.
 if (/<sitemapindex/i.test(sitemap.text)) {
   const nested = await Promise.all(locs.map((u) => get(u)));
-  locs = nested.flatMap((s) => [...s.text.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => m[1]));
+  locs = nested.flatMap((s) => [...s.text.matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)].map((m) => onSite(m[1])));
 }
+// No sitemap: check the homepage at least.
+const noSitemap = locs.length === 0;
+if (noSitemap) locs = [`${origin}/`];
 const llms = await get(`${origin}/llms.txt`);
 const missing = await get(`${origin}/this-page-does-not-exist-${Date.now()}`, { body: false });
 const plain = await get(origin.replace(/^https:/, 'http:') + '/', { redirect: 'manual', body: false });
@@ -140,7 +154,7 @@ const site = {
   robots: robots.status === 200,
   aiCrawlersAllowed: robots.status === 200 && blockedBots.length === 0,
   blockedBots,
-  sitemap: sitemap.status === 200 && locs.length > 0,
+  sitemap: sitemap.status === 200 && !noSitemap,
   sitemapUrl,
   llms: llms.status === 200 && /^#\s+\S/.test(llms.text.trim()),
   llmsLines: llms.status === 200 ? llms.text.trim().split('\n').length : 0,
@@ -157,12 +171,12 @@ for (let i = 0; i < locs.length; i += 6) {
   pages.push(...batch);
 }
 
-const speed = LIGHTHOUSE ? [lighthouse(`${origin}/`, 'mobile'), lighthouse(`${origin}/`, 'desktop')] : [];
+const speed = LIGHTHOUSE ? [lighthouseMedian(`${origin}/`, 'mobile'), lighthouseMedian(`${origin}/`, 'desktop')] : [];
 
 const report = {
   site: origin,
   checkedAt: new Date().toISOString(),
-  tool: 'scripts/launch-report.mjs with Lighthouse 12.2.1',
+  tool: 'scripts/launch-report.mjs with Lighthouse 12.2.1 (median of 3 runs)',
   site_files: site,
   speed,
   pages,
