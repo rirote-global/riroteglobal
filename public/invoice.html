@@ -391,6 +391,17 @@
 
   /* inline editable in preview — hidden, rendered by JS */
   .inv-editable { outline: none; }
+
+  /* Business profile */
+  .field-hint { font-size: 11px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+  .logo-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .logo-thumb { height: 40px; max-width: 140px; object-fit: contain; background: #fff; border-radius: 6px; padding: 4px; }
+  .from-empty {
+    font-size: 12px; color: #b45309; background: #fff8e1; border: 1px dashed #ffe082;
+    border-radius: 6px; padding: 10px 12px; line-height: 1.5;
+  }
+  .from-empty button { background: none; border: none; color: #0077b6; font-weight: 600; cursor: pointer; padding: 0; font-size: 12px; }
+  @media print { .from-empty { display: none !important; } }
 </style>
 </head>
 <body>
@@ -422,9 +433,45 @@
   <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="tab-row">
-      <button class="tab-btn active" onclick="switchTab('client',this)">Client</button>
-      <button class="tab-btn" onclick="switchTab('invoice',this)">Invoice</button>
-      <button class="tab-btn" onclick="switchTab('saved',this)">Saved</button>
+      <button class="tab-btn" data-tab="business" onclick="switchTab('business',this)">Business</button>
+      <button class="tab-btn active" data-tab="client" onclick="switchTab('client',this)">Client</button>
+      <button class="tab-btn" data-tab="invoice" onclick="switchTab('invoice',this)">Invoice</button>
+      <button class="tab-btn" data-tab="saved" onclick="switchTab('saved',this)">Saved</button>
+    </div>
+
+    <!-- BUSINESS TAB (your details — stored only in this browser) -->
+    <div id="tab-business" style="display:none">
+      <p class="field-hint">Your details are saved only in this browser (localStorage). Nothing is sent to any server.</p>
+      <div class="sidebar-section">
+        <h3>Your Business</h3>
+        <div class="field">
+          <label>Logo (PNG/JPG/SVG, max 500 KB — defaults to Rirote Global)</label>
+          <div class="logo-row">
+            <img id="bizLogoThumb" class="logo-thumb" alt="" style="display:none">
+            <input id="bizLogoInput" type="file" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display:none" onchange="onLogoSelected(event)">
+            <button class="btn btn-ghost btn-sm" onclick="document.getElementById('bizLogoInput').click()">Change</button>
+            <button class="btn btn-danger btn-sm" id="bizLogoRemove" style="display:none" onclick="removeLogo()">Reset to default</button>
+          </div>
+        </div>
+        <div class="field"><label>Business Name *</label><input id="biz_name" type="text" placeholder="Your company name" data-biz="name"></div>
+        <div class="field"><label>Owner / Signatory line</label><input id="biz_owner" type="text" placeholder="Jane Doe, Proprietor" data-biz="owner"></div>
+        <div class="field"><label>Address</label><textarea id="biz_address" rows="3" placeholder="Street, city, state, postal code" data-biz="address"></textarea></div>
+        <div class="field"><label>GSTIN / Tax ID</label><input id="biz_gstin" type="text" data-biz="gstin"></div>
+        <div class="field"><label>IEC (optional)</label><input id="biz_iec" type="text" data-biz="iec"></div>
+        <div class="field"><label>Phone</label><input id="biz_phone" type="tel" data-biz="phone"></div>
+        <div class="field"><label>Email</label><input id="biz_email" type="email" data-biz="email"></div>
+        <div class="field"><label>Default LUT ARN (optional)</label><input id="biz_lutARN" type="text" data-biz="lutARN"></div>
+      </div>
+      <div class="divider"></div>
+      <div class="sidebar-section">
+        <h3>Bank Details</h3>
+        <div class="field"><label>Account Name</label><input id="biz_bankAccName" type="text" data-biz="bankAccName"></div>
+        <div class="field"><label>Account Number</label><input id="biz_bankAccNo" type="text" inputmode="numeric" data-biz="bankAccNo"></div>
+        <div class="field"><label>IFSC Code</label><input id="biz_bankIFSC" type="text" data-biz="bankIFSC"></div>
+        <div class="field"><label>Branch</label><input id="biz_bankBranch" type="text" data-biz="bankBranch"></div>
+        <div class="field"><label>SWIFT / BIC</label><input id="biz_bankSWIFT" type="text" data-biz="bankSWIFT"></div>
+      </div>
+      <button class="btn btn-danger btn-sm" onclick="clearBusiness()">Clear my details from this browser</button>
     </div>
 
     <!-- CLIENT TAB -->
@@ -473,14 +520,14 @@
           </select>
         </div>
         <div class="field"><label>SAC Code</label><input id="sacCode" type="text" value="998314" placeholder="e.g. 998314" oninput="updatePreview()"></div>
-        <div class="field"><label>LUT ARN <span style="font-size:10px;color:var(--muted)">(from GST portal acknowledgment)</span></label><input id="lutARN" type="text" value="AD0805260270671" oninput="updatePreview()"></div>
+        <div class="field"><label>LUT ARN <span style="font-size:10px;color:var(--muted)">(from GST portal acknowledgment)</span></label><input id="lutARN" type="text" oninput="updatePreview()"></div>
         <div class="field"><label>Payment Terms</label><input id="paymentTerms" type="text" placeholder="Net 30 days" oninput="updatePreview()"></div>
       </div>
       <div class="divider"></div>
       <div class="sidebar-section">
         <h3>Notes</h3>
         <div class="field"><label>Notes</label><textarea id="invNotes" rows="3" placeholder="Thank you for your business!" oninput="updatePreview()"></textarea></div>
-        <div class="field"><label>Terms & Conditions</label><textarea id="invTerms" rows="3" placeholder="All disputes subject to Jaipur jurisdiction." oninput="updatePreview()"></textarea></div>
+        <div class="field"><label>Terms & Conditions</label><textarea id="invTerms" rows="3" placeholder="All disputes subject to local jurisdiction." oninput="updatePreview()"></textarea></div>
       </div>
     </div>
 
@@ -505,9 +552,7 @@
     <div class="invoice-paper" id="invoicePaper">
 
       <div class="inv-header">
-        <div class="inv-logo">
-          <img src="assets/brand/logo-light.svg" width="186" height="60" alt="Rirote Global">
-        </div>
+        <div class="inv-logo" id="previewLogo"></div>
         <div class="inv-meta">
           <h1>INVOICE</h1>
           <div class="inv-number" id="previewInvNumber">INV-001</div>
@@ -520,15 +565,7 @@
       <div class="inv-addresses">
         <div class="addr-block">
           <h4>From</h4>
-          <div class="company-name">Rirote Global</div>
-          <p style="font-size:12px;color:#666;margin-top:1px;">Rohini Sankhala, Proprietor</p>
-          <p>A-19 Ganesh Nagar New Sanganer Road Sodala<br>Shyam Nagar S.O (Jaipur), Rajasthan 302019</p>
-          <p class="gstin">GSTIN: 08HJCPS6903N1ZI</p>
-          <p class="gstin">IEC: HJCPS6903N</p>
-          <p style="font-size:12px;color:#555;margin-top:4px;line-height:1.7;">
-            📞 +91 82332 35504<br>
-            ✉ riroteglobal@gmail.com
-          </p>
+          <div id="previewFrom"></div>
         </div>
         <div class="addr-block">
           <h4>Bill To</h4>
@@ -569,15 +606,9 @@
       </div>
 
       <!-- BANK DETAILS -->
-      <div style="margin-top:28px;padding:16px 20px;background:#f4f6fb;border-radius:8px;border-left:3px solid #0077b6;">
+      <div id="previewBank" style="margin-top:28px;padding:16px 20px;background:#f4f6fb;border-radius:8px;border-left:3px solid #0077b6;display:none;">
         <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#0077b6;margin-bottom:10px;">Bank Details</div>
-        <table style="border-collapse:collapse;font-size:12.5px;color:#333;width:100%;max-width:420px;">
-          <tr><td style="padding:3px 0;color:#777;width:140px;">Account Name</td><td style="padding:3px 0;font-weight:600;">RIROTE GLOBAL</td></tr>
-          <tr><td style="padding:3px 0;color:#777;">Account Number</td><td style="padding:3px 0;font-weight:600;letter-spacing:0.04em;">50200102373470</td></tr>
-          <tr><td style="padding:3px 0;color:#777;">IFSC Code</td><td style="padding:3px 0;font-weight:600;">HDFC0001843</td></tr>
-          <tr><td style="padding:3px 0;color:#777;">Branch</td><td style="padding:3px 0;">New Sanganer Road, Jaipur</td></tr>
-          <tr><td style="padding:3px 0;color:#777;">SWIFT / BIC</td><td style="padding:3px 0;font-weight:600;">HDFCINBBXXX</td></tr>
-        </table>
+        <table style="border-collapse:collapse;font-size:12.5px;color:#333;width:100%;max-width:420px;" id="previewBankTable"></table>
       </div>
 
       <!-- FOOTER -->
@@ -643,8 +674,12 @@ let items = [];
 let invoices = [];
 let currency = 'USD';
 let status = 'draft';
+let business = {};
 
 const CURRENCY_SYMBOLS = { USD: '$', INR: '₹' };
+const BUSINESS_KEY = 'rg_business';
+const MAX_LOGO_BYTES = 500 * 1024;
+const DEFAULT_LOGO = 'assets/brand/logo-light.svg';
 
 // =============================================
 // INIT
@@ -652,9 +687,13 @@ const CURRENCY_SYMBOLS = { USD: '$', INR: '₹' };
 window.onload = () => {
   loadFromStorage();
   setTodayDates();
+  fillBusinessForm();
+  document.getElementById('lutARN').value = business.lutARN || '';
+  document.querySelectorAll('[data-biz]').forEach(el => el.addEventListener('input', onBusinessInput));
   renderClientList();
   renderSavedList();
   updatePreview();
+  if (!hasBusiness()) openBusinessTab();
 
   document.getElementById('currencySelect').addEventListener('change', e => {
     currency = e.target.value;
@@ -677,12 +716,126 @@ function setTodayDates() {
 // TABS
 // =============================================
 function switchTab(name, btn) {
-  ['client','invoice','saved'].forEach(t => {
+  ['business','client','invoice','saved'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t === name ? 'block' : 'none';
   });
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   if (name === 'saved') renderSavedList();
+}
+
+function openBusinessTab() {
+  switchTab('business', document.querySelector('.tab-btn[data-tab="business"]'));
+}
+
+// =============================================
+// BUSINESS PROFILE (your details, browser-only)
+// =============================================
+function hasBusiness() {
+  return Boolean((business.name || '').trim());
+}
+
+function fillBusinessForm() {
+  document.querySelectorAll('[data-biz]').forEach(el => { el.value = business[el.dataset.biz] || ''; });
+  renderLogoControls();
+}
+
+function onBusinessInput(e) {
+  business[e.target.dataset.biz] = e.target.value;
+  saveBusiness();
+  updatePreview();
+}
+
+function saveBusiness() {
+  try {
+    localStorage.setItem(BUSINESS_KEY, JSON.stringify(business));
+    return true;
+  } catch (err) {
+    console.error('Could not save business details', err);
+    showToast('Could not save — browser storage is full or blocked');
+    return false;
+  }
+}
+
+function onLogoSelected(e) {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = '';
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast('Please choose an image file'); return; }
+  if (file.size > MAX_LOGO_BYTES) { showToast('Logo must be under 500 KB'); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const prev = business.logo;
+    business.logo = reader.result;
+    if (!saveBusiness()) { business.logo = prev; return; }
+    renderLogoControls();
+    updatePreview();
+    showToast('Logo saved');
+  };
+  reader.onerror = () => showToast('Could not read that file');
+  reader.readAsDataURL(file);
+}
+
+function removeLogo() {
+  delete business.logo;
+  saveBusiness();
+  renderLogoControls();
+  updatePreview();
+}
+
+function renderLogoControls() {
+  const thumb = document.getElementById('bizLogoThumb');
+  const removeBtn = document.getElementById('bizLogoRemove');
+  thumb.src = business.logo || DEFAULT_LOGO;
+  thumb.style.display = '';
+  removeBtn.style.display = business.logo ? '' : 'none';
+}
+
+function clearBusiness() {
+  if (!confirm('Remove your business and bank details from this browser?')) return;
+  business = {};
+  try { localStorage.removeItem(BUSINESS_KEY); } catch {}
+  fillBusinessForm();
+  updatePreview();
+  showToast('Your details were removed');
+}
+
+function renderBusinessPreview() {
+  const b = business;
+  const v = k => (b[k] || '').trim();
+
+  // Logo: uploaded image, else the default Rirote Global logo
+  const logoEl = document.getElementById('previewLogo');
+  if (b.logo) logoEl.innerHTML = `<img src="${esc(b.logo)}" alt="${esc(v('name'))}" style="height:60px;width:auto;max-width:240px;object-fit:contain;">`;
+  else logoEl.innerHTML = `<img src="${DEFAULT_LOGO}" width="186" height="60" alt="Rirote Global">`;
+
+  // From block
+  const fromEl = document.getElementById('previewFrom');
+  if (!hasBusiness()) {
+    fromEl.innerHTML = `<div class="from-empty">Your business details are empty.<br><button onclick="openBusinessTab()">Add them in the Business tab →</button></div>`;
+  } else {
+    const contact = [v('phone') && '📞 ' + esc(v('phone')), v('email') && '✉ ' + esc(v('email'))].filter(Boolean).join('<br>');
+    fromEl.innerHTML = `
+      <div class="company-name">${esc(v('name'))}</div>
+      ${v('owner') ? `<p style="font-size:12px;color:#666;margin-top:1px;">${esc(v('owner'))}</p>` : ''}
+      ${v('address') ? `<p>${esc(v('address')).replace(/\n/g, '<br>')}</p>` : ''}
+      ${v('gstin') ? `<p class="gstin">GSTIN: ${esc(v('gstin'))}</p>` : ''}
+      ${v('iec') ? `<p class="gstin">IEC: ${esc(v('iec'))}</p>` : ''}
+      ${contact ? `<p style="font-size:12px;color:#555;margin-top:4px;line-height:1.7;">${contact}</p>` : ''}`;
+  }
+
+  // Bank block — only rows that have a value; hidden when all are empty
+  const rows = [
+    ['Account Name', v('bankAccName'), 'font-weight:600;'],
+    ['Account Number', v('bankAccNo'), 'font-weight:600;letter-spacing:0.04em;'],
+    ['IFSC Code', v('bankIFSC'), 'font-weight:600;'],
+    ['Branch', v('bankBranch'), ''],
+    ['SWIFT / BIC', v('bankSWIFT'), 'font-weight:600;'],
+  ].filter(r => r[1]);
+  document.getElementById('previewBank').style.display = rows.length ? '' : 'none';
+  document.getElementById('previewBankTable').innerHTML = rows.map(([label, val, style]) =>
+    `<tr><td style="padding:3px 0;color:#777;width:140px;">${label}</td><td style="padding:3px 0;${style}">${esc(val)}</td></tr>`
+  ).join('');
 }
 
 // =============================================
@@ -820,6 +973,8 @@ function deleteItem(index) {
 // =============================================
 function updatePreview() {
   const sym = CURRENCY_SYMBOLS[currency] || '$';
+
+  renderBusinessPreview();
 
   // Invoice meta
   document.getElementById('previewInvNumber').textContent = document.getElementById('invNumber').value || 'INV-001';
@@ -993,7 +1148,7 @@ function loadInvoice(index) {
   document.getElementById('invTerms').value = inv.terms || '';
   document.getElementById('gstDeclaration').value = inv.gstDeclaration || 'lut';
   document.getElementById('sacCode').value = inv.sacCode || '998314';
-  document.getElementById('lutARN').value = inv.lutARN || 'AD0805260270671';
+  document.getElementById('lutARN').value = inv.lutARN || business.lutARN || '';
   document.getElementById('paymentTerms').value = inv.paymentTerms || '';
   currency = inv.currency;
   status = inv.status;
@@ -1064,7 +1219,20 @@ function emailInvoice() {
     return `  - ${item.name} (${item.qty} x ${sym}${fmt(item.rate)}) = ${sym}${fmt(amt)}`;
   }).join('\n');
 
-  const subject = encodeURIComponent(`Invoice ${invNum} from Rirote Global`);
+  const b = business;
+  const v = k => (b[k] || '').trim();
+  const bizName = v('name');
+  const bankLines = [
+    ['Account Name  ', v('bankAccName')],
+    ['Account Number', v('bankAccNo')],
+    ['IFSC Code     ', v('bankIFSC')],
+    ['Branch        ', v('bankBranch')],
+    ['SWIFT / BIC   ', v('bankSWIFT')],
+  ].filter(r => r[1]).map(([k, val]) => `  ${k} : ${val}`).join('\n');
+  const paymentSection = bankLines ? `PAYMENT DETAILS:\n${bankLines}\n\n` : '';
+  const signature = [bizName, v('gstin') && 'GSTIN: ' + v('gstin')].filter(Boolean).join('\n');
+
+  const subject = encodeURIComponent(`Invoice ${invNum}${bizName ? ' from ' + bizName : ''}`);
   const body = encodeURIComponent(
 `Dear ${clientName},
 
@@ -1080,17 +1248,10 @@ ${itemLines || '  (no items)'}
 
 TOTAL: ${sym}${fmt(total)} ${currency}
 
-PAYMENT DETAILS:
-  Account Name   : RIROTE GLOBAL
-  Account Number : 50200102373470
-  IFSC Code      : HDFC0001843
-  Branch         : New Sanganer Road, Jaipur
-
-Please don't hesitate to reach out if you have any questions.
+${paymentSection}Please don't hesitate to reach out if you have any questions.
 
 Warm regards,
-Rirote Global
-GSTIN: 08HJCPS6903N1ZI`
+${signature}`
   );
 
   const mailto = `mailto:${clientEmail}?subject=${subject}&body=${body}`;
@@ -1108,6 +1269,8 @@ function saveToStorage() {
 function loadFromStorage() {
   try { clients = JSON.parse(localStorage.getItem('rg_clients')) || []; } catch { clients = []; }
   try { invoices = JSON.parse(localStorage.getItem('rg_invoices')) || []; } catch { invoices = []; }
+  try { business = JSON.parse(localStorage.getItem(BUSINESS_KEY)) || {}; } catch { business = {}; }
+  if (typeof business !== 'object' || Array.isArray(business)) business = {};
 
 }
 
@@ -1122,7 +1285,7 @@ function formatDate(d) {
   return `${day} ${months[parseInt(m)-1]} ${y}`;
 }
 function esc(str) {
-  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function showToast(msg) {
   const t = document.getElementById('toast');
