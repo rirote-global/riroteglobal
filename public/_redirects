@@ -10,3 +10,6 @@
 /prep/system-design/reference/  https://rirote-global.github.io/crack-the-prep/system-design/  301
 /prep                           https://rirote-global.github.io/crack-the-prep/  301
 /prep/*                         https://rirote-global.github.io/crack-the-prep/:splat  301
+# Removed from the site (2026-11-18): Roomcraftr product page and the Reports & Dashboards service
+/products/roomcraftr            /products   301
+/services/data-pipelines        /services   301

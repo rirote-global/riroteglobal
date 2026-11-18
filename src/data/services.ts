@@ -195,7 +195,7 @@ export const SERVICES: Service[] = [
       { question: 'How do you stop an AI feature from making things up?', answer: 'By narrowing what it is asked to do, grounding answers in your own data with sources shown, checking outputs before they reach users, and keeping a person in the loop for decisions that matter.' },
       { question: 'Can you add AI to our existing product?', answer: 'Yes. Most of our AI work sits inside an existing product or workflow, connected through your current APIs and permissions rather than as a separate tool.' },
     ],
-    related: ['full-stack-development', 'data-pipelines', 'dedicated-engineers'],
+    related: ['full-stack-development', 'dedicated-engineers', 'cloud-devops'],
   },
   {
     slug: 'erp-integration',
@@ -220,7 +220,7 @@ export const SERVICES: Service[] = [
       { question: 'Do you work with Frappe Cloud and self-hosted ERPNext?', answer: 'Yes. Our unified ERP platform for an infrastructure group runs across 5 ERPNext v15 sites on Frappe Cloud, and the same approach works for self-hosted installs.' },
       { question: 'Should we customise ERPNext or build a separate app?', answer: 'It depends on how far the process is from standard ERP. Small changes belong in ERPNext. A process with its own data and rules, like foundry operations or field service, is often better as a separate app that syncs with ERPNext.' },
     ],
-    related: ['data-pipelines', 'full-stack-development', 'technical-leadership'],
+    related: ['full-stack-development', 'ai-integration', 'technical-leadership'],
   },
   {
     slug: 'cloud-devops',
@@ -245,7 +245,7 @@ export const SERVICES: Service[] = [
       { question: 'Do you only work on AWS?', answer: 'No. We work on AWS and DigitalOcean, and the same practices apply to other providers.' },
       { question: 'Where do you start with a slow application?', answer: 'With measurement. We find which queries and calls take the time, fix the biggest ones first, and confirm the gain with before-and-after numbers.' },
     ],
-    related: ['full-stack-development', 'technical-leadership', 'data-pipelines'],
+    related: ['full-stack-development', 'technical-leadership', 'dedicated-engineers'],
   },
   {
     slug: 'technical-leadership',
@@ -271,31 +271,6 @@ export const SERVICES: Service[] = [
       { question: 'Is a microservices migration always the right move?', answer: 'No. We recommend it only when parts of the system need to scale or ship independently. Often a cleaner monolith with clear modules is the cheaper answer.' },
     ],
     related: ['full-stack-development', 'cloud-devops', 'erp-integration'],
-  },
-  {
-    slug: 'data-pipelines',
-    name: 'Reports & Dashboards',
-    techName: 'Data pipelines and reporting',
-    heading: ['Reports &', 'Dashboards'],
-    metaTitle: 'Dashboards, Reports & Data Pipelines | Rirote Global',
-    description: 'Dashboards and reports that bring the numbers from your ERP and your other software into one place, defined once and fast to load.',
-    summary: 'Dashboards and reports that bring numbers from your ERP and apps into one place, so leadership can act on them.',
-    intro: 'We bring the numbers from your ERP and other software into one place and turn them into dashboards and reports your management team can act on. Each figure is defined once, so every screen shows the same answer, and it loads fast.',
-    includes: [
-      { title: 'Collecting your data', text: 'Scheduled jobs that copy data from ERPNext, apps and databases into one reporting database, checking for missing and duplicate records.' },
-      { title: 'Dashboards for each head', text: 'Dashboards for heads of sales, finance, manufacturing and the MD, each showing the numbers that role is accountable for.' },
-      { title: 'One version of the numbers', text: 'Every dashboard, app and export uses the same agreed figures, so no two screens disagree.' },
-      { title: 'Service reports', text: 'Response and resolution times, comparisons by region, and reports sent automatically by email.' },
-      { title: 'Several sources at once', text: 'Reports that combine several ERP sites or databases and still load quickly.' },
-      { title: 'Decision views', text: 'Progress against targets, sales funnels that show where deals get stuck, and a click through to the deal or ticket behind any number.' },
-    ],
-    proof: [UNIFIED_ERP, ERPTICK],
-    faq: [
-      { question: 'Can you report across several ERPNext sites?', answer: 'Yes. Our multi-site middleware queries up to 5 ERPNext sites in parallel and caches each widget, bringing dashboard loads under 500ms from more than 5 seconds.' },
-      { question: 'Do we need a data warehouse?', answer: 'Not always. For a handful of sources, well-indexed PostgreSQL and a reporting API are often enough. A warehouse like Redshift earns its place when data volume or the number of sources grows.' },
-      { question: 'Can reports arrive by email?', answer: 'Yes. Any report can be scheduled to arrive by email, for example as a CSV each morning.' },
-    ],
-    related: ['erp-integration', 'ai-integration', 'cloud-devops'],
   },
   {
     slug: 'dedicated-engineers',

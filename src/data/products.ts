@@ -93,18 +93,6 @@ export const PRODUCTS: Product[] = [
     rowCta: { href: '/products/erptick#get-started', label: 'Talk to Us' },
   },
   {
-    id: 'roomcraftr', name: 'Roomcraftr', short: 'Roomcraftr', status: 'In development', group: 'Products',
-    tags: ['custom'], path: '/products/roomcraftr', generatedPage: true,
-    line: 'Quotes, orders and dealer commissions for curtain and blind shops.',
-    points: ['Measure a window, price it and share the quote', 'Orders, payments and fitting visits in one place', 'Dealers quote under your rules, commission tracked in a ledger'],
-    heading: ['Quotes, orders and dealers', 'for curtain and blind shops.'],
-    intro: 'Software for curtain and blind shops in India. It is still being built, and we will write to you when it is ready.',
-    note: 'Roomcraftr is not public yet, so this page shows only what is settled. Screens and a demo will be added here when they exist.',
-    metaTitle: 'Roomcraftr: Quotes & Orders for Curtain and Blind Shops',
-    description: 'Roomcraftr is software for curtain and blind shops in India: measure, quote, track orders and manage dealer commissions. In development, from Rirote Global.',
-    formService: 'Roomcraftr (our product)', cta: 'Tell us you are interested', services: ['full-stack-development'],
-  },
-  {
     // Facts below come from the app's own README and tauri.conf.json (v0.1.0). Media was recorded from the
     // real app on a demo copy; long waits in the clips are sped up and the text says so.
     id: 'rirote-vision', name: 'RIROTE VISION', short: 'RIROTE VISION', status: 'Free · Early version', group: 'Products',

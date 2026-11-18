@@ -60,7 +60,7 @@ export const CASES: CaseStudy[] = [
     ],
     results: [['<500ms', 'Dashboard loads, down from 5s+'], ['2 → 1', 'Apps and servers merged'], ['11', 'Role-based dashboards'], ['9', 'Business entities on one platform']],
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'NestJS', 'Node.js', 'Prisma', 'PostgreSQL', 'Redis', 'MariaDB', 'ERPNext v15', 'JWT', 'PWA'],
-    services: ['erp-integration', 'data-pipelines'],
+    services: ['erp-integration'],
   },
   {
     slug: 'nimnim',

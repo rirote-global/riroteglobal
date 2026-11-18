@@ -4,7 +4,7 @@
 import { SERVICES } from '../data/services';
 export interface Props { service?: string; message?: string; }
 const { service, message } = Astro.props;
-const options = [...SERVICES.map((s) => s.name), 'ERPTick (our product)', 'Roomcraftr (our product)', 'Something Else'];
+const options = [...SERVICES.map((s) => s.name), 'ERPTick (our product)', 'Something Else'];
 ---
 <form id="contactForm" novalidate>
   <div class="field">
