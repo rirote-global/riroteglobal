@@ -3,8 +3,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Crumbs from '../components/Crumbs.astro';
 import Cta from '../components/Cta.astro';
-import ServicePicker from '../components/ServicePicker.astro';
 import { breadcrumbs, itemList, webPage } from '../lib/schema';
+import { SERVICE_ICONS } from '../data/icons';
 import { ENGAGEMENTS, SERVICES, SERVICES_PATH, SERVICE_STEPS, serviceUrl } from '../data/services';
 
 const seo = {
@@ -18,6 +18,8 @@ const seo = {
     itemList(SERVICES.map((s) => ({ name: s.name, path: serviceUrl(s.slug) }))),
   ],
 };
+const icons = SERVICE_ICONS;
+const ways = [...ENGAGEMENTS, { title: 'Partner on your idea', text: 'Start small with a prototype or first version, build in stages, or partner on the website and web app.', href: '/partner-with-us' }];
 ---
 <BaseLayout seo={seo} nav={{ current: 'services' }}>
 <main id="main">
@@ -27,44 +29,55 @@ const seo = {
       <p class="eyebrow">Services</p>
       <h1 class="page-title">What we can <span>build for you.</span></h1>
       <p class="page-sub">Websites, business software, AI assistants and ERP systems for companies in India, the United States and the Middle East. The same team plans it, builds it and looks after it once it is live.</p>
-      <div class="hero-actions">
-        <a href="/contact" class="btn-primary">Talk to Us</a>
-        <a href="/projects" class="btn-outline">See Our Work</a>
-      </div>
+      <nav class="sv-jump" aria-label="Jump to a service">
+        {SERVICES.map((s) => <a href={serviceUrl(s.slug)}><svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons[s.slug]}></svg>{s.name}</a>)}
+      </nav>
     </div>
   </section>
 
-  <section class="band dark" aria-labelledby="all-services">
+  <section class="band" aria-labelledby="all-services">
     <div class="wrap">
-      <div class="sec-h"><h2 class="section-title" id="all-services">What we do</h2></div>
-      <ServicePicker />
-    </div>
-  </section>
-
-  <section class="band" aria-labelledby="ways-title">
-    <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="ways-title">Ways to work with us</h2></div>
-      <div class="roles">
-        {ENGAGEMENTS.map((e) => (
-          <article class="role" data-reveal>
-            <h3>{e.title}</h3><p>{e.text}</p>
-            {e.href && <p style="margin-top:8px"><a href={e.href} class="more-link">Learn more →</a></p>}
-          </article>
+      <p class="eyebrow">What we do</p>
+      <h2 class="section-title" id="all-services" style="margin-top:12px">Six ways we help.</h2>
+      <div class="sv-grid">
+        {SERVICES.map((s, i) => (
+          <a class:list={['sv-card', { lead: i === 0 }]} href={serviceUrl(s.slug)} data-reveal>
+            <span class="sv-ico" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={icons[s.slug]}></svg></span>
+            <span class="sv-tech">{s.techName}</span>
+            <h3>{s.name}</h3>
+            <p>{s.summary}</p>
+            <ul class="sv-inc">{s.includes.slice(0, 4).map((x) => <li>{x.title}</li>)}</ul>
+            <span class="sv-go">Explore {s.name.split(' ')[0] === 'Hire' ? 'hiring' : 'this service'} →</span>
+          </a>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="steps-title">
+  <section class="band dark" aria-labelledby="steps-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="steps-title">How every engagement runs</h2></div>
-      <div class="steps">{SERVICE_STEPS.map((s) => <div class="step" data-reveal><h3>{s.title}</h3><p>{s.text}</p></div>)}</div>
+      <p class="eyebrow">Process</p>
+      <h2 class="section-title" id="steps-title" style="margin-top:12px">How every engagement runs</h2>
+      <ol class="svp-line">{SERVICE_STEPS.map((s) => <li data-reveal><b>{s.title}</b><p>{s.text}</p></li>)}</ol>
+      <p class="sv-same">The same team at every step. No hand-offs.</p>
     </div>
   </section>
 
-  <Cta eyebrow="Not Sure Where to Start?" title="Tell us the problem" body="Describe what you want to change and we'll suggest where to start. We'll get back to you as soon as we can.">
-    <a href="/contact" class="btn-primary">Start a Conversation</a>
-    <a href="/products/erptick" class="btn-outline">See ERPTick</a>
+  <section class="band" aria-labelledby="ways-title">
+    <div class="wrap">
+      <p class="eyebrow">Engagements</p>
+      <h2 class="section-title" id="ways-title" style="margin-top:12px">Ways to work with us</h2>
+      <div class="lp-cards sv-ways" style="margin-top:28px">
+        {ways.map((e) => (
+          <article class="lp-card" data-reveal><h3>{e.title}</h3><p>{e.text}</p>{e.href && <a href={e.href} class="more-link">Learn more →</a>}</article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Cta eyebrow="Not sure where to start?" title="Tell us the problem" body="Describe what you want to change and we'll suggest where to start. We'll get back to you as soon as we can.">
+    <a href="/contact" class="btn-primary">Start a project</a>
+    <a href="/projects" class="btn-outline">See our work</a>
   </Cta>
 </main>
 </BaseLayout>

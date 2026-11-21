@@ -1,4 +1,4 @@
-// Shared behaviour: mobile menu, reveal and count-up, filters, the climbing rail, and the contact form.
+// Shared behaviour: mobile menu, reveal and count-up, filters, the phone dock, and the contact form.
 (function () {
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
@@ -140,77 +140,61 @@
     apply();
   });
 
-  // ── Rail: the arrow is tied to the sections, so it sits on each stop as that section arrives and reaches
-  // the top when the last one (contact) does. That is the summit: a short moment that points to the form,
-  // which replays only after scrolling back up. Layout is measured on resize and content change, not per frame.
-  var rail = document.querySelector('.rail');
-  if (rail) {
-    var track = rail.querySelector('.track'), climber = rail.querySelector('.climber'), fill = rail.querySelector('.fill');
-    var pbar = document.querySelector('.pbar'), bar = pbar && pbar.querySelector('i');
-    var fab = document.querySelector('.fab');
-    var stops = $$('.stop', rail);
-    var sections = stops.map(function (s) { return document.getElementById(s.getAttribute('data-id')); });
-    var lastStop = stops[stops.length - 1], lastSection = sections[sections.length - 1];
-    var lastLabel = lastStop.querySelector('span');
-    var lastText = lastLabel.textContent, summitText = rail.getAttribute('data-summit');
-    lastStop.classList.add('last');
-    var th = 0, anchors = [0], summit = false, ticking = false;
-
+  // ── Signature: progress is tied to the sections, so the R sits on each stop as that section arrives and reaches
+  // the top when the last one (contact) does: the summit. Drives the desktop rail, the dock's edge (--p) and the
+  // dock's show/hide. Layout is measured on resize and content change, not every frame. ──
+  var climb = document.querySelector('.climb'), dock = document.querySelector('[data-dock]');
+  if (climb || dock) {
+    var rootEl = document.documentElement;
+    var stopEls = climb ? $$('.stop', climb) : [];
+    var ids = stopEls.length ? stopEls.map(function (s) { return s.getAttribute('data-id'); }) : [dock.getAttribute('data-dock')];
+    var secs = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    var lastSec = secs[secs.length - 1], lastStop = stopEls[stopEls.length - 1];
+    var lastLabel = lastStop && lastStop.querySelector('span'), lastText = lastLabel && lastLabel.textContent;
+    var summitText = climb && climb.getAttribute('data-summit');
+    var dockLinks = dock ? $$('a', dock) : [];
+    var anchors = [0], summit = false, dockOn = null, tick = false, y = 0;
     var measure = function () {
-      th = track.clientHeight;
-      var max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      anchors = sections.map(function (sec, i) {
-        return i === 0 ? 0 : Math.min(max, Math.max(0, sec.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.35));
-      });
+      var max = Math.max(1, rootEl.scrollHeight - window.innerHeight);
+      anchors = secs.map(function (el, i) { return i === 0 ? 0 : Math.min(max, Math.max(0, el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.35)); });
       for (var i = 1; i < anchors.length; i++) if (anchors[i] <= anchors[i - 1]) anchors[i] = anchors[i - 1] + 1;
     };
-    var progress = function (y) {
+    var progress = function (v) {
       var n = anchors.length;
-      if (y >= anchors[n - 1]) return 1;
-      for (var k = n - 2; k >= 0; k--) {
-        if (y >= anchors[k]) return (k + (y - anchors[k]) / (anchors[k + 1] - anchors[k])) / (n - 1);
-      }
+      if (n < 2) return Math.min(1, v / Math.max(1, rootEl.scrollHeight - window.innerHeight));
+      if (v >= anchors[n - 1]) return 1;
+      for (var k = n - 2; k >= 0; k--) if (v >= anchors[k]) return (k + (v - anchors[k]) / (anchors[k + 1] - anchors[k])) / (n - 1);
       return 0;
     };
-    var setSummit = function (on) {
-      if (on === summit) return;
-      summit = on;
-      rail.classList.toggle('summit', on);
-      if (pbar) pbar.classList.toggle('done', on);
-      if (lastSection) lastSection.classList.toggle('reached', on);
-      lastLabel.textContent = on ? summitText + ' →' : lastText;
-    };
-    var scrollPos = 0;
     var draw = function () {
-      ticking = false;
-      var p = progress(scrollPos);
-      climber.style.transform = 'translateY(' + ((1 - p) * th - 11) + 'px)';
-      fill.style.transform = 'scaleY(' + p + ')';
-      if (bar) bar.style.transform = 'scaleX(' + p + ')';
-      if (fab) fab.classList.toggle('show', window.scrollY > 240 && p < 0.999);
-      // The lit stop is the last one the arrow has reached.
-      var reached = Math.floor(p * (stops.length - 1) + 0.001);
-      stops.forEach(function (st, j) { st.classList.toggle('on', j === reached); });
-      if (p >= 0.999) setSummit(true); else if (p < 0.9) setSummit(false);
+      tick = false;
+      var p = progress(y);
+      rootEl.style.setProperty('--p', p.toFixed(4));
+      var reached = Math.floor(p * (stopEls.length - 1) + 0.001);
+      stopEls.forEach(function (st, j) { st.classList.toggle('on', j === reached); });
+      var atLast = lastSec && lastSec.getBoundingClientRect().top < window.innerHeight * 0.45;
+      var on = p >= 0.999 || !!atLast;
+      if (on !== summit) {
+        summit = on;
+        if (climb) climb.classList.toggle('summit', on);
+        if (lastSec) lastSec.classList.toggle('reached', on);
+        if (lastLabel) lastLabel.textContent = on && summitText ? summitText + ' →' : lastText;
+      }
+      if (dock) {
+        var show = y > window.innerHeight * 0.6 && !(lastSec && lastSec.getBoundingClientRect().top < window.innerHeight * 0.75);
+        if (show !== dockOn) {
+          dockOn = show;
+          dock.classList.toggle('on', show);
+          dock.setAttribute('aria-hidden', String(!show));
+          dockLinks.forEach(function (a) { a.tabIndex = show ? 0 : -1; });
+        }
+      }
     };
-    var refresh = function () { measure(); scrollPos = window.scrollY; draw(); };
-    window.addEventListener('scroll', function () {
-      // Read here, before this frame's animation callbacks write styles.
-      scrollPos = window.scrollY;
-      if (!ticking) { ticking = true; requestAnimationFrame(draw); }
-    }, { passive: true });
-    // Measure at the start of a frame, once per frame at most, so reading layout never forces a reflow.
-    // ResizeObserver fires once on observe and after every layout change; height-only window resizes
-    // don't change the body, hence the listener.
+    window.addEventListener('scroll', function () { y = window.scrollY; if (!tick) { tick = true; requestAnimationFrame(draw); } }, { passive: true });
     var pending = false;
-    var schedule = function () {
-      if (pending) return;
-      pending = true;
-      requestAnimationFrame(function () { pending = false; refresh(); });
-    };
+    var schedule = function () { if (pending) return; pending = true; requestAnimationFrame(function () { pending = false; measure(); y = window.scrollY; draw(); }); };
     window.addEventListener('resize', schedule);
-    if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.body);
-    else schedule();
+    if ('ResizeObserver' in window) new ResizeObserver(schedule).observe(document.body); else schedule();
   }
 
   // ── Contact form ──
@@ -227,11 +211,30 @@
   // Pre-fill from links such as /contact?service=ERPTick%20(our%20product)&message=...
   var params = new URLSearchParams(window.location.search);
   var preService = params.get('service'), preMessage = params.get('message');
+  // "What do you need?" cards: a ?service= with no card of its own ticks "Something Else" and names it in the message.
+  // "What do you need?": the hint under the message follows the choice. A ?service= with no option of its own
+  // picks "Something Else" and names it in the message.
+  var need = form.elements.service;
+  var hint = document.getElementById('cf-hint');
+  var has = function (v) { return Array.prototype.some.call(need.options, function (o) { return o.value === v; }); };
+  var syncHint = function () {
+    var o = need.options[need.selectedIndex];
+    if (hint) hint.textContent = (o && o.getAttribute('data-hint')) || hint.getAttribute('data-default');
+  };
+  need.addEventListener('change', syncHint);
+  // Section buttons elsewhere on the page (data-need) pick an option before jumping to the form.
+  $$('[data-need]').forEach(function (a) {
+    a.addEventListener('click', function () { var v = a.getAttribute('data-need'); if (has(v)) { need.value = v; syncHint(); } });
+  });
   if (preService) {
-    var select = form.elements.service;
-    if (Array.prototype.some.call(select.options, function (o) { return o.value === preService; })) select.value = preService;
+    if (has(preService)) need.value = preService;
+    else {
+      need.value = 'Something Else';
+      if (!preMessage && !form.elements.message.value) form.elements.message.value = 'About ' + preService + ': ';
+    }
   }
   if (preMessage && !form.elements.message.value) form.elements.message.value = preMessage;
+  syncHint();
 
   var sendBtn = form.querySelector('button[type="submit"]');
   var statusEl = document.getElementById('contactStatus');
@@ -281,6 +284,7 @@
       return res.json().catch(function () { return {}; }).then(function (body) {
         if (!res.ok || !body.success) throw new Error(body.message || 'Request failed');
         form.reset();
+        syncHint();
         setStatus('Thanks, your message has been sent. We will get back to you as soon as we can.', 'success');
       });
     }).catch(function () {
@@ -343,5 +347,19 @@
     list.hidden = false;
     box.classList.add('is-tabbed');
     select(tabs.filter(function (t) { return t.getAttribute('aria-selected') === 'true'; })[0] || tabs[0], false);
+  });
+
+  // Before / After switch ([data-na], the NimNim diagram). Without this script both views show, one after the other.
+  $$('[data-na]').forEach(function (box) {
+    var sw = box.querySelector('.na-switch'), btns = $$('[data-view]', box), panes = $$('[data-pane]', box);
+    function show(v) {
+      btns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-view') === v)); });
+      panes.forEach(function (p) { p.hidden = p.getAttribute('data-pane') !== v; });
+      box.setAttribute('data-show', v);
+    }
+    btns.forEach(function (b) { b.addEventListener('click', function () { show(b.getAttribute('data-view')); }); });
+    sw.hidden = false;
+    box.classList.add('is-switch');
+    show('before');
   });
 })();

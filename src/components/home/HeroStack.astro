@@ -1,0 +1,15 @@
+---
+// Three real screens stacked in 3D: the AI video studio, the ANGARAA website and a reel of our web apps in front.
+// home.js assembles it on load, flattens it as the page scrolls and tilts it with the pointer on desktop.
+// The reel's caption follows its four cuts. Under reduced motion it is a still stack and the reel waits for a tap.
+---
+<div class="hx-stage" id="hx-stage" role="img" aria-label="Our work, layered: an AI video studio, the ANGARAA website and a reel of our web apps">
+  <div class="hx-stack" id="hx-stack">
+    <figure class="hx-layer hx-l3"><img src="/assets/products/rirote-vision/editor.webp" alt="" width="1280" height="764" decoding="async"><span class="hx-tag">AI tools</span></figure>
+    <figure class="hx-layer hx-l2"><img src="/assets/home/angaraa-live.webp" alt="" width="1440" height="900" decoding="async"><span class="hx-tag">Websites</span></figure>
+    <figure class="hx-layer hx-l1">
+      <video id="hx-reel" src="/assets/home/reel.mp4" poster="/assets/home/reel.webp" muted loop playsinline autoplay preload="metadata" aria-hidden="true"></video>
+      <figcaption class="hx-cap" aria-hidden="true"><span class="hx-dot"></span><span id="hx-reel-cap">ERPTick · service tickets</span></figcaption>
+    </figure>
+  </div>
+</div>

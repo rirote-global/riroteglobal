@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Crumbs from '../components/Crumbs.astro';
-import ProductRow from '../components/ProductRow.astro';
+import ProductShow from '../components/ProductShow.astro';
+import Cta from '../components/Cta.astro';
 import { breadcrumbs, webPage } from '../lib/schema';
 import { ERPTICK_SHARE_IMAGE } from '../data/erptick';
-import { PROBLEMS } from '../data/cases';
-import { PRODUCTS, type Product } from '../data/products';
+import { PRODUCTS, badgeClass } from '../data/products';
 
 const seo = {
   title: 'Software Products for Busy Operations | Rirote Global',
@@ -18,8 +18,12 @@ const seo = {
   ],
 };
 
-const statuses = [...new Set(PRODUCTS.flatMap((p) => p.status ?? []))];
-const groups: Array<[Product['group'], string | null]> = [['Products', null], ['Open source', 'Free to use, and public.']];
+const products = PRODUCTS.filter((p) => p.group === 'Products');
+const openSource = PRODUCTS.filter((p) => p.group === 'Open source');
+const icons: Record<string, string> = {
+  'rirote-vision': '/assets/products/rirote-vision/logo-animated.svg',
+  'code-vaidya': '/assets/products/code-vaidya/logo-mark.svg',
+};
 
 const approach = [
   ['Connected', 'Your ERP stays the source', 'Customers, machines, items and stock are read from ERPNext. Nothing is written back until you switch it on, and invoices are always created as drafts.'],
@@ -35,54 +39,60 @@ const approach = [
       <p class="eyebrow">Products</p>
       <h1 class="page-title">Software we build <span>and ship ourselves.</span></h1>
       <p class="page-sub">Software for businesses with busy operations, built by the same team that builds for clients and connected to the systems you already use.</p>
+      <nav class="pj" aria-label="Our products">
+        {products.map((p) => (
+          <a href={`#${p.id}`}><span class="pj-ico" aria-hidden="true">{icons[p.id] ? <img src={icons[p.id]} alt="" width="40" height="40"> : p.short.slice(0, 2)}</span><span><b>{p.name}</b>{p.status && <small>{p.status}</small>}</span></a>
+        ))}
+      </nav>
     </div>
   </section>
 
-  <section class="wrap" data-filters aria-labelledby="all-products" style="padding-bottom:clamp(40px,6vw,80px)">
-    <h2 class="section-title" id="all-products" style="font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:18px">All products</h2>
-    <div class="filters" role="group" aria-label="Filter by status">
-      <span class="fl">Status</span>
-      <button class="fchip" type="button" data-key="status" data-val="" aria-pressed="true">All</button>
-      {statuses.map((s) => <button class="fchip" type="button" data-key="status" data-val={s.replace(/ /g, '-')} aria-pressed="false">{s}</button>)}
-      <label class="fl" for="pneed" style="margin-left:8px">Problem</label>
-      <select class="fsel" id="pneed" data-key="tags">
-        <option value="">Any problem</option>
-        {PROBLEMS.map((p) => <option value={p.id}>{p.label}</option>)}
-      </select>
+  <section class="band" aria-label="Products">
+    <div class="wrap ps-list">
+      {products.map((p, i) => <ProductShow product={p} flip={i % 2 === 1} icon={icons[p.id]} />)}
+      <aside class="ps-soon" aria-labelledby="soon-title">
+        <div><span class="kicker">In the works</span><h3 id="soon-title">More products are coming</h3><p>For teams that run on ERP and field operations. Want to hear when the next one is ready?</p></div>
+        <a class="btn-outline" href="mailto:info@riroteglobal.com?subject=Notify%20me%20about%20new%20Rirote%20products">Get notified</a>
+      </aside>
     </div>
-    <p class="fcount" data-filter-count data-noun="products" role="status"></p>
+  </section>
 
-    {groups.map(([group, intro]) => (
-      <div data-group>
-        {intro && <><h3 class="group-h">{group}</h3><p class="group-d">{intro}</p></>}
-        <div class="prows">
-          {PRODUCTS.filter((p) => p.group === group).map((p) => (
-            <ProductRow product={p} showTags shotAlt={p.id === 'erptick' ? 'ERPTick ticket screen showing stage progress, SLA status and AMC coverage for a crusher breakdown.' : undefined} />
-          ))}
-        </div>
-        {group === 'Products' && (
-            <aside class="soon" aria-labelledby="soon-title">
-              <span class="kicker">In the works</span>
-              <h3 id="soon-title">More coming</h3>
-              <p>We're building more products for teams that run on ERP and field operations. Want to hear when the next one is ready?</p>
-              <a class="btn-outline" href="mailto:info@riroteglobal.com?subject=Notify%20me%20about%20new%20Rirote%20products">Get notified</a>
-            </aside>
-          )}
+  <section class="band dark" id="open-source" aria-labelledby="oss-title">
+    <div class="wrap">
+      <p class="eyebrow">Open source</p>
+      <h2 class="section-title" id="oss-title" style="margin-top:12px">Built in the open, free to use.</h2>
+      <p class="section-sub">Tools and learning material we build for other engineers and give away.</p>
+      <div class="oss-grid">
+        {openSource.map((p) => {
+          const ext = p.path.startsWith('http');
+          return (
+            <a class="oss-card" href={p.path} target={ext ? '_blank' : undefined} rel={ext ? 'noopener' : undefined}>
+              <span class="oss-ico" aria-hidden="true">{'{ }'}</span>
+              {p.status && <span class:list={['badge', badgeClass(p.status)]}>{p.status}</span>}
+              <b>{p.name}</b><span class="oss-line">{p.line}</span>
+              <span class="oss-go">{ext ? 'Open ↗' : 'Explore →'}</span>
+            </a>
+          );
+        })}
       </div>
-    ))}
-    <p class="note2" data-filter-empty hidden>No product matches that. Try another filter, or <a href="/contact">tell us what you need</a>. A custom build is often the answer.</p>
+      <p class="seeall"><a class="more-link" href="https://github.com/rirote-global" rel="noopener">See them on GitHub →</a></p>
+    </div>
   </section>
 
   <section class="band" aria-labelledby="approach-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal>
-        <h2 class="section-title" id="approach-title">How our products work</h2>
-        <p class="section-sub">Our products come from the same engineering we do for clients: ticketing, dashboards and integrations built on ERPNext for manufacturers and service businesses. We build them for operations-heavy teams that already run their business on an ERP and need software that fits around it, not another system to keep in sync by hand. Here is how that works in ERPTick.</p>
-      </div>
-      <div class="approach">
-        {approach.map(([k, t, b]) => <div class="approach-item" data-reveal><span class="kicker">{k}</span><h3>{t}</h3><p>{b}</p></div>)}
+      <p class="eyebrow">How our products work</p>
+      <h2 class="section-title" id="approach-title" style="margin-top:12px">Built around your ERP, not beside it.</h2>
+      <p class="section-sub">Our products come from the same engineering we do for clients: ticketing, dashboards and integrations built on ERPNext for manufacturers and service businesses. Here is how that works in ERPTick.</p>
+      <div class="lp-cards three" style="margin-top:28px">
+        {approach.map(([k, t, b]) => <div class="lp-card"><span class="kicker">{k}</span><h3>{t}</h3><p>{b}</p></div>)}
       </div>
     </div>
   </section>
+
+  <Cta eyebrow="Something else in mind?" title="Need software that isn't here yet?" body="A custom build is often the answer. Tell us what your team needs, and we will tell you honestly whether to build, buy or extend.">
+    <a href="/contact" class="btn-primary">Start a project</a>
+    <a href="/services" class="btn-outline">See our services</a>
+  </Cta>
 </main>
 </BaseLayout>

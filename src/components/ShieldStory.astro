@@ -1,0 +1,98 @@
+---
+// How we protected NimNim, as one diagram in four states: requests fall from the internet towards the servers
+// (cyan customers, red attacks) and each step adds a layer. Facts confirmed by the owner, 2026-11-20.
+//   teaser: the attack in numbers and the diagram cycling on its own, with a link to the full story.
+//   full:   the six apps, the numbers, the diagram and four step buttons with an explanation each.
+// Behaviour: public/assets/shield.js. Styles: site.css "Shield story". Without JS (or under reduced motion)
+// the diagram shows a still for the current step and every step's text stays readable.
+export interface Props { mode?: 'teaser' | 'full'; headingLevel?: 'h2' | 'h3'; }
+const { mode = 'full', headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+const full = mode === 'full';
+
+const apps = [
+  ['Website', 'getnimnim.com, where customers order'],
+  ['Partner app', 'for the laundry partners'],
+  ['Driver app', 'pickups and deliveries'],
+  ['Buildings app', 'addresses and buildings'],
+  ['Admin app', 'the team runs operations'],
+  ['Server', 'the API behind all five'],
+];
+const attack = [
+  ['Every second', 'a new fake sign-up request', false],
+  ['8–10 h', 'the script kept running', false],
+  ['Millions', 'of requests overall', false],
+  ['Stopped', 'fake account creation', true],
+] as const;
+const SHIELD_STEPS = [
+  {
+    tab: 'Before', title: 'Before: everything came straight in.',
+    text: 'The website, partner, driver, buildings and admin apps and the server behind them ran on servers whose database and internal ports could be reached from the internet, around Cloudflare. Attacks and real customers came in the same way.',
+    caption: 'Before: attacks reach the servers, including the database port.',
+  },
+  {
+    tab: 'Doors closed', title: 'We closed the doors.',
+    text: 'We put NimNim fully behind Cloudflare and closed the firewall to everything except web traffic through Cloudflare, plus server access from known addresses. The database is no longer reachable from outside.',
+    caption: 'Step 2: all traffic goes through Cloudflare; the direct route is closed.',
+  },
+  {
+    tab: 'Bot Fight Mode', title: 'The attack: a fake sign-up every second.',
+    text: 'A hacker ran a script that sent an account-creation request every second, for 8 to 10 hours. Cloudflare Bot Fight Mode, our custom rules and DDoS protection blocked a lot of it, but the script kept changing its IP address, so some requests still got through.',
+    caption: 'Step 3: Cloudflare stops most attacks, but some sign-ups still get through.',
+  },
+  {
+    tab: 'Sign-ups locked', title: 'Sign-up locked down. Fake accounts stopped.',
+    text: 'The sign-up API had no rate limit and no phone check. We added both, in the API itself. With Cloudflare in front and these checks behind it, fake account creation stopped, and real customers still sign up normally.',
+    caption: 'Step 4: rate limiting and phone verification stop the rest.',
+  },
+];
+import { asset } from '../lib/asset';
+---
+<div class:list={['shield', { 'is-teaser': !full }]} data-shield={mode}>
+  {full && (
+    <ul class="shield-apps" aria-label="The six NimNim apps we look after">
+      {apps.map(([a, b], i) => <li class:list={{ core: i === apps.length - 1 }}><b>{a}</b><span>{b}</span></li>)}
+    </ul>
+  )}
+  <ul class="shield-attack" aria-label="The attack">
+    {attack.map(([a, b, ok]) => <li><b class:list={{ ok }}>{a}</b><span>{b}</span></li>)}
+  </ul>
+  <div class="shield-grid">
+    <figure class="shield-fig">
+      <svg viewBox="0 0 360 400" role="img" aria-label="Diagram: requests from the internet reaching NimNim's servers, and the layers that stop attacks">
+        <text x="20" y="22" class="sl">INTERNET</text>
+        <g class="legend"><circle cx="210" cy="18" r="5" class="hu" /><text x="220" y="22">Customers</text><circle cx="290" cy="18" r="5" class="bo" /><text x="300" y="22">Attacks</text></g>
+        <path class="bypass" d="M330 40 V318" />
+        <g class="bx"><path d="M320 170 l20 20 M340 170 l-20 20" /><text x="250" y="210" class="sl">PORTS CLOSED</text></g>
+        <g class="dots"></g>
+        <g class="cf"><rect x="16" y="150" width="292" height="44" rx="10" /><text x="30" y="170" class="cft">Cloudflare</text><text x="30" y="185" class="cfs">All traffic goes through here</text></g>
+        <g class="gate"><rect x="196" y="270" width="100" height="10" rx="5" /><text x="150" y="262" class="sl">RATE LIMIT + PHONE CHECK</text></g>
+        <rect class="srv" x="16" y="300" width="330" height="80" rx="12" />
+        <text x="30" y="322" class="sl">NIMNIM SERVERS</text>
+        <rect class="door" x="40" y="336" width="120" height="30" rx="6" /><text x="52" y="356">5 apps</text>
+        <rect class="door" x="196" y="336" width="100" height="30" rx="6" /><text x="208" y="356">Sign-up</text>
+        <rect class="door db" x="306" y="336" width="34" height="30" rx="6" /><text x="311" y="356" class="tiny">DB</text>
+      </svg>
+      <figcaption class="shield-cap" aria-live="polite">{SHIELD_STEPS[0].caption}</figcaption>
+    </figure>
+    {full ? (
+      <div class="shield-side">
+        <div class="shield-steps" role="tablist" aria-label="What we changed">
+          {SHIELD_STEPS.map((s, i) => (
+            <button role="tab" type="button" aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-step={i}><span aria-hidden="true">{i + 1}</span>{s.tab}</button>
+          ))}
+        </div>
+        <div class="shield-text" aria-live="polite">
+          {SHIELD_STEPS.map((s, i) => (
+            <div class="shield-say" data-say={i}><H>{s.title}</H><p>{s.text}</p></div>
+          ))}
+        </div>
+        <slot />
+      </div>
+    ) : (
+      <div class="shield-side"><slot /></div>
+    )}
+  </div>
+  <script type="application/json" data-steps set:html={JSON.stringify(SHIELD_STEPS.map((s) => s.caption))} />
+</div>
+<script is:inline src={asset('/assets/shield.js')} defer></script>

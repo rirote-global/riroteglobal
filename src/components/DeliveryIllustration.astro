@@ -1,0 +1,48 @@
+---
+// An illustration (not the client's app, which we may not show) of the multi-service platform: one app, three
+// services: parcel delivery, ride booking and food delivery, each its own service behind the scenes.
+// Colours match DeliveryDiagram: food pink, parcel amber, ride violet. Styles: site.css "Delivery illustration".
+export interface Props { caption?: boolean; }
+const { caption = false } = Astro.props;
+---
+<figure class="dlv">
+  <svg viewBox="0 0 400 250" role="img" aria-label="Illustration: one app with three services, parcel delivery, ride booking and food delivery, on a map with a delivery route">
+    <defs>
+      <linearGradient id="dlv-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#15253D"/><stop offset="1" stop-color="#0E1B2E"/></linearGradient>
+    </defs>
+    <rect width="400" height="250" fill="url(#dlv-bg)"/>
+    <!-- map: streets and a route from pickup to drop -->
+    <g stroke="#22344F" stroke-width="10" fill="none" stroke-linecap="round">
+      <path d="M-10 70 H410"/><path d="M-10 170 H410"/><path d="M60 -10 V260"/><path d="M330 -10 V260"/><path d="M240 -10 V260"/>
+    </g>
+    <path class="dlv-route" d="M330 205 V170 H240 V70 H330" fill="none" stroke="#27C6E6" stroke-width="3" stroke-dasharray="6 6"/>
+    <circle cx="330" cy="205" r="7" fill="#FF7A90"/><circle cx="330" cy="70" r="7" fill="#3DDC97"/>
+    <g class="dlv-rider"><circle r="9" fill="#F5A524"/><path d="M-4 -1 l4 -5 4 5 h-2.5 v5 h-3 v-5 z" fill="#0E1B2E"/></g>
+    <!-- phone -->
+    <g transform="translate(110 14)">
+      <rect width="124" height="222" rx="18" fill="#0B1626" stroke="#31476A" stroke-width="2"/>
+      <rect x="8" y="10" width="108" height="202" rx="12" fill="#F4F7FA"/>
+      <rect x="46" y="14" width="32" height="5" rx="2.5" fill="#C3CEDB"/>
+      <text x="18" y="38" font-family="Instrument Sans, sans-serif" font-size="9" fill="#4B5B73">Good evening</text>
+      <text x="18" y="52" font-family="Instrument Sans, sans-serif" font-weight="700" font-size="10" fill="#0E1B2E">What do you need?</text>
+      <!-- three service tiles -->
+      <g font-family="Instrument Sans, sans-serif" font-weight="700" font-size="9" fill="#0E1B2E">
+        <g transform="translate(16 62)"><rect width="92" height="38" rx="8" fill="#FFF4E0" stroke="#F5A524"/>
+          <g transform="translate(12 10)" fill="#F5A524"><rect width="18" height="16" rx="2"/><path d="M0 5 H18" stroke="#FFF4E0" stroke-width="1.5"/><path d="M9 0 V16" stroke="#FFF4E0" stroke-width="1.5"/></g>
+          <text x="38" y="23">Parcel</text></g>
+        <g transform="translate(16 106)"><rect width="92" height="38" rx="8" fill="#EEF0FF" stroke="#7C8CFF"/>
+          <g transform="translate(10 12)" fill="#7C8CFF"><path d="M2 8 L5 2 H17 L20 8 V14 H2 Z"/><circle cx="6" cy="14" r="2.6" fill="#0E1B2E"/><circle cx="16" cy="14" r="2.6" fill="#0E1B2E"/></g>
+          <text x="38" y="23">Ride booking</text></g>
+        <g transform="translate(16 150)"><rect width="92" height="38" rx="8" fill="#FFEEF1" stroke="#FF7A90"/>
+          <g transform="translate(11 11)" fill="#FF7A90"><path d="M0 7 H20 A10 9 0 0 1 0 7 Z"/><path d="M6 0 q2 3 0 5 M10 0 q2 3 0 5 M14 0 q2 3 0 5" stroke="#FF7A90" stroke-width="1.4" fill="none"/></g>
+          <text x="38" y="23">Food delivery</text></g>
+      </g>
+      <rect x="16" y="196" width="92" height="8" rx="4" fill="#D3DCE6"/>
+    </g>
+    <!-- labels on the right -->
+    <g font-family="Instrument Sans, sans-serif" font-size="10" fill="#B8C4D6">
+      <text x="262" y="236">One app · three services</text>
+    </g>
+  </svg>
+  {caption && <figcaption class="cd-cap">An illustration of how the platform works, not the client’s app. The client is not named.</figcaption>}
+</figure>

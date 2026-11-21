@@ -1,0 +1,37 @@
+---
+// One case study as a card on /projects: its picture, sector, title, two results and a link. The featured card
+// (NimNim) is wider and shows the live site on a laptop and a phone. Works with the page filters (data-item,
+// data-tags). Pictures are drawings where the client is under NDA. Styles: site.css "Work page".
+import InfraDiagram from './InfraDiagram.astro';
+import DeliveryIllustration from './DeliveryIllustration.astro';
+import { caseUrl, type CaseStudy } from '../data/cases';
+export interface Props { study: CaseStudy; featured?: boolean; }
+const { study: c, featured = false } = Astro.props;
+const tones: Record<string, string> = { 'high-traffic-ecommerce-platform': 'violet', 'shopify-store-projects': 'amber' };
+const lines: Record<string, string> = {
+  nimnim: 'Six live apps stabilised, rebuilt and protected, including stopping a fake sign-up attack, while customers kept ordering.',
+  'angaraa-charcoal-website': 'Designed and developed by us, on Astro.',
+};
+---
+<article class:list={['wk-card', { featured }]} data-item data-tags={c.tags.join(' ')} data-reveal>
+  <a class="wk-pic" href={caseUrl(c.slug)} tabindex="-1" aria-hidden="true">
+    {c.slug === 'nimnim' && (
+      <div class="wk-devices">
+        <img class="wk-laptop" src="/assets/home/nimnim-web.webp" alt="" width="1440" height="900" loading="eager" decoding="async">
+        <img class="wk-phone" src="/assets/home/nimnim-phone.webp" alt="" width="520" height="1000" loading="eager" decoding="async">
+        <span class="wk-logo"><img src="/assets/home/nimnim-logo.webp" alt="" width="64" height="64"></span>
+      </div>
+    )}
+    {c.slug === 'angaraa-charcoal-website' && <img class="wk-shot" src="/assets/home/angaraa-live.webp" alt="" width="1440" height="900" loading="lazy" decoding="async">}
+    {c.slug === 'unified-erp-service-platform' && <InfraDiagram />}
+    {c.slug === 'multi-service-delivery-platform' && <DeliveryIllustration />}
+    {tones[c.slug] && <span class:list={['wk-num', tones[c.slug], { long: c.results[0][0].length > 5 }]}><b>{c.results[0][0]}</b><small>{c.results[0][1]}</small></span>}
+  </a>
+  <div class="wk-body">
+    <p class="wk-kick">{c.sector}{c.place && ` · ${c.place}`}</p>
+    <h3><a href={caseUrl(c.slug)}>{c.title}</a></h3>
+    {lines[c.slug] && <p class="wk-line">{lines[c.slug]}</p>}
+    <ul class="wk-res">{c.results.slice(0, featured ? 3 : 2).map(([v, l]) => <li><b data-count>{v}</b><span>{l}</span></li>)}</ul>
+    <a class="wk-go" href={caseUrl(c.slug)}>Read the case study →</a>
+  </div>
+</article>

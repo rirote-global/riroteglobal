@@ -1,0 +1,116 @@
+---
+// Code Vaidya, our aftercare tool. In beta testing with businesses and agencies (2026-11).
+// Claims are limited to what the owner confirmed: it captures errors, the steps that led to them, server logs,
+// and issues and requests logged by the team; it emails us; it points to a likely cause and drafts a fix; the
+// client gets a note on what changed, on request and automatically. Runs with us or on the client's server.
+// Not claimed yet (owner, 2026-11-20): a person checking every fix, or watching slow pages and requests.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Crumbs from '../../components/Crumbs.astro';
+import Faq from '../../components/Faq.astro';
+import ContactPanel from '../../components/ContactPanel.astro';
+import { breadcrumbs, faqPage, softwareApplication, webPage, type FaqItem } from '../../lib/schema';
+import { PRODUCTS } from '../../data/products';
+
+const p = PRODUCTS.find((x) => x.id === 'code-vaidya')!;
+const path = p.path;
+
+const steps = [
+  ['Something breaks', 'An error on your website or app, or an issue your team logs, at any hour.'],
+  ['Code Vaidya captures it', 'What happened, the steps that led to it and the server logs, together in one place, so nobody has to reproduce it from a vague message.'],
+  ['We are alerted straight away', 'An email reaches us the moment it happens, and we can open it from a phone.'],
+  ['It points to the cause and drafts a fix', 'Code Vaidya reads the error against your code, points to the likely cause and drafts a fix for us to work from.'],
+  ['You hear what changed', 'A short note on what broke and what we did about it, sent automatically, and whenever you ask.'],
+];
+const faq: FaqItem[] = [
+  { question: 'Is Code Vaidya ready to use?', answer: 'It is in beta testing with businesses and agencies. If your website or app needs looking after, ask to join the testing and we will tell you honestly whether it fits.' },
+  { question: 'Do I have to move my website or app to you?', answer: 'No. Code Vaidya connects to the website or app where it already runs, or we install it on your own server.' },
+  { question: 'What does it capture?', answer: 'Errors, the steps that led to each one and the server logs around it, plus issues and requests your team logs, so the cause can be found without guesswork.' },
+  { question: 'Will I know what was changed?', answer: 'Yes. You get a short note on what broke and what was done about it, sent automatically, and whenever you ask for one.' },
+  { question: 'How is it priced?', answer: 'When we look after your website or app, it is part of the maintenance contract (AMC). For your own team or agency it is a one-time setup on your server, with an optional yearly plan for new versions. Tell us about your setup and we will quote.' },
+];
+
+const seo = {
+  title: p.metaTitle!,
+  path,
+  description: p.description!,
+  schema: [
+    webPage({ path, name: p.name }),
+    softwareApplication({ path, name: p.name, description: p.description, category: 'DeveloperApplication' }),
+    breadcrumbs(['Home', '/'], ['Products', '/products'], [p.name, path]),
+    faqPage(faq),
+  ],
+};
+---
+<BaseLayout seo={seo} nav={{ current: 'products', cta: { href: '#get-started', label: 'Ask to try it' } }} rail={{ stops: [['overview', 'Overview'], ['how', 'How'], ['faq', 'FAQ'], ['get-started', 'Talk']], summitLabel: 'Ask to try it' }}>
+<main id="main">
+  <section class="page-hero lp-hero" id="overview">
+    <div class="hero-content">
+      <Crumbs items={[['Home', '/'], ['Products', '/products'], [p.name]]} />
+      <img class="cv-mark" src="/assets/products/code-vaidya/logo-mark.svg" alt="" width="64" height="64">
+      <p class="eyebrow">After launch · Code Vaidya</p>
+      <h1 class="page-title">Know what broke, <span>before your customers call.</span></h1>
+      <p class="page-sub">The developer who built your website or app may be busy, or gone. Code Vaidya watches it after launch, captures what went wrong and tells us straight away, so it gets fixed fast.</p>
+      <p style="margin-top:18px"><span class="badge dev">In beta testing with businesses and agencies</span></p>
+      <div class="hero-actions">
+        <a href="#get-started" class="btn-primary">Ask to try it</a>
+        <a href="#how" class="btn-outline">How it works</a>
+      </div>
+    </div>
+    <div>
+      <div class="alert-card" role="img" aria-label="Example alert from Code Vaidya: checkout is failing for some customers, with the error, the steps that led to it and the server logs attached">
+        <div class="alert-top"><b><span class="live-dot" aria-hidden="true"></span>Code Vaidya</b><span>now</span></div>
+        <p class="alert-h">Checkout is failing for some customers</p>
+        <p>Payment step returns an error after the address is saved.</p>
+        <div class="alert-att"><span>Error</span><span>Steps that led to it</span><span>Server logs</span></div>
+      </div>
+      <p class="alert-cap">An example of the alert we receive</p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="who-h">
+    <div class="wrap">
+      <p class="eyebrow">Who it is for</p>
+      <h2 class="section-title" id="who-h" style="margin-top:12px">For apps that must keep working.</h2>
+      <div class="lp-cards two" style="margin-top:28px">
+        <div class="lp-card"><span class="kicker">Businesses</span><h3>Your developer is busy, or gone.</h3><p>Your website or app runs the business, but nobody is watching it. Code Vaidya is, and we fix what it finds.</p></div>
+        <div class="lp-card"><span class="kicker">Agencies</span><h3>You look after many client sites.</h3><p>Run it on your own server for your own team, so problems reach your developers before your clients notice.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="how" aria-labelledby="how-h">
+    <div class="wrap">
+      <p class="eyebrow">How it works</p>
+      <h2 class="section-title" id="how-h" style="margin-top:12px">From the error to the fix.</h2>
+      <ol class="lp-steps" style="margin-top:28px">{steps.map(([b, t]) => <li><b>{b}</b><p>{t}</p></li>)}</ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="ways-h">
+    <div class="wrap">
+      <p class="eyebrow">Where it runs and how to have it</p>
+      <h2 class="section-title" id="ways-h" style="margin-top:12px">With us, or on your own server.</h2>
+      <div class="lp-cards three" style="margin-top:28px">
+        <div class="lp-card accent"><span class="kicker">We look after your app</span><h3>Part of your AMC</h3><p>When we maintain your website or app, Code Vaidya is included and the alerts come to us.</p></div>
+        <div class="lp-card"><span class="kicker">Your team or agency</span><h3>One-time setup</h3><p>We install it on your server and your own developers get the alerts.</p></div>
+        <div class="lp-card"><span class="kicker">Keep it current</span><h3>Yearly updates</h3><p>An optional annual plan to keep receiving new versions and improvements.</p></div>
+      </div>
+      <p class="lp-note"><b>No prices on this page:</b> it depends on your website or app and who looks after it. Tell us about your setup and we will quote.</p>
+    </div>
+  </section>
+
+  <section class="band" id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <h2 class="section-title" id="faq-h">Questions</h2>
+      <div style="margin-top:20px"><Faq items={faq} /></div>
+    </div>
+  </section>
+
+  <section class="band" id="get-started">
+    <div class="wrap">
+      <ContactPanel eyebrow="Join the beta" title="Tell us about your website or app."
+        lead="What it is, where it runs and who looks after it today." service="Code Vaidya (aftercare)" />
+    </div>
+  </section>
+</main>
+</BaseLayout>

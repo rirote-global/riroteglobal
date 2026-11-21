@@ -1,0 +1,29 @@
+---
+// Recent work as a swipe gallery with a position counter and dots (home.js). Card text and results come from
+// cases.ts; the look of each card from home.ts. Without JS it is a plain horizontal scroller.
+import InfraDiagram from '../InfraDiagram.astro';
+import DeliveryIllustration from '../DeliveryIllustration.astro';
+import { CASES, caseUrl } from '../../data/cases';
+import { WORK_CARDS } from '../../data/home';
+
+const cards = WORK_CARDS.map((w) => ({ ...w, study: CASES.find((c) => c.slug === w.slug)! })).filter((c) => c.study);
+---
+<div class="hx-work">
+  <p class="hx-pos" id="hx-pos" aria-live="polite">1 of {cards.length}</p>
+  <div class="hx-gallery" id="hx-gallery" tabindex="0" aria-label="Recent work, scroll sideways">
+    {cards.map(({ study: c, visual: v, line }, i) => (
+      <article>
+        {v.kind === 'image' && <figure class="hx-frame"><img src={v.src} alt={v.alt} width="1440" height="900" loading={i === 0 ? 'eager' : 'lazy'} decoding="async"></figure>}
+        {v.kind === 'nimnim' && <div class="hx-brand nim"><img src="/assets/home/nimnim-logo.webp" alt="NimNim logo" width="320" height="320" loading="lazy"><span>On-demand laundry and dry cleaning<br>Boston · New York · Miami</span></div>}
+        {v.kind === 'infra' && <InfraDiagram />}
+        {v.kind === 'delivery' && <DeliveryIllustration />}
+        {v.kind === 'number' && <div class:list={['hx-num', v.tone]}><b>{v.value}</b><span>{v.label}</span></div>}
+        <p class="hx-kick">{c.sector}{c.place && ` · ${c.place}`}</p>
+        <h3><a href={caseUrl(c.slug)}>{c.title}</a></h3>
+        {line && <p class="hx-line">{line}</p>}
+        {c.results.slice(0, 2).map(([val, label]) => <div class="hx-r"><b>{val}</b><span>{label}</span></div>)}
+      </article>
+    ))}
+  </div>
+  <div class="hx-dots" id="hx-dots" role="group" aria-label="Go to work item"></div>
+</div>

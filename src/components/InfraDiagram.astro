@@ -1,0 +1,21 @@
+---
+// A schematic of the infrastructure group's platform: 9 business entities and 5 ERP sites feeding one platform
+// with service tickets, dashboards and reports. A drawing, not a screenshot: the client is under NDA.
+// Styles: site.css "Infrastructure diagram". Flow lines move only when motion is allowed.
+const colours = ['#27C6E6', '#7C8CFF', '#F5A524', '#3DDC97', '#FF7A90', '#B57BFF', '#27C6E6', '#F5A524', '#3DDC97'];
+---
+<div class="infra">
+  <svg viewBox="0 0 320 200" role="img" aria-label="Nine business entities and five ERP sites feeding one platform with service tickets, 11 dashboards and reports">
+    <g>{colours.map((c, i) => <rect x={14 + (i % 3) * 22} y={40 + Math.floor(i / 3) * 22} width="16" height="16" rx="3" fill={c} />)}</g>
+    <text x="14" y="128" class="t">9 business</text><text x="14" y="140" class="t">entities</text>
+    <g class="erp">{[0, 1, 2, 3, 4].map((i) => <rect x="104" y={44 + i * 12} width="44" height="7" rx="2" />)}</g>
+    <text x="104" y="128" class="t">5 ERP sites</text>
+    <path class="flow" d="M80 73 H100" /><path class="flow" d="M152 73 H178" />
+    <rect class="plat" x="182" y="26" width="126" height="132" rx="8" />
+    <text x="194" y="46" class="h">One platform</text>
+    <g class="mod m1"><rect x="194" y="56" width="102" height="26" rx="4" /><text x="202" y="73">Service tickets</text></g>
+    <g class="mod m2"><rect x="194" y="88" width="102" height="26" rx="4" /><text x="202" y="105">11 dashboards</text></g>
+    <g class="mod m3"><rect x="194" y="120" width="102" height="26" rx="4" /><text x="202" y="137">Reports</text></g>
+    <text x="182" y="182" class="t">Client name under NDA</text>
+  </svg>
+</div>

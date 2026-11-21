@@ -28,7 +28,7 @@ export interface Product {
   name: string;
   short: string;
   /** Shown as a badge. Leave out when there is nothing to flag. */
-  status?: 'In development' | 'Open source' | 'Free · Early version';
+  status?: 'In development' | 'In beta testing' | 'Open source' | 'Free · Early version';
   group: 'Products' | 'Open source';
   tags: ProblemId[];
   /** Relative page path, or a full URL when the project lives elsewhere. */
@@ -180,6 +180,24 @@ export const PRODUCTS: Product[] = [
     ],
     credits: 'Built on HyperFrames, which renders video from HTML. The assistant runs on Claude Code with your own sign-in, so the app stores no API key. RIROTE VISION is not affiliated with or endorsed by HeyGen (HyperFrames) or Anthropic (Claude), and using your Claude plan through it is subject to Anthropic’s terms.',
     contact: { eyebrow: 'Talk to Us', title: 'Want a tool like this built for you?', lead: 'We build desktop and web apps with AI inside. Tell us what you need.', message: 'I would like to talk about building an app with AI.' },
+  },
+  {
+    // In beta testing with businesses and agencies (2026-11). Claims kept to what it does today: captures
+    // errors, logs and bug reports, alerts by email, and a note on what changed (on request and automatically).
+    // Not claimed yet: a person checking every fix, or watching slow pages and requests (both planned).
+    id: 'code-vaidya', name: 'Code Vaidya', short: 'Code Vaidya', status: 'In beta testing', group: 'Products',
+    tags: ['ai', 'speed'], path: '/products/code-vaidya',
+    line: 'Watches your website or app after launch, captures what broke and alerts us straight away, so it gets fixed before your customers call.',
+    points: [
+      'Captures the error, the steps that led to it and the server logs',
+      'Emails us the moment something goes wrong, readable on a phone',
+      'Points to the likely cause and drafts a fix',
+      'Runs with us, or on your own server',
+    ],
+    formService: 'Code Vaidya (aftercare)',
+    metaTitle: 'Code Vaidya: Website & App Error Alerts and Aftercare | Rirote Global',
+    description: 'Code Vaidya watches your website or app after launch, captures what broke with its logs, alerts us by email and drafts a fix. In beta with businesses and agencies.',
+    services: ['cloud-devops', 'ai-integration'],
   },
   {
     id: 'stop-guessing', name: 'stop-guessing', short: 'stop-guessing', status: 'Open source', group: 'Open source',

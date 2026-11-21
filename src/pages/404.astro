@@ -2,18 +2,23 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const seo = { title: 'Page Not Found | Rirote Global', noindex: true };
+const go = [
+  ['/', 'Home', 'Start from the top'],
+  ['/projects', 'Our work', 'Case studies and results'],
+  ['/services', 'Services', 'What we can build for you'],
+  ['/contact', 'Contact', 'Tell us what you need'],
+];
 ---
 <BaseLayout seo={seo}>
 <main id="main">
-  <section class="page-hero" style="padding-block:clamp(60px,12vw,140px)">
+  <section class="page-hero nf" style="padding-block:clamp(60px,10vw,120px)">
     <div class="hero-content">
       <p class="eyebrow">Page not found</p>
-      <h1 class="page-title">404</h1>
+      <h1 class="page-title nf-big">4<span>0</span>4</h1>
       <p class="page-sub">That page doesn't exist or has moved. Here's where to go next.</p>
-      <div class="hero-actions">
-        <a href="/" class="btn-primary">Back to Home</a>
-        <a href="/products" class="btn-outline">Our Products</a>
-      </div>
+      <nav class="nf-go" aria-label="Where to go next">
+        {go.map(([href, label, text]) => <a href={href}><b>{label} →</b><span>{text}</span></a>)}
+      </nav>
     </div>
   </section>
 </main>

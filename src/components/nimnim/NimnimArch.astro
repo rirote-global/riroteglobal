@@ -1,0 +1,69 @@
+---
+// NimNim, before and after: how the platform ran, drawn as layers, with a Before / After switch (nimnim.js).
+// Replaces the plain "problem / what we built" paragraphs on the NimNim page; those paragraphs stay here as the
+// caption of each view. Without JS (or for search engines) both views show, one after the other.
+// Facts only from cases.ts (nimnim) and the owner (2026-11-20).
+export interface Props { problem: string; built: string; }
+const { problem, built } = Astro.props;
+const apps = ['Website', 'Partner', 'Driver', 'Buildings', 'Admin'];
+---
+<div class="na" data-na>
+  <div class="na-switch" role="group" aria-label="Show the platform" hidden>
+    <button type="button" data-view="before" aria-pressed="true">Before</button>
+    <button type="button" data-view="after" aria-pressed="false">After</button>
+    <i aria-hidden="true"></i>
+  </div>
+
+  <section class="na-view na-before" data-pane="before" aria-labelledby="na-b-h">
+    <h2 class="na-h" id="na-b-h"><span class="na-tag bad">Before</span> Fragile, and open to the internet</h2>
+    <div class="na-stage">
+      <div class="na-layer na-net"><b>Internet</b><span>customers <em class="dot hu"></em> and attackers <em class="dot bo"></em></span></div>
+      <div class="na-paths">
+        <span class="na-path ok">through Cloudflare</span>
+        <span class="na-path bad">straight to the servers, around Cloudflare</span>
+      </div>
+      <div class="na-servers">
+        {[0, 1].map((n) => (
+          <div class="na-box na-ec2">
+            <p class="na-box-h">EC2 server {n + 1}</p>
+            <ul class="na-chips">{(n === 0 ? ['Website', 'Partner', 'Driver'] : ['Buildings', 'Admin', 'API']).map((a) => <li>{a} <small>dev server</small></li>)}</ul>
+            <ul class="na-flags">
+              <li class="bad">{n === 0 ? 'Database port open' : 'Internal app ports open'}</li>
+              <li class="bad">No process manager</li>
+              <li class="bad">No memory buffer</li>
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="na-crash"><b>One memory spike</b> → the server crashes → every app stays down until someone restarts it by hand.</p>
+    </div>
+    <p class="na-cap">{problem}</p>
+  </section>
+
+  <section class="na-view na-after" data-pane="after" aria-labelledby="na-a-h">
+    <h2 class="na-h" id="na-a-h"><span class="na-tag good">After</span> Stable, lean and closed off</h2>
+    <div class="na-stage">
+      <div class="na-layer na-net"><b>Internet</b><span>customers <em class="dot hu"></em> and attackers <em class="dot bo"></em></span></div>
+      <div class="na-layer na-cf"><b>Cloudflare</b><span>Bot Fight Mode · custom rules · DDoS protection</span></div>
+      <div class="na-layer na-fw"><b>Firewall</b><span>only web traffic through Cloudflare, and SSH from known addresses</span></div>
+      <div class="na-servers one">
+        <div class="na-box na-prod">
+          <p class="na-box-h">Production server <small>one hardened server</small></p>
+          <div class="na-row">
+            <div class="na-nginx"><b>Nginx</b><span>serves the 5 apps as prebuilt files</span>
+              <ul class="na-chips">{apps.map((a) => <li>{a}</li>)}</ul>
+            </div>
+            <div class="na-api"><b>API</b><span>restarts itself after a crash or reboot</span></div>
+          </div>
+          <div class="na-row">
+            <div class="na-swap"><b>Swap buffer</b><span>absorbs memory spikes</span></div>
+            <div class="na-db"><b>MongoDB</b><span>closed to the internet · slow queries optimised</span></div>
+          </div>
+        </div>
+        <div class="na-box na-dev"><p class="na-box-h">Dev server</p><span>the same setup</span></div>
+      </div>
+      <p class="na-crash good"><b>A memory spike now</b> → the buffer absorbs it. If the API does stop, it restarts itself; the apps are plain files, so they stay up.</p>
+    </div>
+    <p class="na-cap">{built}</p>
+  </section>
+</div>

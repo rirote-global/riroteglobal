@@ -1,0 +1,32 @@
+---
+// One "Work that shows it" item on a service page: the same pictures as the Work page when it links to a case
+// study, a product mark when it links to a product, otherwise a plain card. Styles: site.css "Service pages".
+import InfraDiagram from './InfraDiagram.astro';
+import DeliveryIllustration from './DeliveryIllustration.astro';
+import type { ServiceProof } from '../data/services';
+export interface Props { proof: ServiceProof; lead?: boolean; }
+const { proof: p, lead = false } = Astro.props;
+const href = p.link?.href ?? '';
+const slug = href.startsWith('/projects/') ? href.slice('/projects/'.length) : '';
+const product = href.startsWith('/products/') ? href.slice('/products/'.length) : '';
+const pic = ['nimnim', 'angaraa-charcoal-website', 'unified-erp-service-platform', 'multi-service-delivery-platform'].includes(slug) || product === 'erptick' || product === 'stop-guessing';
+---
+<article class:list={['pf', { 'no-pic': !pic, 'pf-lead': lead && pic }]} data-reveal>
+  {pic && (
+    <a class="pf-pic" href={href} tabindex="-1" aria-hidden="true">
+      {slug === 'nimnim' && <img src="/assets/home/nimnim-web.webp" alt="" width="1440" height="900" loading="lazy" decoding="async">}
+      {slug === 'angaraa-charcoal-website' && <img src="/assets/home/angaraa-live.webp" alt="" width="1440" height="900" loading="lazy" decoding="async">}
+      {slug === 'unified-erp-service-platform' && <InfraDiagram />}
+      {slug === 'multi-service-delivery-platform' && <DeliveryIllustration />}
+      {product === 'erptick' && <img src="/assets/home/erptick.webp" alt="" width="1280" height="720" loading="lazy" decoding="async">}
+      {product === 'stop-guessing' && <span class="pf-mark">{'{ }'}</span>}
+    </a>
+  )}
+  <div class="pf-body">
+    <span class="kicker">{p.kicker}</span>
+    <h3>{p.link ? <a href={href}>{p.title}</a> : p.title}</h3>
+    <p>{p.text}</p>
+    {p.stats && <ul class="pf-stats">{p.stats.map((s) => <li><b data-count>{s.value}</b><span>{s.label}</span></li>)}</ul>}
+    {p.link && <a class="pf-go" href={href}>{p.link.label}</a>}
+  </div>
+</article>

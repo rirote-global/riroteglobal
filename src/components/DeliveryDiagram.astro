@@ -1,0 +1,18 @@
+---
+// Three services on one platform, each scaling on its own. The bars in each service grow and shrink
+// independently to show that, not to report real server counts. Facts from cases.ts (multi-service-delivery-platform).
+const services = [
+  ['Food delivery', 'food'],
+  ['Parcel logistics', 'parcel'],
+  ['Ride booking', 'ride'],
+];
+---
+<figure class="cd cd-delivery">
+  <ul class="cd-svcs" aria-label="Three services, each its own microservice">
+    {services.map(([name, key]) => (
+      <li class={key}><b>{name}</b><span>its own service, scales on its own</span><span class="cd-load" aria-hidden="true"><i></i><i></i><i></i><i></i></span></li>
+    ))}
+  </ul>
+  <div class="cd-shared"><b>One shared platform</b><span>REST APIs and one database schema designed for all three services</span><small>PostgreSQL · Redis · on DigitalOcean</small></div>
+  <figcaption class="cd-cap">The moving bars show each service scaling on its own; they are not real server counts. The client is not named.</figcaption>
+</figure>

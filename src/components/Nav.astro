@@ -1,15 +1,17 @@
 ---
-// Site navigation. /projects keeps its address and is labelled "Work".
+// Site navigation: logo, links and a "Start a project" button. On phones and tablets the links open as a
+// full-screen sheet (site.js). /projects keeps its address and is labelled "Work".
 import { SITE } from '../data/site';
 
 export interface Props {
   /** Highlights the matching link. */
   current?: 'services' | 'projects' | 'products' | 'about' | 'contact';
-  /** Optional call-to-action button. */
-  cta?: { href: string; label: string };
+  /** The call-to-action button. Defaults to "Start a project"; pass false to hide it (the contact page). */
+  cta?: { href: string; label: string } | false;
 }
 
-const { current, cta } = Astro.props;
+const { current, cta = { href: '/contact', label: 'Start a project' } } = Astro.props;
+const showCta = cta && current !== 'contact';
 const links = [
   { href: '/projects', label: 'Work', key: 'projects' },
   { href: '/services', label: 'Services', key: 'services' },
@@ -21,17 +23,13 @@ const links = [
 ---
 <nav id="navbar" aria-label="Main">
   <a href="/" class="nav-logo-link" aria-label="Rirote Global, home">
-    <img class="nav-logo-mark" src="/assets/brand/mark.svg" width="32" height="32" alt="">
-    <span class="nav-logo-text">
-      <span class="nav-logo-brand">RI<span>RO</span>TE</span>
-      <span class="nav-logo-sub">Global</span>
-    </span>
+    <img class="nav-logo-img" src="/assets/brand/logo-global-dark.svg" width="199" height="30" alt="Rirote Global">
   </a>
   <ul class="nav-links" id="navLinks">
     {links.map((l) => (
       <li><a href={l.href} aria-current={l.key === current ? 'page' : undefined}>{l.label}</a></li>
     ))}
-    {cta && <li><a href={cta.href} class="btn-primary nav-cta">{cta.label}</a></li>}
+    {showCta && <li><a href={cta.href} class="btn-primary nav-cta">{cta.label}</a></li>}
     <li class="nav-extra"><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
   </ul>
   <button class="menu-toggle" id="menuToggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
