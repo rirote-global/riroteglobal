@@ -2,6 +2,8 @@
 // One case study, built from src/data/cases.ts.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Crumbs from '../../components/Crumbs.astro';
+import CaseVisual from '../../components/CaseVisual.astro';
+import NimnimArch from '../../components/nimnim/NimnimArch.astro';
 import { article, breadcrumbs, webPage } from '../../lib/schema';
 import { contactUrl } from '../../data/site';
 import { serviceBySlug, serviceUrl, type Service } from '../../data/services';
@@ -16,6 +18,11 @@ const path = caseUrl(c.slug);
 const i = CASES.indexOf(c);
 const prev = CASES[i - 1];
 const next = CASES[i + 1];
+// Client marks, only for clients we may name.
+const logos: Record<string, { src: string; bg: string; alt: string }> = {
+  nimnim: { src: '/assets/home/nimnim-logo.webp', bg: '#6FCFB7', alt: 'NimNim logo' },
+};
+const logo = logos[c.slug];
 const services = c.services.map(serviceBySlug).filter((s): s is Service => Boolean(s));
 
 const seo = {
@@ -36,6 +43,12 @@ const seo = {
       <Crumbs items={[['Home', '/'], ['Work', PROJECTS_PATH], [c.name]]} />
       <p class="eyebrow">{c.sector}{c.place && ` · ${c.place}`}</p>
       <h1 class="page-title">{c.title}</h1>
+      {(logo || c.website) && (
+        <p class="case-brand">
+          {logo && <img src={logo.src} alt={logo.alt} width="48" height="48" style={`background:${logo.bg}`}>}
+          {c.website && <a href={c.website.href} target="_blank" rel="noopener">{c.website.label} ↗</a>}
+        </p>
+      )}
     </div>
   </section>
 
@@ -46,10 +59,16 @@ const seo = {
   </div>
 
   <div class="wrap">
-    <div class="cols2">
-      <div><h2>The problem</h2><p>{c.problem}</p></div>
-      <div><h2>What we built</h2><p>{c.built}</p></div>
-    </div>
+    {c.slug === 'nimnim' ? (
+      <div class="case-arch"><NimnimArch problem={c.problem} built={c.built} /></div>
+    ) : (
+      <div class="cols2">
+        <div class="pb-card problem"><h2>The problem</h2><p>{c.problem}</p></div>
+        <div class="pb-card built"><h2>What we built</h2><p>{c.built}</p></div>
+      </div>
+    )}
+
+    <CaseVisual slug={c.slug} />
 
     <div class="detail">
       <div>
@@ -67,7 +86,6 @@ const seo = {
     <h2 class="sub-h" style="margin-top:20px">Tech stack</h2>
     <ul class="stackrow">{c.stack.map((t) => <li>{t}</li>)}</ul>
     {c.via && <p class="meta2">{c.via}</p>}
-    {c.website && <p class="meta2"><a href={c.website.href} target="_blank" rel="noopener">{c.website.label} ↗</a></p>}
 
     <h2 class="sub-h" style="margin-top:32px">Related services</h2>
     <div class="rel">{services.map((s) => <a href={serviceUrl(s.slug)}><b>{s.name}</b><span>{s.summary}</span></a>)}</div>

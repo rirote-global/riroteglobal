@@ -1,0 +1,44 @@
+---
+// One product as a showcase card on /products: icon, status, name, line, key points, actions, and a picture
+// (its screenshot in a browser frame, or for Code Vaidya, which has no screens yet, its example alert).
+// Alternates picture side on desktop. Styles: site.css "Products page".
+import { badgeClass, type Product } from '../data/products';
+export interface Props { product: Product; flip?: boolean; icon?: string; }
+const { product: p, flip = false, icon } = Astro.props;
+const shot = p.shot;
+const dl = p.download?.available ? p.download : undefined;
+---
+<article class:list={['ps', { flip }]} id={p.id} data-reveal>
+  <div class="ps-text">
+    <div class="ps-top">
+      <span class="ps-ico" aria-hidden="true">{icon ? <img src={icon} alt="" width="56" height="56" loading="lazy"> : p.short.slice(0, 2)}</span>
+      {p.status && <span class:list={['badge', badgeClass(p.status)]}>{p.status}</span>}
+    </div>
+    <h2><a href={p.path}>{p.name}</a></h2>
+    <p class="ps-line">{p.line}</p>
+    <ul class="ps-pts">{p.points.map((x) => <li>{x}</li>)}</ul>
+    <div class="cta-row">
+      <a class="btn-primary" href={p.path}>Explore {p.short} →</a>
+      {dl ? <a class="btn-outline" href={dl.href} download>{dl.label}</a> : p.rowCta && <a class="btn-outline" href={p.rowCta.href}>{p.rowCta.label}</a>}
+    </div>
+  </div>
+  <div class="ps-pic">
+    {shot ? (
+      <a class="ps-browser" href={shot.href ?? p.path} aria-label={shot.hrefLabel ?? `See ${p.name}`}>
+        <span class="ps-chrome" aria-hidden="true"><i></i><i></i><i></i><em>{p.name}</em></span>
+        <img src={shot.poster ?? shot.src} srcset={shot.srcset} sizes="(max-width: 900px) 100vw, 55vw" width={shot.width} height={shot.height} loading="lazy" decoding="async" alt={shot.alt}>
+        {shot.playLabel && <span class="ps-play" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 4v16l13-8z"/></svg>{shot.playLabel}</span>}
+      </a>
+    ) : (
+      <div class="ps-alert">
+        <div class="alert-card" role="img" aria-label="Example alert from Code Vaidya: checkout is failing for some customers, with the error, the steps that led to it and the server logs attached">
+          <div class="alert-top"><b><span class="live-dot" aria-hidden="true"></span>{p.name}</b><span>now</span></div>
+          <p class="alert-h">Checkout is failing for some customers</p>
+          <p>Payment step returns an error after the address is saved.</p>
+          <div class="alert-att"><span>Error</span><span>Steps that led to it</span><span>Server logs</span></div>
+        </div>
+        <p class="alert-cap">An example of the alert we receive</p>
+      </div>
+    )}
+  </div>
+</article>

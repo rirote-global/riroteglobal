@@ -13,3 +13,5 @@
 # Removed from the site (2026-11-18): Roomcraftr product page and the Reports & Dashboards service
 /products/roomcraftr            /products   301
 /services/data-pipelines        /services   301
+# Removed from the site (2026-11-22): the foundry ERP case study
+/projects/foundry-operations-erp  /projects  301

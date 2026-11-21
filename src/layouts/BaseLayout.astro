@@ -30,7 +30,7 @@ const hasFooterText = Astro.slots.has('footer');
 <link rel="stylesheet" href="/assets/site.css">
 <slot name="head" />
 </head>
-<body class={rail ? 'has-rail' : undefined}>
+<body class={rail ? 'has-dock' : undefined}>
 <a class="skip-link" href="#main">Skip to content</a>
 {rail && <Rail {...rail} />}
 <Nav {...nav} />

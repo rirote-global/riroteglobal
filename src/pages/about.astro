@@ -32,7 +32,7 @@ const pillars = [
   {
     kicker: 'Our products',
     title: 'Software we ship',
-    text: 'Products we build and run ourselves, for businesses with busy operations.',
+    text: 'Products we build and run ourselves: ERPTick for service teams, RIROTE VISION for making videos, and Code Vaidya (in beta) for watching apps after launch.',
     links: [{ href: '/products', label: 'See our products' }],
   },
   {
@@ -41,6 +41,12 @@ const pillars = [
     text: 'Free tools and learning material for engineers: the CrackThePrep interview hub, and stop-guessing, agent skills that stop AI coding tools from inventing decisions.',
     links: [{ href: '/#opensource', label: 'See our open source' }],
   },
+];
+
+const pillarIcons = [
+  '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 13l-2 2 2 2M16 13l2 2-2 2"/>',
+  '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
+  '<path d="M8 7L3 12l5 5M16 7l5 5-5 5M14 4l-4 16"/>',
 ];
 
 const principles = [
@@ -53,7 +59,7 @@ const principles = [
 // What experience adds, each tied to a real (anonymised) case study.
 const experience = [
   { title: 'Scaling', text: 'Knowing what breaks at ten times the users, before it does.', slug: 'high-traffic-ecommerce-platform', proof: 'A high-traffic store: a plan to move from one big application to microservices' },
-  { title: 'System design', text: 'Data models, boundaries and integrations that still make sense in two years.', slug: 'foundry-operations-erp', proof: 'A foundry ERP joined to ERPNext through a safe, retry-friendly boundary' },
+  { title: 'System design', text: 'Data models, boundaries and integrations that still make sense in two years.', slug: 'unified-erp-service-platform', proof: 'Nine business entities on one platform, synced with ERPNext through its API, never its database' },
   { title: 'Performance', text: 'Slow queries, caching and parallel work, found and fixed.', slug: 'unified-erp-service-platform', proof: 'Dashboards from 5s+ down to under 500ms' },
   { title: 'Security', text: 'Logins, permissions and keys done properly from day one, not patched later.', slug: 'nimnim', proof: 'The API of a live platform, secured while customers kept ordering' },
   { title: 'Cost', text: 'Hosting sized to what you really need, not to what was easiest to set up.', slug: 'nimnim', proof: 'A 50% lower AWS bill' },
@@ -68,109 +74,143 @@ const experience = [
       <p class="eyebrow">About Rirote Global</p>
       <h1 class="page-title">Engineers who have <span>built for global clients.</span></h1>
       <p class="page-sub">Rirote Global is a small software company in Jaipur, India. We build websites, business software, AI features and ERP systems for companies in India, the United States and the Middle East, and we build software products of our own.</p>
+      <ul class="ab-facts" aria-label="Rirote Global in numbers">
+        <li><b data-count>{COMPANY_STATS.projects.value}</b><span>{COMPANY_STATS.projects.label}</span></li>
+        <li><b data-count>{COMPANY_STATS.industries.value}</b><span>{COMPANY_STATS.industries.label}</span></li>
+        <li><b data-count>{COMPANY_STATS.regions.value}</b><span>Regions: India, US &amp; Middle East</span></li>
+        <li><b>≤10</b><span>People, close to the work</span></li>
+      </ul>
       <div class="hero-actions">
-        <a href="/contact" class="btn-primary">Talk to Us</a>
-        <a href="/projects" class="btn-outline">See Our Work</a>
+        <a href="/contact" class="btn-primary">Start a project</a>
+        <a href="/projects" class="btn-outline">See our work</a>
       </div>
     </div>
   </section>
 
-  <section class="band">
-    <div class="wrap about">
+  <section class="band" aria-labelledby="story-title">
+    <div class="wrap ab-story">
       <div data-reveal>
-        <h2 class="h2s">Engineers on your project from start to finish.</h2>
+        <p class="eyebrow">Who you work with</p>
+        <h2 class="h2s" id="story-title" style="margin-top:12px">Engineers on your project from start to finish.</h2>
         <p>Our engineers worked at multinational companies, building applications for clients around the world. We have solved the problems that only appear when software meets real users, real data and real deadlines.</p>
         <p>We understand what you need, plan the solution from that experience, and then deliver it. The people who plan the work are the people who build and run it.</p>
       </div>
-      <div class="stats">
-        <div><b data-count>{COMPANY_STATS.projects.value}</b><span>{COMPANY_STATS.projects.label}</span></div>
-        <div><b data-count>{COMPANY_STATS.industries.value}</b><span>{COMPANY_STATS.industries.label}</span></div>
-      </div>
+      <ol class="ab-path" aria-label="The same people at every stage" data-reveal>
+        {[['Plan', 'what must change, written down first'], ['Build', 'small releases you can see and test'], ['Launch', 'hosting, speed and security set up'], ['Look after', 'monitoring, fixes and new features']].map(([a, b], i) => (
+          <li style={`--i:${i}`}><b>{a}</b><span>{b}</span></li>
+        ))}
+        <li class="ab-same"><span>The same team, every step. No hand-offs.</span></li>
+      </ol>
     </div>
   </section>
 
-  <section class="band">
+  <section class="band dark" aria-labelledby="name-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal>
-        <h2 class="section-title">Anyone can build an app with AI now. Few can make it last.</h2>
-        <p class="section-sub">AI has made the first version quick and cheap, and we use it too. But a working demo and a system your business can depend on are different things. The gap between them is experience.</p>
-      </div>
-      <div class="incl three">
-        {experience.map((x) => (
-          <a class="inc" href={caseUrl(x.slug)} data-reveal><h3>{x.title}</h3><p>{x.text}</p><span class="proof2">{x.proof} →</span></a>
+      <p class="eyebrow">The name is the promise</p>
+      <h2 class="section-title" id="name-title" style="margin-top:12px">Rirote comes from three words.</h2>
+      <p class="section-sub">We hold every project to them.</p>
+      <div class="ab-name">
+        {name.map((n, i) => (
+          <div class:list={['ab-letter', { mid: i === 1 }]} data-reveal>
+            <span class="ab-big" aria-hidden="true">{n.letters}</span>
+            <h3>{n.word}</h3>
+            <p>{n.text}</p>
+          </div>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="band dark">
+  <section class="band" aria-labelledby="last-title">
     <div class="wrap">
-      <h2 class="h-lg" data-reveal>How we use AI</h2>
-      <p class="lead" style="max-width:62ch" data-reveal>AI helps us write code faster. It does not decide what to build, how it should scale or what could go wrong. Engineers who answer for the result make those decisions. To keep AI honest we released stop-guessing, open-source guardrails for AI coding agents.</p>
-      <div class="cta-row"><a class="btn-outline" href="/products/stop-guessing">About stop-guessing</a><a class="btn-outline" href="/services/ai-integration">AI in your product</a></div>
+      <p class="eyebrow">Experience</p>
+      <h2 class="section-title" id="last-title" style="margin-top:12px">Anyone can build an app with AI now. Few can make it last.</h2>
+      <p class="section-sub">AI has made the first version quick and cheap, and we use it too. But a working demo and a system your business can depend on are different things. The gap between them is experience.</p>
+      <div class="ab-exp">
+        {experience.map((x, i) => (
+          <a class="ab-card" href={caseUrl(x.slug)} data-reveal>
+            <span class="ab-n">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{x.title}</h3><p>{x.text}</p>
+            <span class="ab-proof"><small>Proof</small>{x.proof} →</span>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="name-title">
-    <div class="wrap">
-      <div class="sec-h" data-reveal>
-        <h2 class="section-title" id="name-title">The name is the promise</h2>
-        <p class="section-sub">Rirote comes from three words we hold every project to.</p>
+  <section class="band dark" aria-labelledby="ai-title">
+    <div class="wrap ab-ai">
+      <div data-reveal>
+        <p class="eyebrow">AI, with judgement</p>
+        <h2 class="section-title" id="ai-title" style="margin-top:12px">How we use AI</h2>
+        <p class="lead">AI helps us write code faster. It does not decide what to build, how it should scale or what could go wrong. Engineers who answer for the result make those decisions. To keep AI honest we released stop-guessing, open-source guardrails for AI coding agents. We also use AI after launch: Code Vaidya, our own tool now in beta, watches the apps we look after and drafts fixes for our engineers to review.</p>
+        <p class="cta-row"><a class="btn-outline" href="/services/ai-integration">AI in your product</a></p>
       </div>
-      <div class="roles">
-        {name.map((n) => <div class="role" data-reveal><span class="kicker" aria-hidden="true">{n.letters}</span><h3>{n.word}</h3><p>{n.text}</p></div>)}
+      <div class="ab-tools">
+        <a class="ab-tool" href="/products/stop-guessing" data-reveal>
+          <span class="ab-tool-ico" aria-hidden="true">{'{ }'}</span>
+          <span><b>stop-guessing</b><small>Open source · before and during the build</small>Guardrails that stop AI coding agents inventing decisions or calling unfinished work done.</span>
+        </a>
+        <a class="ab-tool" href="/products/code-vaidya" data-reveal>
+          <span class="ab-tool-ico vaidya" aria-hidden="true"><img src="/assets/products/code-vaidya/logo-mark.svg" alt="" width="44" height="44"></span>
+          <span><b>Code Vaidya</b><small>In beta · after launch</small>Watches the apps we look after and drafts fixes for our engineers to review.</span>
+        </a>
       </div>
     </div>
   </section>
 
   <section class="band" aria-labelledby="do-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="do-title">What we do</h2></div>
-      <div class="roles">
-        {pillars.map((p) => (
-          <article class="role" data-reveal>
+      <p class="eyebrow">What we do</p>
+      <h2 class="section-title" id="do-title" style="margin-top:12px">Three kinds of work.</h2>
+      <div class="lp-cards three" style="margin-top:28px">
+        {pillars.map((p, i) => (
+          <article class="lp-card ab-pillar" data-reveal>
+            <svg class="ab-ico" viewBox="0 0 24 24" aria-hidden="true" set:html={pillarIcons[i]}></svg>
             <span class="kicker">{p.kicker}</span><h3>{p.title}</h3><p>{p.text}</p>
-            <p style="margin-top:10px">{p.links.map((l) => <a href={l.href} class="more-link" style="margin-right:16px">{l.label} →</a>)}</p>
+            <p class="ab-links">{p.links.map((l) => <a href={l.href} class="more-link">{l.label} →</a>)}</p>
           </article>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="band" aria-labelledby="how-title">
-    <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="how-title">How we work</h2></div>
-      <div class="steps">{principles.map((p) => <div class="step" data-reveal><h3>{p.title}</h3><p>{p.text}</p></div>)}</div>
-    </div>
-  </section>
-
-  <section class="band" aria-labelledby="ways-title">
-    <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="ways-title">Ways to work with us</h2></div>
-      <div class="roles">
-        {ENGAGEMENTS.map((e) => (
-          <article class="role" data-reveal>
-            <h3>{e.title}</h3><p>{e.text}</p>
-            {e.href && <p style="margin-top:8px"><a href={e.href} class="more-link">Learn more →</a></p>}
-          </article>
-        ))}
+  <section class="band dark" aria-labelledby="how-title">
+    <div class="wrap ab-two">
+      <div>
+        <p class="eyebrow">Principles</p>
+        <h2 class="section-title" id="how-title" style="margin-top:12px">How we work</h2>
+        <ol class="ab-princ">{principles.map((p) => <li data-reveal><b>{p.title}</b><span>{p.text}</span></li>)}</ol>
+      </div>
+      <div>
+        <p class="eyebrow">Engagements</p>
+        <h2 class="section-title" id="ways-title" style="margin-top:12px">Ways to work with us</h2>
+        <ul class="ab-ways">
+          {ENGAGEMENTS.map((e) => (
+            <li data-reveal><b>{e.title}</b><span>{e.text}</span>{e.href && <a href={e.href} class="more-link">Learn more →</a>}</li>
+          ))}
+          <li data-reveal><b>Partner on your idea</b><span>Start small with a prototype or first version, build in stages, or partner on the website and web app.</span><a href="/partner-with-us" class="more-link">Learn more →</a></li>
+        </ul>
       </div>
     </div>
   </section>
 
   <section class="band" aria-labelledby="team-title">
-    <div class="wrap">
-      <div class="sec-h" data-reveal>
-        <h2 class="section-title" id="team-title">A small team, close to the work</h2>
-        <p class="section-sub">We are a team of up to ten people, extended with vetted engineers when a project needs more hands. Staying small means you work directly with the people designing and building your software.</p>
+    <div class="wrap ab-team">
+      <div>
+        <p class="eyebrow">Team</p>
+        <h2 class="section-title" id="team-title" style="margin-top:12px">A small team, close to the work</h2>
       </div>
-      <p class="nda-note">{SITE.legal.name} · {SITE.legal.city}, {SITE.legal.state}, {SITE.legal.country}</p>
+      <div>
+        <p class="lead" style="margin-top:0">We are a team of up to ten people, extended with vetted engineers when a project needs more hands. Staying small means you work directly with the people designing and building your software.</p>
+        <p class="ab-place">{SITE.legal.name} · {SITE.legal.city}, {SITE.legal.state}, {SITE.legal.country}</p>
+      </div>
     </div>
   </section>
 
-  <Cta eyebrow="Let's Talk" title="Have something to build?" body="Tell us what you're working on. We'll get back to you as soon as we can.">
-    <a href="/contact" class="btn-primary">Start a Conversation</a>
-    <a href={`mailto:${SITE.email}`} class="btn-outline">Email Us</a>
+  <Cta eyebrow="Let's talk" title="Have something to build?" body="Tell us what you're working on. We'll get back to you as soon as we can.">
+    <a href="/contact" class="btn-primary">Start a project</a>
+    <a href={`mailto:${SITE.email}`} class="btn-outline">Email us</a>
   </Cta>
 </main>
 </BaseLayout>

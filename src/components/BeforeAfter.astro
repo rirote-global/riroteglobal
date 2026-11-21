@@ -16,8 +16,10 @@ export interface Props {
   after: Report;
   /** Said under the table when the new site was measured somewhere other than its final address. */
   afterNote?: string;
+  /** Leave out the link to the case study (when the table is on that page). */
+  hideLink?: boolean;
 }
-const { name, caseSlug, before, after, afterNote } = Astro.props;
+const { name, caseSlug, before, after, afterNote, hideLink = false } = Astro.props;
 
 const phone = (r: Report) => r.speed.find((s) => s.strategy === 'mobile' && !s.error);
 const secs = (ms?: number) => (ms == null ? null : `${(ms / 1000).toFixed(1)} s`);
@@ -57,6 +59,6 @@ const host = (url: string) => new URL(url).host;
   <p class="ba-note">
     Old site measured on {host(before.site)} on {date(before.checkedAt)}. New site measured on {host(after.site)} on {date(after.checkedAt)}{afterNote ? `, ${afterNote}` : ''}.
     Speed is the median of three Google Lighthouse runs.
-    <a href={caseUrl(caseSlug)}>Read the {name} case study →</a>
+    {!hideLink && <a href={caseUrl(caseSlug)}>Read the {name} case study →</a>}
   </p>
 </div>

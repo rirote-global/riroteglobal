@@ -13,6 +13,7 @@ const link = (name: string, path: string, text?: string): string =>
 const productText = (p: Product): string => {
   const facts: string[] = [];
   if (p.status === 'In development') facts.push('in development');
+  if (p.status === 'In beta testing') facts.push('in beta testing');
   // Only state a licence the data records, and only when the line does not already say it.
   if (p.status === 'Open source' && p.license && !/MIT/.test(p.line)) facts.push('open source, MIT licence');
   if (p.free) facts.push('free');
@@ -41,6 +42,7 @@ export const llmsText = (): string =>
     '',
     link('All services', SERVICES_PATH),
     ...SERVICES.map((s) => link(s.name, serviceUrl(s.slug), `${s.techName}. ${s.summary}`)),
+    link('Partner with us', '/partner-with-us', 'for founders with an idea but no tech team: start small with a prototype or first version, build in stages, or partner on terms agreed together'),
     '',
     '## Products',
     '',

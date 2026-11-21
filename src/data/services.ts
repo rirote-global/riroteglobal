@@ -76,28 +76,21 @@ const UNIFIED_ERP: ServiceProof = {
 };
 
 const NIMNIM: ServiceProof = {
-  kicker: 'Case study · SaaS · USA',
-  title: 'A live laundry platform, stabilised and rebuilt',
-  text: 'NimNim runs on-demand laundry and dry-cleaning across Boston, New York and Miami. We took over a production platform spread across loosely secured EC2 instances, consolidated it onto one hardened server behind Nginx and Cloudflare, fixed slow MongoDB queries, secured the API and delivered a full revamp while customers kept ordering.',
+  kicker: 'Case study · On-demand laundry · USA',
+  title: 'NimNim: a live laundry platform, stabilised and rebuilt',
+  text: 'NimNim runs on-demand laundry and dry-cleaning across Boston, New York and Miami. We took over a production platform spread across loosely secured EC2 instances, moved it onto one hardened server per environment behind Nginx and Cloudflare, fixed slow MongoDB queries, stopped a fake sign-up attack with rate limiting and phone verification, and delivered a full revamp while customers kept ordering.',
   stats: [
     { value: '50%', label: 'Lower AWS bill' },
     { value: '50%', label: 'Faster API responses' },
-    { value: '1', label: 'Hardened server replacing many' },
+    { value: '4 → 2', label: 'Servers across production and dev' },
   ],
   link: caseLink('nimnim'),
 };
 
-const FOUNDRY: ServiceProof = {
-  kicker: 'Case study · Manufacturing ERP · India',
-  title: 'A foundry ERP that talks to ERPNext safely',
-  text: 'A domain-specific ERP for a foundry, from sales order to dispatch across a 17-module map, with heat-number genealogy as the traceability key. It integrates with the client’s existing ERPNext only for finance and payroll, through a REST-only boundary with idempotent correlation-ID calls, retry and backoff queues, and a nightly reconciliation run for one-sided records.',
-  link: caseLink('foundry-operations-erp'),
-};
-
 const MULTI_SERVICE: ServiceProof = {
-  kicker: 'Case study · Logistics & delivery',
-  title: 'Food, parcels and rides on one platform',
-  text: 'A unified platform for food delivery, parcel logistics and ride booking, built on microservices so each vertical scales on its own. We led the engineering team, drove product decisions and owned features from API design through production support.',
+  kicker: 'Case study · Multi-service platform',
+  title: 'One platform for parcels, ride booking and food delivery',
+  text: 'A unified platform for parcel delivery, ride booking and food delivery, built on microservices so each vertical scales on its own. We led the engineering team, drove product decisions and owned features from API design through production support.',
   link: caseLink('multi-service-delivery-platform'),
 };
 
@@ -208,17 +201,17 @@ export const SERVICES: Service[] = [
     intro: 'We connect your ERP to the rest of your software, build the modules your business needs when your standard ERP doesn\'t fit, and set up dashboards for your management team. Data moves safely between systems and stays the same everywhere. We also build software products of our own.',
     includes: [
       { title: 'Connecting your ERP to your other apps', text: 'Data flows both ways between your ERP and your other software through its official connections, so its rules and permissions still apply.' },
-      { title: 'Custom modules', text: 'Modules for work your standard ERP doesn\'t cover, such as foundry operations, service tickets or engineer visits, linked to your ERP for accounts.' },
+      { title: 'Custom modules', text: 'Modules for work your standard ERP doesn\'t cover, such as production tracking, service tickets or engineer visits, linked to your ERP for accounts.' },
       { title: 'Management dashboards', text: 'Dashboards for each head of department, pulling from one or several ERP sites and loading in under a second.' },
       { title: 'Several sites or companies', text: 'One view across several ERP sites or companies, with user roles kept in step between them.' },
       { title: 'Safe data updates', text: 'Every update is tracked, retried if it fails and checked overnight, so records are never left half-saved.' },
       { title: 'Service and field work', text: 'Tickets, service deadlines, AMC contracts and engineer visits, linked to the customers, machines and stock already in your ERP.' },
     ],
-    proof: [UNIFIED_ERP, FOUNDRY, ERPTICK],
+    proof: [UNIFIED_ERP, ERPTICK],
     faq: [
       { question: 'Do you write directly to the ERPNext database?', answer: 'No. Writes go through ERPNext’s REST API so its validation and permission rules apply. We read from the database only where read-only access is agreed, for example for nightly master-data pulls.' },
       { question: 'Do you work with Frappe Cloud and self-hosted ERPNext?', answer: 'Yes. Our unified ERP platform for an infrastructure group runs across 5 ERPNext v15 sites on Frappe Cloud, and the same approach works for self-hosted installs.' },
-      { question: 'Should we customise ERPNext or build a separate app?', answer: 'It depends on how far the process is from standard ERP. Small changes belong in ERPNext. A process with its own data and rules, like foundry operations or field service, is often better as a separate app that syncs with ERPNext.' },
+      { question: 'Should we customise ERPNext or build a separate app?', answer: 'It depends on how far the process is from standard ERP. Small changes belong in ERPNext. A process with its own data and rules, like production tracking or field service, is often better as a separate app that syncs with ERPNext.' },
     ],
     related: ['full-stack-development', 'ai-integration', 'technical-leadership'],
   },
@@ -264,7 +257,7 @@ export const SERVICES: Service[] = [
       { title: 'Leading your developers', text: 'A senior engineer leading your team day to day: reviewing work, mentoring, making technical decisions and planning releases.' },
       { title: 'ERP planning', text: 'Deciding what belongs inside ERPNext and what should be a connected app, before custom work starts.' },
     ],
-    proof: [ECOMMERCE, MULTI_SERVICE, FOUNDRY],
+    proof: [ECOMMERCE, MULTI_SERVICE],
     faq: [
       { question: 'Do you only advise, or do you also build?', answer: 'Both. We can review and plan on their own, but most clients ask us to stay and lead or build the work, so the plan and the code stay in step.' },
       { question: 'Can you lead our in-house team?', answer: 'Yes. A senior engineer can lead your developers day to day: setting technical direction, reviewing code and owning releases alongside your product team.' },

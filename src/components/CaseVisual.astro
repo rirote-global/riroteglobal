@@ -1,0 +1,69 @@
+---
+// The picture for a case study page, chosen by slug. Cases without one render nothing.
+// NimNim: the full protection story. Infrastructure group: a drawing (NDA). Delivery: three services,
+// one platform. ANGARAA: the live site on laptop and phone, plus the measured before-and-after table.
+import ShieldStory from './ShieldStory.astro';
+import NimnimNumbers from './nimnim/NimnimNumbers.astro';
+import NimnimRateLimit from './nimnim/NimnimRateLimit.astro';
+import InfraDiagram from './InfraDiagram.astro';
+import DeliveryDiagram from './DeliveryDiagram.astro';
+import DeliveryIllustration from './DeliveryIllustration.astro';
+import BeforeAfter from './BeforeAfter.astro';
+import angaraaBefore from '../data/launch-reports/angaraa-before.json';
+import angaraaAfter from '../data/launch-reports/angaraa-after.json';
+export interface Props { slug: string; }
+const { slug } = Astro.props;
+---
+{slug === 'nimnim' && (
+  <section class="case-visual" aria-labelledby="numbers-h">
+    <p class="eyebrow">The numbers</p>
+    <h2 class="section-title" id="numbers-h" style="margin-top:12px">Smaller, cheaper, faster.</h2>
+    <div style="margin-top:28px"><NimnimNumbers /></div>
+  </section>
+)}
+{slug === 'nimnim' && (
+  <section class="case-visual" id="protection" aria-labelledby="protection-h">
+    <p class="eyebrow">Security</p>
+    <h2 class="section-title" id="protection-h" style="margin-top:12px">How we protected a live platform.</h2>
+    <p class="section-sub">NimNim is six apps working together. A hacker’s script tried to flood it with fake customer accounts. This is what we changed, one layer at a time. Tap a step, or let it play.</p>
+    <div style="margin-top:28px">
+      <ShieldStory mode="full" headingLevel="h3">
+        <p class="cd-next">More security work is planned. Right now we are building new features with NimNim.</p>
+      </ShieldStory>
+    </div>
+  </section>
+)}
+{slug === 'nimnim' && (
+  <section class="case-visual" aria-labelledby="rate-h">
+    <p class="eyebrow">A quieter fix</p>
+    <h2 class="section-title" id="rate-h" style="margin-top:12px">Every visitor looked like one person.</h2>
+    <div style="margin-top:28px"><NimnimRateLimit /></div>
+  </section>
+)}
+{slug === 'unified-erp-service-platform' && (
+  <section class="case-visual" aria-labelledby="cv-h">
+    <p class="eyebrow">How it fits together</p>
+    <h2 class="section-title" id="cv-h" style="margin-top:12px">Many businesses, one platform.</h2>
+    <p class="section-sub">Nine business entities and five ERPNext sites feed one platform with a service ticket module, role-based dashboards and reports, built to what the client needed. Drawn, not screenshotted: the client is under NDA.</p>
+    <div class="cv-infra"><InfraDiagram /></div>
+  </section>
+)}
+{slug === 'multi-service-delivery-platform' && (
+  <section class="case-visual" aria-labelledby="cv-h">
+    <p class="eyebrow">How it fits together</p>
+    <h2 class="section-title" id="cv-h" style="margin-top:12px">Parcels, rides and food, in one app.</h2>
+    <div class="cv-dlv"><DeliveryIllustration caption /></div>
+    <div style="margin-top:28px"><DeliveryDiagram /></div>
+  </section>
+)}
+{slug === 'angaraa-charcoal-website' && (
+  <section class="case-visual" aria-labelledby="cv-h">
+    <p class="eyebrow">The live site</p>
+    <h2 class="section-title" id="cv-h" style="margin-top:12px">Built for phones first.</h2>
+    <div class="cv-devices">
+      <figure class="cv-browser"><span class="cv-chrome" aria-hidden="true"><i></i><i></i><i></i><em>theangaraa.com</em></span><img src="/assets/home/angaraa-live.webp" alt="The ANGARAA website on a laptop: the Tandoor coal sack, its price and the weight dial" width="1440" height="900" loading="lazy" decoding="async"></figure>
+      <figure class="cv-phone"><img src="/assets/home/angaraa-phone.webp" alt="The ANGARAA website on a phone" width="520" height="1000" loading="lazy" decoding="async"></figure>
+    </div>
+    <BeforeAfter name="ANGARAA" caseSlug="angaraa-charcoal-website" before={angaraaBefore} after={angaraaAfter} afterNote="its preview address before launch" hideLink />
+  </section>
+)}

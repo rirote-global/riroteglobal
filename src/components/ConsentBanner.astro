@@ -20,23 +20,23 @@ import { GA_ID } from '../data/site';
       .consent {
         position: fixed; left: 16px; bottom: 16px; z-index: 10000;
         width: min(420px, calc(100vw - 32px));
-        background: #0E1B2E; color: #f0f4ff;
-        border: 1px solid rgba(39,198,230,0.5); border-radius: 0;
+        background: #1C1D21; color: #EDECE8;
+        border: 1px solid #3B3E44; border-radius: 12px;
         box-shadow: 0 12px 32px rgba(0,0,0,0.45);
-        padding: 1.1rem 1.2rem; font-family: 'Inter', system-ui, sans-serif;
+        padding: 1.1rem 1.2rem; font-family: 'Instrument Sans', system-ui, sans-serif;
       }
       .consent[hidden] { display: none; }
-      .consent-text { font-size: 0.95rem; line-height: 1.6; color: rgba(240,244,255,0.85); margin: 0; }
-      .consent-text a { color: #27C6E6; text-underline-offset: 3px; }
+      .consent-text { font-size: 0.95rem; line-height: 1.6; color: #A4A7AD; margin: 0; }
+      .consent-text a { color: #EDECE8; text-decoration-color: #27C6E6; text-underline-offset: 3px; }
       .consent-actions { display: flex; gap: 0.75rem; margin-top: 0.9rem; }
       /* Accept and Decline look the same on purpose: refusing must be as easy as agreeing. */
       .consent-btn {
         flex: 1; min-height: 44px; padding: 0 1rem; cursor: pointer;
-        font: 600 0.95rem 'Inter', system-ui, sans-serif; color: #f0f4ff;
-        background: transparent; border: 1px solid rgba(0,180,216,0.55); border-radius: 0;
+        font: 600 0.95rem 'Instrument Sans', system-ui, sans-serif; color: #EDECE8;
+        background: transparent; border: 1px solid #EDECE8; border-radius: 0;
       }
-      .consent-btn:hover { border-color: #27C6E6; color: #27C6E6; }
-      .consent-btn:focus-visible { outline: 2px solid #27C6E6; outline-offset: 2px; }
+      .consent-btn:hover { background: #EDECE8; color: #141517; }
+      .consent-btn:focus-visible { outline: 2px solid #EDECE8; outline-offset: 2px; }
     </style>
     <script is:inline>
       (function () {

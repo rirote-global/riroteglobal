@@ -1,0 +1,26 @@
+---
+// "Every visitor looked like one person": the rate-limit fix. Before, the API saw Cloudflare's address for everyone,
+// so one shared limit; after, the real visitor address is passed through Cloudflare and Nginx, so each person
+// gets their own limit and a noisy script is stopped alone. Fact from cases.ts (nimnim achievements).
+const people = ['#27C6E6', '#7C8CFF', '#3DDC97', '#F5A524', '#FF7A90'];
+---
+<div class="nr">
+  <div class="nr-lane">
+    <p class="na-tag bad">Before</p>
+    <div class="nr-flow">
+      <div class="nr-dots">{people.map((c) => <em style={`background:${c}`}></em>)}<em class="bot"></em></div>
+      <span class="nr-arrow">→ Cloudflare →</span>
+      <div class="nr-api"><b>API sees</b><span class="nr-one"><em></em> one address</span></div>
+    </div>
+    <p>Every customer arrived from Cloudflare’s address, so the rate limit treated everyone as one user: it could block everybody at once, or protect nobody.</p>
+  </div>
+  <div class="nr-lane">
+    <p class="na-tag good">After</p>
+    <div class="nr-flow">
+      <div class="nr-dots">{people.map((c) => <em style={`background:${c}`}></em>)}<em class="bot"></em></div>
+      <span class="nr-arrow">→ Cloudflare → Nginx →</span>
+      <div class="nr-api"><b>API sees</b><span class="nr-each">{people.map((c) => <em style={`background:${c}`}></em>)}<em class="bot stop"></em></span></div>
+    </div>
+    <p>The real visitor address now passes through Cloudflare and Nginx, so each person gets their own limit, and a script hammering one endpoint is stopped on its own.</p>
+  </div>
+</div>

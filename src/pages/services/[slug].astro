@@ -5,6 +5,8 @@ import Crumbs from '../../components/Crumbs.astro';
 import Cta from '../../components/Cta.astro';
 import Faq from '../../components/Faq.astro';
 import FoundEverywhere from '../../components/FoundEverywhere.astro';
+import ProofCard from '../../components/ProofCard.astro';
+import { SERVICE_ICONS } from '../../data/icons';
 import { breadcrumbs, service as serviceNode, webPage } from '../../lib/schema';
 import { contactUrl, SITE } from '../../data/site';
 import { SERVICES, SERVICES_PATH, SERVICE_STEPS, serviceBySlug, serviceUrl, type Service } from '../../data/services';
@@ -35,18 +37,19 @@ const seo = {
   <section class="page-hero">
     <div class="hero-content">
       <Crumbs items={[['Home', '/'], ['Services', SERVICES_PATH], [service.name]]} />
+      <span class="svp-ico" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={SERVICE_ICONS[service.slug]}></svg></span>
       <p class="eyebrow">{service.techName}</p>
       <h1 class="page-title">{service.heading[0]} <span>{service.heading[1]}</span></h1>
       <p class="page-sub">{service.intro}</p>
       <div class="hero-actions">
-        <a href={talk} class="btn-primary">Talk to Us</a>
-        <a href="/projects" class="btn-outline">See Our Work</a>
+        <a href={talk} class="btn-primary">Start a project</a>
+        <a href="#proof-title" class="btn-outline">See the work</a>
       </div>
     </div>
   </section>
 
   <section class="band whoband">
-    <div class="wrap" data-reveal>
+    <div class="wrap svp-who" data-reveal>
       <p class="eyebrow">Who does the work</p>
       <p class="whotext">Engineers who worked at multinational companies, building for clients around the world. The people who plan your project also build and run it. <a href="/about">More about us →</a></p>
     </div>
@@ -54,9 +57,10 @@ const seo = {
 
   <section class="band" aria-labelledby="includes-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="includes-title">What's included</h2></div>
-      <div class="incl three">
-        {service.includes.map((item) => <div class="inc" data-reveal><h3>{item.title}</h3><p>{item.text}</p></div>)}
+      <p class="eyebrow">{service.name}</p>
+      <h2 class="section-title" id="includes-title" style="margin-top:12px">What's included</h2>
+      <div class="svp-inc">
+        {service.includes.map((item, i) => <div class="svp-item" data-reveal><span class="svp-n">{String(i + 1).padStart(2, '0')}</span><h3>{item.title}</h3><p>{item.text}</p></div>)}
       </div>
     </div>
   </section>
@@ -65,26 +69,11 @@ const seo = {
     <FoundEverywhere page={{ path, title: service.metaTitle, description: service.description, name: service.name, techName: service.techName, summary: service.summary }} />
   )}
 
-  <section class="band" aria-labelledby="proof-title">
+  <section class="band dark" aria-labelledby="proof-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="proof-title">Work that shows it</h2></div>
-      <div class="ascents">
-        {service.proof.map((p) => (
-          <article class="proof" data-reveal>
-            <div>
-              <span class="kicker">{p.kicker}</span>
-              <h3>{p.title}</h3>
-              <p>{p.text}</p>
-              {p.link && <a class="proof-link" href={p.link.href}>{p.link.label}</a>}
-            </div>
-            {p.stats && (
-              <div class="proof-stats">
-                {p.stats.map((stat) => <div><b data-count>{stat.value}</b><span>{stat.label}</span></div>)}
-              </div>
-            )}
-          </article>
-        ))}
-      </div>
+      <p class="eyebrow">Proof</p>
+      <h2 class="section-title" id="proof-title" style="margin-top:12px">Work that shows it</h2>
+      <div class="pf-grid">{service.proof.map((p) => <ProofCard proof={p} />)}</div>
     </div>
   </section>
 
@@ -95,40 +84,50 @@ const seo = {
           <h2 class="section-title" id="designs-title">{service.designs.title}</h2>
           <p class="section-sub">{service.designs.text}</p>
         </div>
-        <div class="rel">
-          {service.designs.links.map((l) => <a href={SITE.designsUrl + l.path}><b>{l.label}</b><span>{l.text}</span></a>)}
+        <div class="rel svp-rel">
+          {service.designs.links.map((l) => <a href={SITE.designsUrl + l.path}><b>{l.label} ↗</b><span>{l.text}</span></a>)}
         </div>
       </div>
     </section>
   )}
 
-  <section class="band" aria-labelledby="steps-title">
+  <section class="band dark" aria-labelledby="steps-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="steps-title">How we work</h2></div>
-      <div class="steps">{SERVICE_STEPS.map((step) => <div class="step" data-reveal><h3>{step.title}</h3><p>{step.text}</p></div>)}</div>
+      <p class="eyebrow">Process</p>
+      <h2 class="section-title" id="steps-title" style="margin-top:12px">How we work</h2>
+      <ol class="sv-steps">{SERVICE_STEPS.map((step) => <li data-reveal><b>{step.title}</b><p>{step.text}</p></li>)}</ol>
+      <p class="sv-same">The same team at every step. No hand-offs.</p>
     </div>
   </section>
 
   <section class="band" aria-labelledby="faq-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="faq-title">Common questions</h2></div>
-      <Faq items={service.faq} />
+      <div class="svp-faq">
+        <div><p class="eyebrow">FAQ</p><h2 class="section-title" id="faq-title" style="margin-top:12px">Common questions</h2><p class="section-sub">Something else? <a href={talk}>Ask us directly →</a></p></div>
+        <Faq items={service.faq} />
+      </div>
     </div>
   </section>
 
   <section class="band" aria-labelledby="related-title">
     <div class="wrap">
-      <div class="sec-h" data-reveal><h2 class="section-title" id="related-title">Related services</h2></div>
-      <div class="rel">
-        {related.map((r) => <a href={serviceUrl(r.slug)}><b>{r.name}</b><span>{r.summary}</span></a>)}
+      <p class="eyebrow">Related</p>
+      <h2 class="section-title" id="related-title" style="margin-top:12px">Related services</h2>
+      <div class="sv-grid">
+        {related.map((r) => (
+          <a class="sv-card" href={serviceUrl(r.slug)}>
+            <span class="sv-ico" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={SERVICE_ICONS[r.slug]}></svg></span>
+            <h3>{r.name}</h3><p>{r.summary}</p><span class="sv-go">Explore →</span>
+          </a>
+        ))}
       </div>
-      <p class="seeall"><a class="btn-outline" href={SERVICES_PATH}>All services →</a></p>
+      <p class="seeall"><a class="more-link" href={SERVICES_PATH}>All services →</a></p>
     </div>
   </section>
 
   <Cta eyebrow="Let's Talk" title="Have a project in mind?" body="Tell us what you're building and we'll get back to you as soon as we can.">
-    <a href={talk} class="btn-primary">Start a Conversation</a>
-    <a href="mailto:info@riroteglobal.com" class="btn-outline">Email Us</a>
+    <a href={talk} class="btn-primary">Start a project</a>
+    <a href="mailto:info@riroteglobal.com" class="btn-outline">Email us</a>
   </Cta>
 </main>
 </BaseLayout>

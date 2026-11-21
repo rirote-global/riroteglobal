@@ -1,0 +1,105 @@
+---
+// For founders and businesses with an idea but no tech team, who don't want to hand an agency the whole budget.
+// Business rules confirmed by the owner (2026-11-20): start small with a prototype or MVP depending on the idea;
+// no prices, "talk to us"; partnership terms agreed case by case to suit the idea and the build; open to new
+// founders and existing businesses; each stage agreed before it starts. ANGARAA is the real example, and its
+// terms are confidential, so none are given.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Crumbs from '../components/Crumbs.astro';
+import Faq from '../components/Faq.astro';
+import ContactPanel from '../components/ContactPanel.astro';
+import { breadcrumbs, faqPage, service, webPage, type FaqItem } from '../lib/schema';
+
+const path = '/partner-with-us';
+const description = 'Have a business idea but no tech team? Start small with a prototype or first version, build in stages, or partner with us on the website and web app. Talk to us.';
+const faq: FaqItem[] = [
+  { question: 'How much does it cost to start?', answer: 'It depends on the idea and what it takes to build. The first step is usually a prototype or a first version (MVP). Tell us about the idea and we will suggest the smallest useful first step.' },
+  { question: 'What does partnering mean?', answer: 'We take on the website and web app side with you and share the risk. The terms are agreed together, to suit the idea and what it takes to build, so they differ from one partnership to the next.' },
+  { question: 'Is this only for new founders?', answer: 'No. It is for new founders and for businesses that already run and want to build something new without hiring a tech team first.' },
+  { question: 'Do I have to commit to the whole project?', answer: 'No. The work is split into stages you can see and use, and each one is agreed before it starts.' },
+];
+const seo = {
+  title: 'Partner With Us: Build Your Idea Without a Tech Team | Rirote Global',
+  path,
+  description,
+  schema: [
+    webPage({ path, name: 'Partner with us' }),
+    service({ name: 'Technology partner for founders', serviceType: 'Website and web app development partnership', description, path }),
+    breadcrumbs(['Home', '/'], ['Partner with us', path]),
+    faqPage(faq),
+  ],
+};
+---
+<BaseLayout seo={seo} rail={{ stops: [['start', 'Start'], ['ways', 'Ways'], ['faq', 'FAQ'], ['talk', 'Talk']], summitLabel: 'Talk about your idea' }}>
+<main id="main">
+  <section class="page-hero" id="start">
+    <div class="hero-content">
+      <Crumbs items={[['Home', '/'], ['Partner with us']]} />
+      <p class="eyebrow">Start with us</p>
+      <h1 class="page-title">Have the idea, <span>but not the tech team?</span></h1>
+      <p class="page-sub">You know your market and how to run the business. Building the software, scaling it, and handing an agency the whole budget up front is the hard part. So start small with us, and go further only when it is working.</p>
+      <div class="hero-actions">
+        <a href="#talk" class="btn-primary">Talk about your idea</a>
+        <a href="#ways" class="btn-outline">Three ways to start</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="ways" aria-labelledby="ways-h">
+    <div class="wrap">
+      <p class="eyebrow">Three ways to start</p>
+      <h2 class="section-title" id="ways-h" style="margin-top:12px">Go as far as it makes sense.</h2>
+      <ol class="ladder" style="margin-top:28px">
+        <li><span class="meter" aria-hidden="true"><i class="on"></i><i></i><i></i></span><b>Start small</b><p>A clickable prototype or a first version (MVP), whichever fits the idea. You see how we work before you commit to more.</p></li>
+        <li><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i></i></span><b>Build in stages</b><p>The work is split into stages you can see and use, and each one is agreed before it starts.</p></li>
+        <li><span class="meter" aria-hidden="true"><i class="on"></i><i class="on"></i><i class="on"></i></span><b>Partner with us</b><p>We take on the website and web app side with you and share the risk. The terms are agreed together, to suit the idea and what it takes to build.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="why-h">
+    <div class="wrap">
+      <p class="eyebrow">What you can count on</p>
+      <h2 class="section-title" id="why-h" style="margin-top:12px">Less risk, from the first step.</h2>
+      <div class="lp-cards three" style="margin-top:28px">
+        <div class="lp-card"><h3>Working software early</h3><p>You see something you can click and use, not only a plan.</p></div>
+        <div class="lp-card"><h3>The same people throughout</h3><p>The people who plan it also build it, put it live and look after it.</p></div>
+        <div class="lp-card"><h3>Built to grow</h3><p>Engineers who worked at multinational companies plan for scale, security and running it from day one.</p></div>
+      </div>
+      <p class="lp-note"><b>New founders and existing businesses</b> are both welcome. No prices here: the right first step depends on the idea, so we talk first.</p>
+    </div>
+  </section>
+
+  <section class="band" aria-labelledby="example-h">
+    <div class="wrap">
+      <p class="eyebrow">A real example</p>
+      <h2 class="section-title" id="example-h" style="margin-top:12px">ANGARAA came to us this way.</h2>
+      <div class="lp-proof pw-proof" style="margin-top:28px">
+        <div class="pw-pic">
+          <img class="pw-laptop" src="/assets/home/angaraa-live.webp" alt="The ANGARAA website on a laptop" width="1440" height="900" loading="lazy">
+          <img class="pw-phone" src="/assets/home/angaraa-phone.webp" alt="The ANGARAA website on a phone" width="520" height="1000" loading="lazy">
+        </div>
+        <div>
+          <b>A charcoal brand in Jaipur, now taking orders on WhatsApp.</b>
+          <p>We designed several directions, kept improving the site as feedback came in, and chose today’s design after feedback from many people. We are still working with ANGARAA, and more is on the way. The terms of the partnership stay between us and the client.</p>
+          <p class="cta-row" style="margin-top:14px"><a class="btn-outline" href="/projects/angaraa-charcoal-website">Read the case study</a><a class="btn-outline" href="https://theangaraa.com" target="_blank" rel="noopener">Visit theangaraa.com ↗</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <h2 class="section-title" id="faq-h">Questions</h2>
+      <div style="margin-top:20px"><Faq items={faq} /></div>
+    </div>
+  </section>
+
+  <section class="band" id="talk">
+    <div class="wrap">
+      <ContactPanel eyebrow="Talk about your idea" title="Tell us the idea, and where you are with it."
+        lead="A few lines are enough. We reply with an honest view and a sensible first step." service="Partner on my idea" />
+    </div>
+  </section>
+</main>
+</BaseLayout>

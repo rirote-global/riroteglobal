@@ -1,0 +1,52 @@
+---
+// "What we build": three tabs (websites, web apps, AI) over real work in device frames. Tabs and swipe in home.js;
+// without JS every panel shows, stacked. Each panel links to the live site and its case study.
+import { SHOWCASE, AFTERCARE } from '../../data/home';
+import { FOUND, FOUND_PATH } from '../../data/found';
+---
+<div class="hx-build" data-hx-tabs>
+  <div class="hx-tabs" role="tablist" aria-label="What we build" hidden>
+    {SHOWCASE.map((t, i) => (
+      <button role="tab" type="button" id={`hx-t-${t.id}`} aria-controls={`hx-p-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1}>{t.label}</button>
+    ))}
+  </div>
+  <div class="hx-panels">
+    {SHOWCASE.map((t) => (
+      <div class="hx-show" role="tabpanel" id={`hx-p-${t.id}`} aria-labelledby={`hx-t-${t.id}`} tabindex="0">
+        <div class="hx-devices">
+          <figure class="hx-browser">
+            <span class="hx-chrome" aria-hidden="true"><i></i><i></i><i></i><em>{t.browser.label}</em></span>
+            {t.browser.video
+              ? <video src={t.browser.src} poster={t.browser.poster} muted loop playsinline preload="none" aria-label={t.browser.alt} width={t.browser.width} height={t.browser.height}></video>
+              : <img src={t.browser.src} alt={t.browser.alt} width={t.browser.width} height={t.browser.height} loading="lazy" decoding="async">}
+          </figure>
+          {t.extra?.kind === 'phone' && <figure class:list={['hx-phone', { light: t.extra!.light }]}><img src={t.extra!.src} alt={t.extra!.alt} width="520" height="1000" loading="lazy" decoding="async"></figure>}
+          {t.extra?.kind === 'logo' && <figure class="hx-chip"><img src={t.extra!.src} alt={t.extra!.alt} width="44" height="44" loading="lazy"><span><b>{t.extra!.value}</b> {t.extra!.label}</span></figure>}
+          {t.extra?.kind === 'alert' && <figure class="hx-chip hx-alert-chip"><span class="hx-vt"><span class="hx-dot pulse"></span>Code Vaidya</span><span>{t.extra!.title}</span></figure>}
+        </div>
+        <div class="hx-show-text">
+          <p class="hx-kick">{t.kicker}</p>
+          <h3>{t.title}</h3>
+          <p class="hx-lead">{t.lead}</p>
+          <ul class="hx-res">{t.results.map(([v, l]) => <li><b>{v}</b><span>{l}</span></li>)}</ul>
+          <p class="hx-links">{t.links.map((l) => <a href={l.href} target={l.external ? '_blank' : undefined} rel={l.external ? 'noopener' : undefined}>{l.label}</a>)}</p>
+        </div>
+        {t.offer === 'found' && (
+          <div class="hx-offer">
+            <p class="hx-offer-h"><b>Every website we build</b><span>{FOUND.name}: ready for your customer, Google and ChatGPT</span></p>
+            <ul>{FOUND.promises.map((p) => <li><span class="hx-offer-for">{p.line}</span><b>{p.name}</b><span>{p.text}</span><small>{p.tech}</small></li>)}</ul>
+            <a class="hx-offer-go" href={FOUND_PATH}>What every website includes →</a>
+          </div>
+        )}
+        {t.offer === 'aftercare' && (
+          <div class="hx-offer care">
+            <p class="hx-offer-h"><b>{AFTERCARE.title}</b><span class="badge dev">{AFTERCARE.status}</span></p>
+            <p class="hx-offer-lead">{AFTERCARE.lead}</p>
+            <ul>{AFTERCARE.items.map(([b, t]) => <li><b>{b}</b><span>{t}</span></li>)}</ul>
+            <a class="hx-offer-go" href={AFTERCARE.link.href}>{AFTERCARE.link.label}</a>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>

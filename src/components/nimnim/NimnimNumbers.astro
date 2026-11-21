@@ -1,0 +1,19 @@
+---
+// NimNim in numbers, drawn: each before-bar shrinks to its after-bar when it scrolls into view (CSS, via the
+// shared reveal). Values from cases.ts. Bars for the bill and API speed are relative (before = 100%).
+const rows = [
+  { label: 'Memory the full stack needs', before: '4.4 GB', after: '0.66 GB', pct: 15, note: '85% less' },
+  { label: 'Servers, production and dev', before: '4', after: '2', pct: 50, note: 'half' },
+  { label: 'AWS bill', before: '100%', after: '50%', pct: 50, note: '50% lower' },
+  { label: 'API response time', before: '100%', after: '50%', pct: 50, note: '50% faster' },
+];
+---
+<div class="nn">
+  {rows.map((r) => (
+    <div class="nn-row" data-reveal style={`--after:${r.pct}%`}>
+      <p class="nn-label">{r.label}<b>{r.note}</b></p>
+      <div class="nn-bar before"><i></i><span>Before · {r.before}</span></div>
+      <div class="nn-bar after"><i></i><span>After · {r.after}</span></div>
+    </div>
+  ))}
+</div>

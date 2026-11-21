@@ -1,8 +1,10 @@
 ---
+// Contact: quick ways to reach us, then the form (the same panel as the homepage contact, including the summit).
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactPanel from '../components/ContactPanel.astro';
 import Crumbs from '../components/Crumbs.astro';
 import { breadcrumbs, webPage } from '../lib/schema';
+import { SITE, SOCIAL_LINKS } from '../data/site';
 
 const path = '/contact';
 const seo = {
@@ -11,13 +13,28 @@ const seo = {
   description: 'Tell Rirote Global what you want to build or fix: websites, business software, AI or ERP. A person reads every message and gets back to you as soon as possible.',
   schema: [webPage({ path, name: 'Contact' }), breadcrumbs(['Home', '/'], ['Contact', path])],
 };
+const linkedin = SOCIAL_LINKS.find((l) => l.label === 'LinkedIn');
 ---
-<BaseLayout seo={seo} nav={{ current: 'contact' }}>
+<BaseLayout seo={seo} nav={{ current: 'contact' }} rail={{ stops: [['ways', 'Start'], ['talk', 'Talk']], summitLabel: 'Send a message' }}>
 <main id="main">
-  <section class="band dark" style="border-top:none;padding-top:clamp(28px,4vw,48px)">
-    <div class="wrap">
+  <section class="page-hero" id="ways">
+    <div class="hero-content">
       <Crumbs items={[['Home', '/'], ['Contact']]} />
-      <ContactPanel eyebrow="Get in Touch" title="Tell us what needs solving." asH1 socials
+      <p class="eyebrow">Contact</p>
+      <h1 class="ct-big">Tell us what needs solving.</h1>
+      <p class="page-sub">A person reads every message. Pick the way that suits you.</p>
+      <div class="ct-ways">
+        <a class="ct-way" href="#talk"><b>Send a message</b><span>The form below, about two minutes</span></a>
+        <a class="ct-way" href={`mailto:${SITE.email}`}><b>Email us</b><span>{SITE.email}</span></a>
+        {linkedin && <a class="ct-way" href={linkedin.url} target="_blank" rel="noopener me"><b>LinkedIn</b><span>Message the company page</span></a>}
+        <a class="ct-way" href="/partner-with-us"><b>Have an idea?</b><span>See how we partner with founders</span></a>
+      </div>
+    </div>
+  </section>
+  <section class="band dark" id="talk">
+    <div class="wrap">
+      <ContactPanel eyebrow="Send a message" title="Write to us." socials
+        note="You have reached the top. We are ready when you are."
         lead="Describe your project or the problem you want solved." />
     </div>
   </section>
