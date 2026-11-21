@@ -46,6 +46,7 @@ const SHIELD_STEPS = [
     caption: 'Step 4: rate limiting and phone verification stop the rest.',
   },
 ];
+import { asset } from '../lib/asset';
 ---
 <div class:list={['shield', { 'is-teaser': !full }]} data-shield={mode}>
   {full && (
@@ -94,4 +95,4 @@ const SHIELD_STEPS = [
   </div>
   <script type="application/json" data-steps set:html={JSON.stringify(SHIELD_STEPS.map((s) => s.caption))} />
 </div>
-<script is:inline src="/assets/shield.js" defer></script>
+<script is:inline src={asset('/assets/shield.js')} defer></script>

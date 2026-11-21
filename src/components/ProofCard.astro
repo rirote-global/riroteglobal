@@ -4,14 +4,14 @@
 import InfraDiagram from './InfraDiagram.astro';
 import DeliveryIllustration from './DeliveryIllustration.astro';
 import type { ServiceProof } from '../data/services';
-export interface Props { proof: ServiceProof; }
-const { proof: p } = Astro.props;
+export interface Props { proof: ServiceProof; lead?: boolean; }
+const { proof: p, lead = false } = Astro.props;
 const href = p.link?.href ?? '';
 const slug = href.startsWith('/projects/') ? href.slice('/projects/'.length) : '';
 const product = href.startsWith('/products/') ? href.slice('/products/'.length) : '';
 const pic = ['nimnim', 'angaraa-charcoal-website', 'unified-erp-service-platform', 'multi-service-delivery-platform'].includes(slug) || product === 'erptick' || product === 'stop-guessing';
 ---
-<article class:list={['pf', { 'no-pic': !pic }]} data-reveal>
+<article class:list={['pf', { 'no-pic': !pic, 'pf-lead': lead && pic }]} data-reveal>
   {pic && (
     <a class="pf-pic" href={href} tabindex="-1" aria-hidden="true">
       {slug === 'nimnim' && <img src="/assets/home/nimnim-web.webp" alt="" width="1440" height="900" loading="lazy" decoding="async">}

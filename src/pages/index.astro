@@ -29,9 +29,10 @@ const products = productOrder.map((id) => PRODUCTS.find((p) => p.id === id)!).fi
 const openSource = PRODUCTS.filter((p) => p.group === 'Open source');
 const icon: Record<string, string> = { 'rirote-vision': '/assets/products/rirote-vision/logo-animated.svg', 'code-vaidya': '/assets/products/code-vaidya/logo-mark.svg' };
 const stops: Array<[string, string]> = [['start', 'Start'], ['build', 'Build'], ['work', 'Work'], ['services', 'Services'], ['products', 'Products'], ['partner', 'Partner'], ['contact', 'Talk']];
+import { asset } from '../lib/asset';
 ---
 <BaseLayout seo={seo} rail={{ stops, summitLabel: 'Start a project' }}>
-<Fragment slot="head"><link rel="stylesheet" href="/assets/home.css"></Fragment>
+<Fragment slot="head"><link rel="stylesheet" href={asset('/assets/home.css')}></Fragment>
 <main id="main">
 
 <section class="hero0 hx-hero wrap dark" id="start">
@@ -137,5 +138,5 @@ const stops: Array<[string, string]> = [['start', 'Start'], ['build', 'Build'], 
 </section>
 
 </main>
-<Fragment slot="scripts"><script is:inline src="/assets/home.js"></script></Fragment>
+<Fragment slot="scripts"><script is:inline src={asset('/assets/home.js')}></script></Fragment>
 </BaseLayout>

@@ -17,6 +17,7 @@ export interface Props {
 
 const { seo, nav = {}, rail } = Astro.props;
 const hasFooterText = Astro.slots.has('footer');
+import { asset } from '../lib/asset';
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +28,7 @@ const hasFooterText = Astro.slots.has('footer');
 <script is:inline>document.documentElement.classList.add('js')</script>
 <Analytics />
 <Seo {...seo} />
-<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href={asset('/assets/site.css')}>
 <slot name="head" />
 </head>
 <body class={rail ? 'has-dock' : undefined}>
@@ -36,7 +37,7 @@ const hasFooterText = Astro.slots.has('footer');
 <Nav {...nav} />
 <slot />
 {hasFooterText ? <Footer><slot name="footer" /></Footer> : <Footer />}
-<script is:inline src="/assets/site.js"></script>
+<script is:inline src={asset('/assets/site.js')}></script>
 <slot name="scripts" />
 <ConsentBanner />
 </body>
